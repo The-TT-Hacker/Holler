@@ -6,6 +6,7 @@
 2. Niraj Sapkota (z5259070)
 3. Andrew Han (z5204829)
 4. Timothy Thacker (z5115699)
+5. Harikrishna Manogaran (z5124767)
 
 ### Introduction to our Problem
 
