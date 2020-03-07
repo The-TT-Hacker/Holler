@@ -1,19 +1,21 @@
-const cheerio = require('cheerio');
-const fetch = require('node-fetch');
+import cheerio from 'cheerio';
+import fetch from 'node-fetch';
 
-export async function getEvents(): Promise<any[]> {
+import { Faculty } from "../common/models/faculty";
+import { Subject } from "../common/models/subject";
+
+export async function getUnswTimetable(): Promise<Faculty[]> {
   return fetch("http://timetable.unsw.edu.au/2020/subjectSearch.html")
-    .then((res: Response) => res.text())
-    .then((body: string) => extractFaculties(body));
+    .then((res) => res.text())
+    .then(fetchFaculties);
 }
 
-function extractFaculties(body: string): Promise<any> {
+function fetchFaculties(body: string): Promise<Faculty[]> {
   const $ = cheerio.load(body);
   const FACULTY_TABLE_INDEX: number = 7;
-  //const 
   const content: any[] = $('table')[FACULTY_TABLE_INDEX].children[1].children;
 
-  var faculties: any[] = [];
+  var promises: Promise<Faculty>[] = [];
 
   for (var i = 2; i < content.length; i++) {
     if (content[i].type != "tag") continue;
@@ -24,14 +26,42 @@ function extractFaculties(body: string): Promise<any> {
     const facultyUrl = content[i].children[1].children[0].attribs.href;
     const facultyName = content[i].children[3].children[0].children[0].data;
 
-    faculties.push({
-      facultyCode: facultyCode,
-      facultyUrl: facultyUrl,
-      facultyName: facultyName
+    const promise: Promise<Faculty> = fetch("http://timetable.unsw.edu.au/2020/" + facultyUrl)
+                                    .then((respose) => respose.text())
+                                    .then((body: string) => fetchClasses(body, facultyCode, facultyName));
+
+    promises.push(promise);
+  }
+
+  return Promise.all(promises);
+}
+
+function fetchClasses(body: string, facultyCode: string, facultyName: string) {
+  const $ = cheerio.load(body);
+  const content = $("table")[8].children[1].children;
+
+  var subjects: Subject[] = [];
+
+  for (var i = 2; i < content.length; i++) {
+    if (content[i].type != "tag") continue;
+    if (content[i].name != "tr") continue;
+    if (content[i].attribs.class != "rowLowlight" && content[i].attribs.class != "rowHighlight") continue;
+
+    const courseCode = content[i].children[1].children[0].children[0].data;
+    const courseUrl = content[i].children[1].children[0].attribs.href;
+    const courseName = content[i].children[3].children[0].children[0].data;
+
+    subjects.push({
+      name: courseName,
+      code: courseCode
     });
   }
 
-  console.log(faculties);
+  const promise: Promise<Faculty> =  Promise.resolve({
+    name: facultyName,
+    code: facultyCode,
+    subjects: subjects
+  });
 
-  return new Promise(() => console.log("promise callback"));
+  return promise;
 }

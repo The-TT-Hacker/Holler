@@ -2,12 +2,15 @@ import express from "express";
 import {
   getClassses
 } from "./common/database";
-import { getEvents } from "./data_collection/unsw_timetable";
+import { getUnswTimetable } from "./data_collection/unsw_timetable";
 
-getEvents().then((x) => {});
+const PORT = 8080;
+
+// Testing scraper
+//var classes = await getAllClasses();
+getUnswTimetable().then((classes) => console.log(classes));
 
 const app = express();
-const port = 8080; // default port to listen
 
 // Root
 app.get('/', (req, res) => res.send(JSON.stringify({
@@ -17,22 +20,16 @@ app.get('/', (req, res) => res.send(JSON.stringify({
 
 // Classes
 app.get('/classes', async (req, res) => {
-
   const classes = await getClassses();
-
   res.send(JSON.stringify(classes));
-
 });
 
 app.get('/timetable', async (req, res) => {
-
   const classes = await getClassses();
-
   res.send(JSON.stringify(classes));
-
 });
 
 // Run Server
-app.listen(port, () => {
-  console.log(`server started at http://localhost:${ port }`);
-} );
+app.listen(PORT, () => {
+  console.log(`server started at http://localhost:${PORT}`);
+});
