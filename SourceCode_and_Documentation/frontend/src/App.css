@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700,800&display=swap');
+
+.page-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-title {
+    margin-top: 5%;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 96px;
+    line-height: 144px;
+    color: #000000;
+}
+
+.page-subtitle {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+}
+
+.page-subtext {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    text-align: center;
+    color: #343A40;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #ED2B5F;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.login-form-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 450px;
+    min-width: 400px;
+    max-height: 175px;
+    min-height: 175px;
+}
+
+.login-form-control {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.login-button {
+    font-size: 14px;
+    background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);
+    border-radius: 3px;
+    border: none;
+    margin-bottom: 1.25%;
+}
+
+.signup-redirect-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 27px;
+    text-decoration: underline;
+    background: -webkit-linear-gradient(101.24deg, #FEA31F 0%, #E3496B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.success-image {
+    margin-bottom: 1.25%;
+}
+
+.interests-badge {
+    padding: 10px;
+    width: 85px;
+    margin: 4px;
+    border-radius: 15px;
+}
