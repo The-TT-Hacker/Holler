@@ -1,9 +1,10 @@
 import express from "express";
 import bodyParser from 'body-parser';
 import {
+  getFaculties,
   getClassses
 } from "./common/database";
-import { getUnswTimetable } from "./data_collection/unsw_timetable";
+import { getUnswTimetable } from "./data_collection/unsw_timetable"
 
 const PORT = 8080;
 
@@ -21,14 +22,20 @@ app.get('/', (req, res) => res.send(JSON.stringify({
 })));
 
 /*
-  Timtable endpoints
+  Timetable endpoints
 
   Get all faculties
   Get all classes
 */
 
+// Get all faculties
+app.get('/timetable/faculties', async (req, res) => {
+  const classes = await getFaculties();
+  res.send(JSON.stringify(classes));
+});
+
 // Get all classes
-app.get('/events/classes', async (req, res) => {
+app.get('/timetable/classes', async (req, res) => {
   const classes = await getClassses();
   res.send(JSON.stringify(classes));
 });
@@ -54,6 +61,8 @@ app.get('/events', async (req, res) => {
   Post Logout
   Post Register
   Puts Updates
+  Get Users - Search
+  Get User
 */
 
 app.post('/user/login', async (req, res) => {
@@ -62,9 +71,11 @@ app.post('/user/login', async (req, res) => {
 });
 
 /*
-  Match endpoints
+  Group endpoints
 
-  
+  Get groups
+  Get new groups
+
 */
 
 app.post('/match', async (req, res) => {
@@ -74,6 +85,9 @@ app.post('/match', async (req, res) => {
 
 /*
   Chat endpoints
+
+  Get messages
+  Get new message - could be websocket?
 */
 
 /*

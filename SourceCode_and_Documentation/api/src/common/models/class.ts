@@ -1,4 +1,4 @@
-export class Subject {
+export class Class {
   name: string;
   code: string;
 }

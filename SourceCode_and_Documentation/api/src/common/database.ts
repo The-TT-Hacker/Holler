@@ -1,7 +1,14 @@
-export async function getClassses(): Promise<any> {
+import { Faculty } from "./models/faculty";
+import { Class } from "./models/class";
 
-  const articles = fetch("www.google.com").then((response) => response.text());
+export async function getFaculties(): Promise<Faculty[]> {
+  return fetch("")
+    .then((response) => response.json())
+    .then((body: Faculty[]) => body);
+}
 
-  return articles;
-
+export async function getClassses(): Promise<Class[]> {
+  return fetch("")
+    .then((response) => response.json())
+    .then((body: Class[]) => body);
 }
