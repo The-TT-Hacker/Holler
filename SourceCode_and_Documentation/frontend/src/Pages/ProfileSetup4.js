@@ -50,7 +50,7 @@ const ProfileSetup4 = () => {
             Step 4 of 4
             </p>
 
-            <Link to="/dashboard"> <Button className="login-button" size="lg"> Finish </Button> </Link>
+            <Link to="/dashboard"> <Button className="btn-gradient btn-lg"> Finish </Button> </Link>
 
         </div>
     )

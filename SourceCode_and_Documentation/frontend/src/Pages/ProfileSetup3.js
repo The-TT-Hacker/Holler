@@ -40,7 +40,7 @@ const ProfileSetup3 = () => {
         Step 3 of 4
         </p>
 
-        <Link to="/profile-setup-4"> <Button className="login-button" size="lg"> Continue </Button> </Link>
+        <Link to="/profile-setup-4"> <Button className="btn-gradient btn-lg"> Continue </Button> </Link>
 
         </div>
     )

@@ -1,6 +1,8 @@
 import React from 'react'
 
 import Success from '../Icons/success.svg'
+
+import { Link } from 'react-router-dom'
 import { Button, Image } from 'react-bootstrap'
 
 const VerifyEmail = () => {
@@ -19,7 +21,7 @@ const VerifyEmail = () => {
             </p>
 
             <br />
-            <Button className="login-button" size="lg"> Continue </Button>
+            <Link to="/login"> <Button className="btn-gradient btn-lg"> Take me to the Login! </Button> </Link>
 
         </div>
     )

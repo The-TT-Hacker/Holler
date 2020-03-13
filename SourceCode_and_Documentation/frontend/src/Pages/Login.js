@@ -40,8 +40,8 @@ const Login = () => {
 
             </Form.Group>
 
-            <Button className="login-button" size="lg"> Login </Button>
-            <Link to="/signup"> <p className="signup-redirect-text"> Create Account! </p> </Link>
+            <Link to="/dashboard"> <Button className="btn-gradient btn-lg"> Login </Button> </Link>
+            <Link to="/signup"> <p className="txt-gradient txt-sm txt-bold"> Create Account! </p> </Link>
 
         </div>
     )
