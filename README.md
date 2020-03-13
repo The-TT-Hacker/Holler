@@ -14,9 +14,9 @@ The problem we aim to address is the difficulty of socialising and making friend
 ### Prototype Implementation
 
 For our system propsal a Low-Fidelity and High-Fidelity Prototype have been designed, they can be found under the following links:
-Mobile Lo-Fi: https://whimsical.com/S4tzjuCznE6Vz6sH261DLb
-Desktop Lo-Fi: https://whimsical.com/TGD6sQD6k42uAC7JzUayzm
-Mobile Hi-Fi: https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A3
-Desktop Hi-Fi: https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A4
+  - Mobile Lo-Fi: https://whimsical.com/S4tzjuCznE6Vz6sH261DL
+  - Desktop Lo-Fi: https://whimsical.com/TGD6sQD6k42uAC7JzUayzm
+  - Mobile Hi-Fi: https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A3
+  - Desktop Hi-Fi: https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A4
 
 The actual implementation will make use of ReactJS for the frontend with bootstrap to speed up development and ExpressJS for the backend.
