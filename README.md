@@ -14,9 +14,18 @@ The problem we aim to address is the difficulty of socialising and making friend
 ### Prototype Implementation
 
 For our system propsal a Low-Fidelity and High-Fidelity Prototype have been designed, they can be found under the following links:
-  - Mobile Lo-Fi: https://whimsical.com/S4tzjuCznE6Vz6sH261DL
-  - Desktop Lo-Fi: https://whimsical.com/TGD6sQD6k42uAC7JzUayzm
-  - Mobile Hi-Fi: https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A3
-  - Desktop Hi-Fi: https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A4
+  - Lo-Fi Prototype:
+    - [Mobile](https://whimsical.com/S4tzjuCznE6Vz6sH261DL)
+    - [Desktop](https://whimsical.com/TGD6sQD6k42uAC7JzUayzm)
+  - Hi-Fi Prototype:
+    - [Mobile](https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A3)
+    - [Desktop](https://www.figma.com/file/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=1%3A4)
+  - [Functional Prototype](https://www.figma.com/proto/I8orwYI867ufVefo4dIalk/Holler-v1?node-id=112%3A249&viewport=469%2C252%2C0.6696478128433228&scaling=min-zoom)
 
 The actual implementation will make use of ReactJS for the frontend with bootstrap to speed up development and ExpressJS for the backend.
+
+### Active Documents/Workspaces
+- [Deliverable 2](https://docs.google.com/document/d/1iUmuT83mGHIvPGmAJrJMeGmTR9coKm3A8y8b2rPACYQ/edit)
+- [Temp Internal API Docs](https://docs.google.com/document/d/1-L7oZ271m-pXc-C_ljsWrYvdTrMt_NRivTRaqn1dZ7U/edit)
+- [High-Level Software Architecture](https://whimsical.com/NM7PhnjJsSbZMpSSiHaC4A)
+- [Use Cases & Flowcharts](https://whimsical.com/PwrvS7V179hJ6LT7hFnnAh)
