@@ -1,25 +1,82 @@
 import express from "express";
 import bodyParser from 'body-parser';
 import {
+  getUID,
+  registerUser,
   getFaculties,
-  getClassses
+  getClasses,
+  getEvents,
+  getUser,
+  loginUser,
+  signOutUser,
+  deleteUser,
+  resetPassword,
+  updateUser
 } from "./common/database";
-import { getUnswTimetable } from "./data_collection/unsw_timetable"
+import { User } from "./common/models/user";
 
 const PORT = 8080;
-
-// Testing scraper
-//var classes = await getAllClasses();
-//getUnswTimetable().then((classes) => console.log(classes));
+const NO_AUTH_ROUTES: string[] = [
+  "/login",
+  "/register"
+];
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(function (req, res, next) {
+  if (NO_AUTH_ROUTES.includes(req.path)) next();
+  else {
+    if (!req.headers.Authorization) res.send(400);
+    
+    var token: string = req.headers.authorization;
 
-app.get('/', (req, res) => res.send(JSON.stringify({
-  "name": "Connect on Campus API",
+    getUID(token)
+      .then((uid) => {
+        req.uid = uid;
+        next();
+      })
+      .catch(() => res.send(401));
+  }
+});
+
+app.get('/', (req, res) => res.send({
+  "name": "Holler API",
   "version": "1.0.0"
-})));
+}));
+
+/*
+  Authentication end points
+
+  Post Login
+  Post Logout
+  Post Register
+*/
+
+app.post('/auth/login', async (req, res) => {
+  const token: string = await loginUser(req.body);
+  res.send();
+});
+
+app.post('/auth/logout', async (req, res) => {
+  const token: string = await signOutUser(req.headers.authorization);
+  res.send();
+});
+
+app.post('/auth/register', async (req, res) => {
+  await registerUser(req.body);
+  res.send();
+});
+
+app.post('/auth/forget_password', async (req, res) => {
+  await resetPassword(req.headers.authorization, req.body);
+  res.send();
+});
+
+app.post('/auth/delete', async (req, res) => {
+  await deleteUser(req.uid);
+  res.send();
+});
 
 /*
   Timetable endpoints
@@ -31,13 +88,13 @@ app.get('/', (req, res) => res.send(JSON.stringify({
 // Get all faculties
 app.get('/timetable/faculties', async (req, res) => {
   const classes = await getFaculties();
-  res.send(JSON.stringify(classes));
+  res.send(classes);
 });
 
 // Get all classes
 app.get('/timetable/classes', async (req, res) => {
-  const classes = await getClassses();
-  res.send(JSON.stringify(classes));
+  const classes = await getClasses();
+  res.send(classes);
 });
 
 /*
@@ -50,24 +107,25 @@ app.get('/timetable/classes', async (req, res) => {
 */
 
 app.get('/events', async (req, res) => {
-  const classes = await getClassses();
-  res.send(JSON.stringify(classes));
+  const events = await getEvents();
+  res.send(events);
 });
 
 /*
   User end points
 
-  Post Login
-  Post Logout
-  Post Register
-  Puts Updates
-  Get Users - Search
-  Get User
+  Puts User
+  Get  Users - Search
+  Get  User
 */
 
-app.post('/user/login', async (req, res) => {
-  const classes = await getClassses();
-  res.send(JSON.stringify(classes));
+app.get('/user', async (req, res) => {
+  const user: User = await getUser(req.uid);
+  res.send(user);
+});
+
+app.puts('/user', async (req, res) => {
+  await updateUser(req.uid, req.body);
 });
 
 /*
@@ -79,7 +137,7 @@ app.post('/user/login', async (req, res) => {
 */
 
 app.post('/match', async (req, res) => {
-  const classes = await getClassses();
+  const classes = await getClasses();
   res.send(JSON.stringify(classes));
 });
 
