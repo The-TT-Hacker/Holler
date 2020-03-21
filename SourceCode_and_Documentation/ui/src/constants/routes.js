@@ -1,0 +1,7 @@
+export const LANDING        = '/'
+export const DASHBOARD      = '/dashboard'
+export const LOGIN          = '/login'
+export const SIGNUP         = '/signup'
+export const RESET_PASSWORD = '/reset-pw' 
+export const VERIFY_EMAIL   = '/verify'
+export const PROFILE_SETUP  = '/ps'

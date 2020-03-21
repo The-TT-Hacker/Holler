@@ -15,7 +15,7 @@ import {
 } from "./common/database";
 import { User } from "./common/models/user";
 
-const PORT = 8080;
+const PORT = 5000;
 const NO_AUTH_ROUTES: string[] = [
   "/login",
   "/register"
