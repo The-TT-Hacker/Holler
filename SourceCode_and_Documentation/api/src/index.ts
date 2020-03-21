@@ -124,7 +124,7 @@ app.get('/user', async (req, res) => {
   res.send(user);
 });
 
-app.puts('/user', async (req, res) => {
+app.put('/user', async (req, res) => {
   await updateUser(req.uid, req.body);
 });
 
