@@ -15,7 +15,7 @@ import {
 } from "./common/database";
 import { User } from "./common/models/user";
 
-const PORT = 8080;
+const PORT = 5000;
 const NO_AUTH_ROUTES: string[] = [
   "/login",
   "/register"
@@ -124,7 +124,7 @@ app.get('/user', async (req, res) => {
   res.send(user);
 });
 
-app.puts('/user', async (req, res) => {
+app.put('/user', async (req, res) => {
   await updateUser(req.uid, req.body);
 });
 
