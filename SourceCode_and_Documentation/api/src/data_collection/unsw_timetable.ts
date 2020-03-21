@@ -2,7 +2,7 @@ import cheerio from 'cheerio';
 import fetch from 'node-fetch';
 
 import { Faculty } from "../common/models/faculty";
-import { Subject } from "../common/models/subject";
+import { Class } from "../common/models/class";
 
 export async function getUnswTimetable(): Promise<Faculty[]> {
   return fetch("http://timetable.unsw.edu.au/2020/subjectSearch.html")
@@ -40,7 +40,7 @@ function fetchClasses(body: string, facultyCode: string, facultyName: string) {
   const $ = cheerio.load(body);
   const content = $("table")[8].children[1].children;
 
-  var subjects: Subject[] = [];
+  var classes: Class[] = [];
 
   for (var i = 2; i < content.length; i++) {
     if (content[i].type != "tag") continue;
@@ -51,7 +51,7 @@ function fetchClasses(body: string, facultyCode: string, facultyName: string) {
     const courseUrl = content[i].children[1].children[0].attribs.href;
     const courseName = content[i].children[3].children[0].children[0].data;
 
-    subjects.push({
+    classes.push({
       name: courseName,
       code: courseCode
     });
@@ -60,7 +60,7 @@ function fetchClasses(body: string, facultyCode: string, facultyName: string) {
   const promise: Promise<Faculty> =  Promise.resolve({
     name: facultyName,
     code: facultyCode,
-    subjects: subjects
+    classes: classes
   });
 
   return promise;

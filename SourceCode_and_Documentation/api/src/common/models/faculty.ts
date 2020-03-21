@@ -1,7 +1,7 @@
-import { Subject } from './subject';
+import { Class } from './class';
 
 export class Faculty {
   name: string;
   code: string;
-  subjects: Subject[];
+  classes: Class[];
 }
