@@ -5,6 +5,10 @@
   height: 100vh;
 }
 
+.App {
+
+}
+
 .form {
   width: 100%;
   margin-top: 4vh;
@@ -76,6 +80,46 @@
 
   .active-user {
     display: none;
+  }
+
+}
+
+
+
+
+/* AVATAR */
+.App {
+  width: 100%;
+  max-width: 960px;
+  margin: 2.5em auto;
+  border-radius: .35em;
+  background: #fcfcfc;
+  overflow: hidden;
+  -webkit-box-shadow: 10px 10px 26px rgba(0, 0, 0, .13);
+  box-shadow: 0 0 26px rgba(0, 0, 0, .13);
+}
+
+.nav-tabs {
+  margin-bottom:15px;
+}
+
+/* Canvas */
+#main-canvas {
+  background: #ccc;
+  background: url('../components/ProfileSetup/images/bg-canvas.png');
+  background-repeat: repeat;
+  border:1px solid #ececec;
+  margin: 10px auto;
+  display: block;
+}
+
+.main {
+    padding: 1em 2em 2em 2em;
+}
+
+@media (min-width: 769px) {
+  .jumbotron {
+    height: 200px;
   }
 
 }
