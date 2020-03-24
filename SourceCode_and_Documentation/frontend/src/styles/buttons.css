@@ -1,0 +1,14 @@
+.btn-sm { }
+.btn-md { }
+.btn-lg { }
+
+.btn-gradient {
+  font-family: 'Poppins';
+  font-weight: bold;
+  font-size: 14px;
+  background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);
+  border-radius: 3px;
+  border: none !important;
+  margin-bottom: 1.25%;
+  line-height: 1.5em;
+}

@@ -5,7 +5,7 @@ import AppDescription from './app-description'
 
 const Landing = () => {
   return (
-    <div>
+    <div className="landing">
       <Navigation />
       <AppDescription />
     </div>

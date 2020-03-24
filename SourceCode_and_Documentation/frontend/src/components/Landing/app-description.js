@@ -9,13 +9,13 @@ const AppDescription = () => {
     <div className="container-fluid">
 
       <div className="row">
-        <div className="col-lg-6 align-left">
-          <h6 className="txt-subtitle responsive-subcontainer">
+        <div className="col-4">
+          <h6 className="txt-subtitle">
             Find new events and meet more
             people in your university.
           </h6>
 
-          <p className="txt-subtext responsive-subcontainer">
+          <p className="txt-subtext">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
             do eiusmod tempor incididunt ut labore et dolore magna
             aliqua. Ut enim ad minim veniam, quis nostrud exercitation
@@ -27,7 +27,7 @@ const AppDescription = () => {
           </Link>
         </div>
 
-        <div className="col-lg-6 align-right">
+        <div className="col-lg-8 d-flex justify-content-end">
         <Image src={CrayonSuccess} className="img-fluid" />
       </div>
       </div>

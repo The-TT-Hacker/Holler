@@ -1,119 +1,94 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { useState } from 'react'
+import axios from 'axios'
 
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
 
-import { withFirebase } from '../Firebase'
-import { compose } from 'recompose'
-import { Button, Form, InputGroup, Image } from 'react-bootstrap'
+import { URL } from '../../constants/roles'
+import { Link } from 'react-router-dom'
+import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
 
 const Signup = () => {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+
+    const PostSignup = () => {
+        axios.post(URL + '/register', {
+            email: email,
+            password: password,
+            confirmPassword: confirmPassword
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }
+
     return (
-        <div className="align">
+        <div className="container-fluid h-100">
+            <div className="row mx-auto align-items-center h-100" style={{ maxWidth: "600px"}}>
+                <div className="col d-flex flex-column align-items-center">
+                <Nav.Link href="/"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Nav.Link>
+                    <h6 className="txt-subtitle"> Create a New Account </h6>
+                    <p className="txt-subtext"> Join and meet more people in your University! </p>
 
-            <div className="txt-title"> Holler <span className="dot"></span> </div>
-            <h6 className="txt-subtitle"> Create a New Account </h6>
-            <p className="txt-subtext"> Join and meet more people in your University! </p>
+                    <Form.Group className="form">
 
-            <SignupForm />
+                        <InputGroup>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="basic-addon1">
+                                    <Image src={Mail} />
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                                size="lg"
+                                type="text"
+                                placeholder="University Email"
+                                onChange={event => setEmail(event.target.value)} />
+                        </InputGroup>
 
+                        <br />
+                        <InputGroup>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="basic-addon1">
+                                    <Image src={Lock} />
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                                size="lg"
+                                type="password"
+                                placeholder="Password"
+                                onChange={event => setPassword(event.target.value)} />
+                        </InputGroup>
+
+                        <br />
+                        <InputGroup>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="basic-addon1">
+                                    <Image src={Lock} />
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                                size="lg"
+                                type="password"
+                                placeholder="Password"
+                                onChange={event => setConfirmPassword(event.target.value)} />
+                        </InputGroup>
+                        <br />
+
+                    </Form.Group>
+
+                    <Link to="/verify"> <Button className="btn-gradient btn-lg" onClick={PostSignup}> Sign Up </Button> </Link>
+                    <br />
+
+                    <Link to="/login"> <p className="txt-gradient txt-sm txt-bold"> Already have an account? Login. </p> </Link>
+                </div>
+            </div>
         </div>
     )
 }
 
-const INITIAL_STATE = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-    error: null,
-}
-
-class SignupFormBase extends Component {
-    constructor(props) {
-        super(props)
-        this.state = { ...INITIAL_STATE }
-    }
-
-    onChange = event => {
-        this.setState({ [event.target.name]: event.target.value })
-    }
-
-    onSubmit = event => {
-        const { email, password } = this.state
-
-        this.props.firebase
-            .doCreateUserWithEmailAndPassword(email, password)
-            .then(authUser => {
-                this.setState({ ...INITIAL_STATE })
-                this.props.history.push('/verify')
-            })
-            .catch(error => {
-                this.setState({ error })
-            })
-
-        event.preventDefault();
-    }
-
-    render() {
-
-        const {
-            email,
-            password,
-            confirmPassword,
-            error,
-        } = this.state
-
-        const isInvalid =
-            password !== confirmPassword ||
-            email === '' ||
-            password === '';
-
-        return (
-            <div>
-                <Form.Group className="login-form-group">
-
-                    <InputGroup>
-                        <InputGroup.Prepend>
-                            <InputGroup.Text id="basic-addon1">
-                                <Image src={Mail} />
-                            </InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control className="login-form-control" size="lg" name="email" value={email} onChange={this.onChange} type="text" placeholder="University Email" />
-                    </InputGroup>
-
-                    <br />
-                    <InputGroup>
-                        <InputGroup.Prepend>
-                            <InputGroup.Text id="basic-addon1">
-                                <Image src={Lock} />
-                            </InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control className="login-form-control" size="lg" name="password" value={password} onChange={this.onChange} type="password" placeholder="Password" />
-                    </InputGroup>
-
-                    <br />
-                    <InputGroup>
-                        <InputGroup.Prepend>
-                            <InputGroup.Text id="basic-addon1">
-                                <Image src={Lock} />
-                            </InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control className="login-form-control" size="lg" name="confirmPassword" value={confirmPassword} onChange={this.onChange} type="password" placeholder="Password" />
-                    </InputGroup>
-
-                    <Button className="btn-gradient btn-lg" disabled={isInvalid} onClick={this.onSubmit}> Sign Up </Button>
-                    {error && <p>{error.message}</p>}
-                </Form.Group>
-            </div>
-        )
-    }
-}
-
-const SignupForm = compose(
-  withRouter,
-  withFirebase,
-)(SignupFormBase);
-
 export default Signup
-export { SignupForm }
