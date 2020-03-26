@@ -1,5 +1,4 @@
 import React from 'react';
-import {Col} from 'react-bootstrap';
 
 export default class TemplateListItem extends React.Component{
 
@@ -11,13 +10,14 @@ export default class TemplateListItem extends React.Component{
 
     render(){
 
-        return(
+        var link = "#" + this.props.key // Remove href warning
 
-            <Col xs={6} md={4} >
-                <a href="#" className="thumbnail" onClick={this.localAddToCanvas}>
-                    <img alt ="" src={this.props.url} />
+        return(
+            <div className="col-md-4 col-sm-6">
+                <a href={link} className="thumbnail" onClick={this.localAddToCanvas}>
+                    <img className="img-fluid" alt="" src={this.props.url} />
                 </a>
-            </Col>
+            </div>
         );
     }
 }

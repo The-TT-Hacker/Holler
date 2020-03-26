@@ -5,11 +5,11 @@ import { Form } from 'react-bootstrap'
 const Step1 = () => {
 
   const onDateFocus = (e) => { e.currentTarget.type = "date" }
-  const onDateBlur  = (e) => { if (e.currentTarget.value == "") e.currentTarget.type="text" }
+  const onDateBlur  = (e) => { if (e.currentTarget.value === "") e.currentTarget.type="text" }
 
   return (
     <div className="container-fluid" style={{ maxHeight: "65vh" }}>
-      <div className="row mx-auto align-items-center h-100" style={{ maxWidth: "900px" }}>
+      <div className="row mx-auto align-items-center h-100" style={{ maxWidth: "960px" }}>
         <div className="col d-flex flex-column align-items-center">
           <h6 className="txt-subtitle"> You Made It! </h6>
           <p className="txt-subtext"> Please fill the following details so we can get you up and running with Holler! </p>

@@ -9,7 +9,7 @@ const AppDescription = () => {
     <div className="container-fluid">
 
       <div className="row">
-        <div className="col-4">
+        <div className="col-lg-4">
           <h6 className="txt-subtitle">
             Find new events and meet more
             people in your university.

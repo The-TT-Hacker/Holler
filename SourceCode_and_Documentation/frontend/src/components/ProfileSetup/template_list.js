@@ -8,7 +8,7 @@ export default class TemplateList extends React.Component{
         const results = this.props.data;
         let templates = results.map(item =>
 
-            <TemplateListItem 
+            <TemplateListItem
                 url={item}
                 property_type = {this.props.property_type} 
                 zIndex = {this.props.zIndex} 
@@ -19,7 +19,6 @@ export default class TemplateList extends React.Component{
         );
 
         return(
-
             <div className="row">
                {templates}   
             </div>    

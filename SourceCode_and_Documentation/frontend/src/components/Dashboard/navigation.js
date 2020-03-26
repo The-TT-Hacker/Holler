@@ -1,8 +1,6 @@
 import React from 'react'
 
 import User from '../../icons/user.svg'
-
-import { Link } from 'react-router-dom'
 import { Navbar, Nav, Image } from 'react-bootstrap'
 
 const Navigation = () => {

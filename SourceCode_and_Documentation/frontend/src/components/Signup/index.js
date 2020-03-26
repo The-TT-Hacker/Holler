@@ -6,9 +6,15 @@ import Mail from '../../icons/mail.svg'
 
 import { URL } from '../../constants/roles'
 import { Link } from 'react-router-dom'
+import { Formik } from 'formik'
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
 
+import * as EmailValidator from 'email-validator'
+import * as Yup from 'yup'
+
+
 const Signup = () => {
+    
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
@@ -16,8 +22,7 @@ const Signup = () => {
     const PostSignup = () => {
         axios.post(URL + '/register', {
             email: email,
-            password: password,
-            confirmPassword: confirmPassword
+            password: password
         })
         .then(function (response) {
             console.log(response);
@@ -25,6 +30,17 @@ const Signup = () => {
         .catch(function (error) {
             console.log(error);
         })
+    }
+
+    const [error, errorMessage] = useState(false)
+    const displayError = () => {
+        if (error) {
+            return <div> {errorMessage} </div>
+        }
+    }
+
+    const setError = (error) => {
+        setError(error)
     }
 
     return (

@@ -1,4 +1,5 @@
 import React, { useState} from 'react'
+import axios from 'axios'
 
 import Mail from '../../icons/mail.svg'
 
@@ -9,7 +10,15 @@ const ResetPassword = () => {
   const [email, setEmail] = useState("")
 
   const PostReset = () => {
-
+    axios.post(URL + '/password-reset', {
+      email: email,
+    })
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
   }
 
   return (
