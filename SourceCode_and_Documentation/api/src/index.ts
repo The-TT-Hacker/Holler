@@ -15,7 +15,7 @@ import {
 } from "./common/database";
 import { User } from "./common/models/user";
 
-const PORT = 5000;
+const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
   "/auth/register"
 ];
