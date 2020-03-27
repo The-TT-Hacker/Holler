@@ -14,8 +14,7 @@
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 800;
-  font-size: 96px;
-  line-height: 144px;
+  font-size: 5rem;
   color: #000000;
 }
 
@@ -23,15 +22,17 @@
   font-family: 'Poppins';
   font-style: normal;
   font-weight: bold;
-  font-size: 36px;
-  line-height: 54px;
+  font-size: 2rem;
 }
 
 .txt-subtext {
   font-family: 'Poppins';
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
-  line-height: 27px;
+  font-size: 1.25rem;
   color: #343A40;
+}
+
+.txt-align-center {
+  text-align: center;
 }

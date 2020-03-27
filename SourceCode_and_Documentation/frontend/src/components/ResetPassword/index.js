@@ -27,7 +27,7 @@ const ResetPassword = () => {
         <div className="col d-flex flex-column align-items-center">
           <Nav.Link href="/"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Nav.Link>
           <h6 className="txt-subtitle"> Oh No! </h6>
-          <p className="txt-subtext"> Forgot your password? No worries. Reset it here. </p>
+          <p className="txt-subtext txt-align-center"> Forgot your password? No worries. Reset it here. </p>
 
           <Form.Group className="form">
 
