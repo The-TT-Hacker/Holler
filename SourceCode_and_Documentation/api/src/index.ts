@@ -7,11 +7,11 @@ import {
   getClasses,
   getEvents,
   getUser,
-  loginUser,
-  signOutUser,
   deleteUser,
   resetPassword,
-  updateUser
+  updateUser,
+  signOutUser,
+  loginUser
 } from "./common/database";
 import { User } from "./common/models/user";
 
@@ -24,19 +24,17 @@ const NO_AUTH_ROUTES: string[] = [
 const app = express();
 
 app.use(bodyParser.json());
-app.use(function (req, res, next) {
-  if (NO_AUTH_ROUTES.includes(req.path)) next();
-  else {
-    if (!req.headers.Authorization) res.send(400);
-    
-    var token: string = req.headers.authorization;
-
-    getUID(token)
-      .then((uid) => {
-        req.uid = uid;
-        next();
-      })
-      .catch(() => res.send(401));
+app.use(async (req, res, next) => {
+  if (NO_AUTH_ROUTES.includes(req.path)) {
+    next();
+  } else if (!req.headers.authorization) {
+    res.sendStatus(403);
+    return;
+  } else {
+    const token: string = req.headers.authorization;
+    const error: string = await getUID(token, req);
+    if (error) res.status(401).send(error);
+    else next();
   }
 });
 
@@ -53,29 +51,36 @@ app.get('/', (req, res) => res.send({
   Post Register
 */
 
-app.post('/auth/login', async (req, res) => {
-  const token: string = await loginUser(req.body);
-  res.send();
-});
-
-app.post('/auth/logout', async (req, res) => {
-  const token: string = await signOutUser(req.headers.authorization);
-  res.send();
-});
-
 app.post('/auth/register', async (req, res) => {
-  await registerUser(req.body);
-  res.send();
-});
-
-app.post('/auth/forget_password', async (req, res) => {
-  await resetPassword(req.headers.authorization, req.body);
-  res.send();
+  const result = await registerUser(req.body);
+  if (result) res.sendStatus(200);
+  else res.sendStatus(400);
 });
 
 app.post('/auth/delete', async (req, res) => {
-  await deleteUser(req.uid);
-  res.send();
+  const result: boolean = await deleteUser(req.uid);
+  if (result) res.sendStatus(200);
+  else res.sendStatus(400);
+});
+
+/*
+  User end points
+
+  Puts User
+  Get  Users - Search
+  Get  User
+*/
+
+app.get('/user', async (req, res) => {
+  const user: User = await getUser(req.uid);
+  if (user) res.send(user);
+  else res.sendStatus(400);
+});
+
+app.put('/user', async (req, res) => {
+  const result: boolean = await updateUser(req.uid, req.body);
+  if (result) res.sendStatus(203);
+  else res.sendStatus(400);
 });
 
 /*
@@ -109,23 +114,6 @@ app.get('/timetable/classes', async (req, res) => {
 app.get('/events', async (req, res) => {
   const events = await getEvents();
   res.send(events);
-});
-
-/*
-  User end points
-
-  Puts User
-  Get  Users - Search
-  Get  User
-*/
-
-app.get('/user', async (req, res) => {
-  const user: User = await getUser(req.uid);
-  res.send(user);
-});
-
-app.put('/user', async (req, res) => {
-  await updateUser(req.uid, req.body);
 });
 
 /*

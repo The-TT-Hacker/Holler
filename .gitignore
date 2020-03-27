@@ -1,3 +1,4 @@
 .DS_Store
 SourceCode_and_Documentation/api/dist
 SourceCode_and_Documentation/api/node_modules
+SourceCode_and_Documentation/ui/node_modules
