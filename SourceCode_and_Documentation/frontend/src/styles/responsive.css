@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700,800&display=swap');
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+.form {
+  width: 100%;
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+}
+
+.circle {
+  fill: none;
+  border-width: 10px;
+  border: solid;
+  border-radius: 48px;
+  width: 96px;
+  height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.d-nav {
+  margin-left: 2vw;
+  border: solid;
+  border-color: #1E2125;
+  border-width: 0 0 4px 0;
+}
+
+.d-nav-link {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 36px;
+
+  padding: 10px;
+  width: 150px;
+  color: black !important;
+}
+
+.success-image {
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+}
+
+.landing {
+  background-color: #FFF7EA;
+  padding: 2.25%;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #ED2B5F;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 0px) and (max-width: 1199px) {
+
+  .dashboard-nav {
+    margin-left: 0;
+    border: none;
+  }
+
+  .circle {
+    display: none;
+  }
+
+  .active-user {
+    display: none;
+  }
+
+}
+
+
+
+
+/* AVATAR */
+.App {
+  width: 100%;
+  max-width: 960px;
+  margin: 2.5em auto;
+  border-radius: .35em;
+  background: #fcfcfc;
+  overflow: hidden;
+  -webkit-box-shadow: 10px 10px 26px rgba(0, 0, 0, .13);
+  box-shadow: 0 0 26px rgba(0, 0, 0, .13);
+}
+
+.avatar-tab-content {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+
+/* Canvas */
+#main-canvas {
+  background: #ccc;
+  background: url('../components/ProfileSetup/images/bg-canvas.png');
+  background-repeat: repeat;
+  border:1px solid #ececec;
+  margin: 10px auto;
+  display: block;
+}
+
+.main {
+  /* width: 100%;
+  max-width: 960px;*/
+  margin: 1em 1em 1em 1em;
+  overflow: hidden;
+  border-radius: 1em;
+  background: #fcfcfc;
+  -webkit-box-shadow: 10px 10px 26px rgba(0, 0, 0, .13);
+  box-shadow: 0 0 26px rgba(0, 0, 0, .13);
+  padding: 1em 2em 2em 2em;
+}
