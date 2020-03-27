@@ -47,9 +47,10 @@ export async function signOutUser(token: string): Promise<boolean> {
   };
 }
 
-export async function registerUser(registration: UserRegistration): Promise<boolean> {
+export async function registerUser(registration: UserRegistration): Promise<string> {
   try {
-    if (!registration.email || !registration.password) return false;
+    if (!registration.email) return "Email is required";
+    if (!registration.password) return "Password is required";
 
     const userRecord = await admin.createUser({
       email: registration.email,
@@ -71,10 +72,10 @@ export async function registerUser(registration: UserRegistration): Promise<bool
     cred.user.sendEmailVerification();
     //const token = await cred.user.getIdToken();
   
-    return true;
+    return null;
   } catch (e) {
-    console.log(e);
-    return false;
+    if (e.errorInfo) return e.errorInfo.message;
+    else return "Error";
   }
 }
 
