@@ -71,6 +71,7 @@ export async function registerUser(registration: UserRegistration): Promise<bool
   
     return true;
   } catch (e) {
+    console.log(e);
     return false;
   }
 }
