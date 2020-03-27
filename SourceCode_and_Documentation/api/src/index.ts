@@ -51,9 +51,10 @@ app.get('/', (req, res) => res.send({
 */
 
 app.post('/auth/register', async (req, res) => {
-  const result = await registerUser(req.body);
-  if (result) res.sendStatus(200);
-  else res.sendStatus(400);
+  const error = await registerUser(req.body);
+  console.log(error);
+  if (error) res.status(400).send(error);
+  else res.sendStatus(200);
 });
 
 app.post('/auth/delete', async (req, res) => {
