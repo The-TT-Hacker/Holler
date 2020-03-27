@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from 'body-parser';
+var cors = require('cors');
+
 import {
   getUID,
   registerUser,
@@ -22,6 +24,7 @@ const NO_AUTH_ROUTES: string[] = [
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(async (req, res, next) => {
   if (NO_AUTH_ROUTES.includes(req.path)) {
