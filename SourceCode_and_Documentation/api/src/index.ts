@@ -17,8 +17,7 @@ import { User } from "./common/models/user";
 
 const PORT = 5000;
 const NO_AUTH_ROUTES: string[] = [
-  "/login",
-  "/register"
+  "/auth/register"
 ];
 
 const app = express();
