@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ./ui
+cd ./frontend
 npm install
 
 cd ../api

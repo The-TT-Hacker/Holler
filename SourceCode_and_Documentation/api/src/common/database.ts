@@ -162,6 +162,7 @@ export async function setEvents(events: Event[]): Promise<boolean> {
 
     return true;
   } catch (e) {
+    console.log(e);
     return false;
   }
 }
