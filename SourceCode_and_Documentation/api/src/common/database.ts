@@ -49,6 +49,8 @@ export async function signOutUser(token: string): Promise<boolean> {
 
 export async function registerUser(registration: UserRegistration): Promise<boolean> {
   try {
+    if (!registration.email || !registration.password) return false;
+
     const userRecord = await admin.createUser({
       email: registration.email,
       emailVerified: false,
