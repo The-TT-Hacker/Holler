@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import querystring from 'querystring'
+//import querystring from 'querystring'
 
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'

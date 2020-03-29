@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import '../../styles/responsive.css'
 import '../../styles/text.css'
 import '../../styles/buttons.css'
+import '../../styles/search_bar.css'
 
 import * as ROUTES from '../../constants/routes'
 

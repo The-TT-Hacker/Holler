@@ -1,0 +1,26 @@
+.topnav {}
+
+
+.topnav-title{
+  position: relative;
+  left: 395px;
+  top: 170px;
+  font-size: 24px;
+  font-weight: bold;
+  background-size: 100px 100px;
+
+
+}
+
+.topnav-dashboard_searchbar {
+  position: relative;
+  left: 395px;
+  top: 190px;
+  background-size: 200px 300px;
+/*  Corner Radius: 3px;
+  Stroke Color Style: Neutral/400;*/
+  Stroke: Solid;
+/*  #CFD4DA;*/
+  Align: Inside;
+  Width: 1px;
+}
