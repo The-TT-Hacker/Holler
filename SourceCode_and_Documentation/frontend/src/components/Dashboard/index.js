@@ -6,8 +6,7 @@ import Going from './going'
 import Matches from './matches'
 import Profile from './profile'
 
-import { Form,FormControl,Button,Navbar} from 'react-bootstrap'
-import Search from '../../icons/search.svg'
+import { withAuthorization } from '../Session'
 
 const Dashboard = () => {
   return (
@@ -29,5 +28,6 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+const condition = authUser => !!authUser
+export default withAuthorization(condition)(Dashboard)
 export { Explore, Going, Matches, Profile }

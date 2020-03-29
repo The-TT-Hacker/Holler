@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import { withFirebase } from "../Firebase"
@@ -55,6 +56,18 @@ class LoginFormBase extends Component {
       .then(() => {
         this.setState({ ...INITIAL_STATE })
         this.props.history.push(ROUTES.DASHBOARD)
+
+        // axios({
+        //   method: "get",
+        //   url: URL + '/user',
+        //   headers: {'Authorization': token}
+        // }).then(function (response) {
+        //   console.log(response)
+        // }).catch(function (error) {
+        //   console.log(error)
+        // })
+
+
       })
       .catch(error => {
         this.setState({ error })

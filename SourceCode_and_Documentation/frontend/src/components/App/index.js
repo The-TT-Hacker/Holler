@@ -1,10 +1,11 @@
 import React from 'react'
+
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 
 import '../../styles/responsive.css'
 import '../../styles/text.css'
 import '../../styles/buttons.css'
-import '../../styles/search_bar.css'
 
 import * as ROUTES from '../../constants/routes'
 
@@ -19,6 +20,7 @@ import { Explore } from '../Dashboard'
 import { Going } from '../Dashboard'
 import { Matches } from '../Dashboard'
 import { Profile } from '../Dashboard'
+import { withAuthentication } from '../Session'
 
 const App = () => {
   return (
@@ -38,4 +40,4 @@ const App = () => {
   )
 }
 
-export default App
+export default withAuthentication(App)

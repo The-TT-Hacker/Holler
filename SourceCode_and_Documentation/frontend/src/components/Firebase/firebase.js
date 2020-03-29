@@ -30,6 +30,9 @@ class Firebase {
 
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password)
+  
+  doSignOut = () =>
+    this.auth.signOut()
     
 }
 
