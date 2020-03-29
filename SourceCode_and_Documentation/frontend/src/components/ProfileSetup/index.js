@@ -7,10 +7,11 @@ import Step4 from './step4'
 
 import { Link } from 'react-router-dom'
 import { Nav, Button } from 'react-bootstrap'
+import { withAuthorization } from '../Session'
 
 const ProfileSetup = () => {
   const componentList = [<Step1 />, <Step2 />, <Step3 />, <Step4 />]
-  const [step, setStep] = useState(4)
+  const [step, setStep] = useState(1)
 
   const goBack = () => { if (step !== 1) setStep(step - 1) }
   const goForward = () => { if (step !== 4) setStep(step + 1) }
@@ -53,4 +54,5 @@ const ProfileSetup = () => {
   )
 }
 
-export default ProfileSetup
+const condition = authUser => !!authUser
+export default withAuthorization(condition)(ProfileSetup)
