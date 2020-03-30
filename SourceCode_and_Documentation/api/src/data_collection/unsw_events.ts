@@ -3,7 +3,7 @@ import { setEvents } from "../common/database";
 import { Event } from "../common/models/event";
 import { Society } from "../common/models/society";
 
-export async function getEvents(): Promise<Event[]> {
+export async function getEvents(): Promise<any[]> {
   return fetch("https://api.eventlink.me/events?uni=unsw")
     .then((res) => <Promise<Event[]>> res.json());
 }
@@ -14,14 +14,13 @@ export async function getSocieties(): Promise<Society[]> {
 }
 
 getEvents().then(async (events: Event[]) => {
-  console.log(events);
   const result = await setEvents(events.map((event) => {
     return {
       id: event.id,
       url: event.url,
       title: event.title,
-      time_start: event.time_start,
-      time_finish: event.time_finish,
+      time_start: new Date(event.time_start),
+      time_finish: new Date(event.time_finish),
       description: event.description,
       location: event.location,
       host_name: event.host_name[0],

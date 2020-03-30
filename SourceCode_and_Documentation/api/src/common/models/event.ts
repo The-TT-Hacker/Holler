@@ -1,5 +1,5 @@
 export class Event {
-  id: number;
+  id: string;
   url: string;
   title: string;
   time_start: Date;
@@ -11,4 +11,9 @@ export class Event {
   host_image: string;
   image_url: string;
   category: string;
+}
+
+export class EventInterest {
+  uid: string;
+  eventId: string;
 }
