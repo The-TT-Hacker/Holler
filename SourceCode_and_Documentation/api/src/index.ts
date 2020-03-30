@@ -10,16 +10,18 @@ import {
   getEvents,
   getUser,
   deleteUser,
-  resetPassword,
   updateUser,
-  signOutUser,
-  loginUser
+  getEvent,
+  selectEvent
 } from "./common/database";
 import { User } from "./common/models/user";
 
 const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
   "/auth/register"
+];
+const UNIVERSITIES: string[] = [
+  "unsw"
 ];
 
 const app = express();
@@ -30,7 +32,7 @@ app.use(async (req, res, next) => {
   if (NO_AUTH_ROUTES.includes(req.path)) {
     next();
   } else if (!req.headers.authorization) {
-    res.sendStatus(403);
+    res.status(403).send("No authorization token");
     return;
   } else {
     const token: string = req.headers.authorization;
@@ -48,9 +50,8 @@ app.get('/', (req, res) => res.send({
 /*
   Authentication end points
 
-  Post Login
-  Post Logout
-  Post Register
+  POST - Register user
+  DELETE - Deletes user
 */
 
 app.post('/auth/register', async (req, res) => {
@@ -60,7 +61,7 @@ app.post('/auth/register', async (req, res) => {
   else res.sendStatus(200);
 });
 
-app.post('/auth/delete', async (req, res) => {
+app.delete('/auth/delete', async (req, res) => {
   const result: boolean = await deleteUser(req.uid);
   if (result) res.sendStatus(200);
   else res.sendStatus(400);
@@ -69,9 +70,8 @@ app.post('/auth/delete', async (req, res) => {
 /*
   User end points
 
-  Puts User
-  Get  Users - Search
-  Get  User
+  GET - User
+  PUT - User
 */
 
 app.get('/user', async (req, res) => {
@@ -89,29 +89,28 @@ app.put('/user', async (req, res) => {
 /*
   Timetable endpoints
 
-  Get all faculties
-  Get all classes
+  GET - All faculties
+  GET - All classes
 */
 
-// Get all faculties
-app.get('/timetable/faculties', async (req, res) => {
-  const classes = await getFaculties();
+app.get('/timetable/faculties:university', async (req, res) => {
+  if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
+  const classes = await getFaculties(req.params.university);
   res.send(classes);
 });
 
-// Get all classes
 app.get('/timetable/classes', async (req, res) => {
   const classes = await getClasses();
   res.send(classes);
 });
 
 /*
-  Event end points
+  Events end points
 
-  Get latest events
-  Get event by id
-  Post - Going to event
-  Puts - Undo going to event
+  GET - Latest events
+  GET - Event by id
+  POST - Going to event
+  DELETE - Undo going to event
 */
 
 app.get('/events', async (req, res) => {
@@ -119,12 +118,31 @@ app.get('/events', async (req, res) => {
   res.send(events);
 });
 
+app.get('/event/:id', async (req, res) => {
+  if (!req.params.id) res.status(400).send("No event id provided");
+  const events = await getEvent(req.params.id);
+  res.send(events);
+});
+
+app.get('/event/:id/add_interest', async (req, res) => {
+  if (!req.params.id) res.status(400).send("No event id provided");
+  const error = await selectEvent(req.uid, req.params.id);
+  if (error) res.status(400).send(error);
+  else res.send();
+});
+
+app.get('/event/:id/remove_interest', async (req, res) => {
+  if (!req.params.id) res.status(400).send("No event id provided");
+  const error = await selectEvent(req.uid, req.params.id);
+  if (error) res.status(400).send(error);
+  else res.send();
+});
+
 /*
   Group endpoints
 
-  Get groups
-  Get new groups
-
+  GET - Groups
+  GET - New groups
 */
 
 app.post('/match', async (req, res) => {
@@ -135,12 +153,8 @@ app.post('/match', async (req, res) => {
 /*
   Chat endpoints
 
-  Get messages
-  Get new message - could be websocket?
-*/
-
-/*
-
+  GET - Messages
+  GET - New message - could be websocket?
 */
 
 app.listen(PORT, () => {

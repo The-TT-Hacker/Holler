@@ -1,6 +1,8 @@
 import cheerio from 'cheerio';
 import fetch from 'node-fetch';
+import fs from 'fs';
 
+import { setFaculties } from '../common/database';
 import { Faculty } from "../common/models/faculty";
 import { Class } from "../common/models/class";
 
@@ -27,8 +29,8 @@ function fetchFaculties(body: string): Promise<Faculty[]> {
     const facultyName = content[i].children[3].children[0].children[0].data;
 
     const promise: Promise<Faculty> = fetch("http://timetable.unsw.edu.au/2020/" + facultyUrl)
-                                    .then((respose) => respose.text())
-                                    .then((body: string) => fetchClasses(body, facultyCode, facultyName));
+      .then((respose) => respose.text())
+      .then((body: string) => fetchClasses(body, facultyCode, facultyName));
 
     promises.push(promise);
   }
@@ -48,8 +50,8 @@ function fetchClasses(body: string, facultyCode: string, facultyName: string) {
     if (content[i].attribs.class != "rowLowlight" && content[i].attribs.class != "rowHighlight") continue;
 
     const courseCode = content[i].children[1].children[0].children[0].data;
-    const courseUrl = content[i].children[1].children[0].attribs.href;
     const courseName = content[i].children[3].children[0].children[0].data;
+    //const courseUrl = content[i].children[1].children[0].attribs.href;
 
     classes.push({
       name: courseName,
@@ -57,11 +59,24 @@ function fetchClasses(body: string, facultyCode: string, facultyName: string) {
     });
   }
 
-  const promise: Promise<Faculty> =  Promise.resolve({
+  const promise: Promise<Faculty> = Promise.resolve({
+    university: "unsw",
     name: facultyName,
     code: facultyCode,
     classes: classes
   });
 
   return promise;
+}
+
+getUnswTimetable()
+  .then((faculties) => {
+    fs.writeFileSync("./data/unsw_timetable.json", JSON.stringify(faculties, null, 2));
+    return setFaculties("unsw", faculties);
+  })
+  .then((result) => console.log(result));
+
+function load_events() {
+  const fileString = fs.readFileSync("./data/unsw_timetable.json", "utf8");
+  const faculties: Faculty[] = JSON.parse(fileString);
 }
