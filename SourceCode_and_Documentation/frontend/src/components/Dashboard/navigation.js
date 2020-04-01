@@ -4,7 +4,7 @@ import SignOutButton from './signout'
 import User from '../../icons/user.svg'
 import { Navbar, Nav, Image } from 'react-bootstrap'
 
-const Navigation = () => {  
+const Navigation = () => {
     return (
         <Navbar collapseOnSelect expand="xl" variant="light" style={{padding: '0 5vw 0 5vw'}}>
             <Navbar.Brand href="#"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Navbar.Brand>

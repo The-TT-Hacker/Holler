@@ -5,6 +5,8 @@ import Explore from './explore'
 import Going from './going'
 import Matches from './matches'
 import Profile from './profile'
+import { Form,FormControl,Button,Navbar} from 'react-bootstrap'
+import Search from '../../icons/search.svg'
 
 import { withAuthorization } from '../Session'
 

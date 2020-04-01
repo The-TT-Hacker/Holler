@@ -1,7 +1,6 @@
-.topnav {}
-
 
 .topnav-title{
+  font-weight: bold;
   position: relative;
   left: 395px;
   top: 170px;
