@@ -1,7 +1,8 @@
 import React from 'react'
 import { ToggleButton,Button,Image,Form,FormControl} from 'react-bootstrap'
 import Event from '../../icons/banner.svg'
-
+import Chat from '../../icons/chat.svg'
+import Going from '../../icons/going-btn.svg'
 
 
 const Explore = () => {
@@ -30,7 +31,8 @@ const Explore = () => {
         <div className="expl_events_info_location">
         Tom, 12-2pm, John Lion's Garden (J17)
         </div>
-
+          <Image src={Going} className="expl_events_info_going" />
+          <Image src={Chat} className="expl_events_info_chatimg" />
         </div>
 
       </div>
