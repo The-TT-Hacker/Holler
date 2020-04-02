@@ -1,6 +1,7 @@
 
 .topnav-title{
-  font-weight: bold;
+  font-style: normal;
+  font-weight: 800;
   position: relative;
   left: 395px;
   top: 170px;
@@ -12,6 +13,9 @@
 }
 
 .topnav-dashboard_searchbar {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 800;
   position: relative;
   left: 395px;
   top: 190px;

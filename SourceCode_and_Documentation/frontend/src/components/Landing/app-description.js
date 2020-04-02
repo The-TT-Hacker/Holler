@@ -31,7 +31,7 @@ const AppDescription = () => {
         <Image src={CrayonSuccess} className="img-fluid" />
       </div>
       </div>
-      
+
     </div>
   )
 }
