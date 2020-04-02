@@ -107,10 +107,21 @@
 
 }
 
-.expl_events_info_chatimg{
+.expl_events_info_chating{
   position:absolute;
-  top: 85px;
+  top: 95px;
   left: 30px;
+  Align: Left;
+  vertical-align: Top;
+
+}
+
+.expl_events_info_timing{
+  position:absolute;
+  top: 95px;
+  left: 80px;
+  font-family: Poppins;
+  font-size: 10px;
   Align: Left;
   vertical-align: Top;
 

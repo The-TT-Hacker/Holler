@@ -32,7 +32,13 @@ const Explore = () => {
         Tom, 12-2pm, John Lion's Garden (J17)
         </div>
           <Image src={Going} className="expl_events_info_going" />
-          <Image src={Chat} className="expl_events_info_chatimg" />
+          <Image src={Chat} className="expl_events_info_chating" />
+
+          <div className="expl_events_info_timing">
+          Next Match
+          24hrs
+          </div>
+
         </div>
 
       </div>
