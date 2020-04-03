@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { setEvents } from "../common/database";
+import * as db from "../common/database";
 import { Event } from "../common/models/event";
 import { Society } from "../common/models/society";
 
@@ -13,8 +13,23 @@ export async function getSocieties(): Promise<Society[]> {
     .then((res) => <Promise<Society[]>> res.json());
 }
 
-getEvents().then(async (events: Event[]) => {
-  const result = await setEvents(events.map((event) => {
+getEvents().then(async (events) => {
+  var tags: string[] = [];
+
+  events = events.map((event) => {
+
+    event.categories[0].forEach((category: string) => {
+      if (!tags.includes(category)) {
+        tags.push(category);
+      }
+    });
+
+    event.hosts.forEach((host: any) => {
+      if (!tags.includes(host.name)) {
+        tags.push(host.name);
+      }
+    });
+
     return {
       id: event.id,
       url: event.url,
@@ -23,12 +38,22 @@ getEvents().then(async (events: Event[]) => {
       time_finish: new Date(event.time_finish),
       description: event.description,
       location: event.location,
-      host_name: event.host_name[0],
-      host_url: event.host_url[0],
-      host_image: event.host_image[0],
-      image_url: event.image_url,
-      category: event.category
+      hosts: event.hosts,
+      categories: event.categories[0]
     }
-  }));
-  console.log(result);
+  });
+
+  var result = await db.setEvents(events);
+
+  if (!result) {
+    console.log("set events failed");
+    return;
+  }
+
+  result = await db.setTags(tags);
+
+  if (!result) {
+    console.log("set tags failed");
+    return;
+  }
 });
