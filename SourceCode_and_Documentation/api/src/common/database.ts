@@ -179,31 +179,24 @@ export async function setFaculties(university: string, faculties: Faculty[]): Pr
   }
 }
 
-export async function getClasses(): Promise<Class[]> {
-  const snapshot = await db.collection('classes').get();
-  const classes: Class[] = <Class[]> snapshot.docs.map(doc => doc.data());
-  
-  return classes;
-}
-
 /*
   Events
 */
 
 export async function getEvents(searchText: string, tags: string, startDate: string, endDate: string): Promise<Event[]> {
   try {
+    var time_start: Date;
+
+    if (searchText) searchText = searchText.toUpperCase();
 
     // Query events occuring after start date
     if (startDate) {
-      var query = db.collection('events').where('time_start', '>', new Date(startDate));
+      time_start = new Date(startDate);
     } else {
-      var query = db.collection('events').where('time_start', '>', new Date());
+      time_start = new Date();
     }
 
-    // Query events occuring after end date
-    if (endDate) {
-      query = query.where('time_end', '>', new Date(endDate));
-    }
+    var query = db.collection('events').where('time_start', '>', time_start);
     
     // Get events
     const snapshot = await query.get()
@@ -222,38 +215,45 @@ export async function getEvents(searchText: string, tags: string, startDate: str
       }
     });
 
-    // Filter based on tags
-    if (tags) {
-      var tagList = tags.split(",");
-      events = events.filter((event) => {
+    // Filter events
 
-        // Check categories
-        for (var i = 0; i < event.categories.length; i++) {
-          if (tagList.includes(event.categories[i])) {
-            return true;
+    events = events.filter((event) => {
+
+      // Filter by matching search text with title
+      if (searchText) {
+        if (!event.title.toUpperCase().includes(searchText)) {
+          return false;
+        }
+      }
+
+      // Query events occuring after end date
+      if (endDate) {
+        if (event.time_start > new Date(endDate)) return false;
+      }
+
+      // Filter based on tags
+      if (tags) {
+        var tagList = tags.split(",");
+
+        var valid = false;
+
+        for (var i = 0; i < tagList.length; i++) {
+          if (event.categories.includes(tagList[i]) || event.hosts.includes(tagList[i])) {
+            valid = true;
+            break;
           }
         }
 
-        // Check hosts
-        for (var i = 0; i < event.hosts.length; i++) {
-          if (tagList.includes(event.hosts[i])) {
-            return true;
-          }
-        }
+        if (!valid) return false;
+      }
 
-        return false;
-      });
-    }
+      // Passed all filters
+      return true;
 
-    // Filter by matching search text with title
-    if (searchText) {
-      events = events.filter((event) => {
-        event.title.includes(searchText);
-      });
-    }
+    });
 
     // Sort events in chronologically order
-    events.sort((a, b) => +b.time_start - +a.time_start);
+    events.sort((a, b) => +a.time_start - +b.time_start);
 
     return events;
   } catch (e) {

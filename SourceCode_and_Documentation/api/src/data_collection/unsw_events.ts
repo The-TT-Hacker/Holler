@@ -38,7 +38,7 @@ getEvents().then(async (events) => {
       time_finish: new Date(event.time_finish),
       description: event.description,
       location: event.location,
-      hosts: event.hosts,
+      hosts: event.hosts.map((host: any) => host.name),
       categories: event.categories[0]
     }
   });

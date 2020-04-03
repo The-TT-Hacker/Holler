@@ -7,7 +7,8 @@ import { User } from "./common/models/user";
 
 const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
-  "/auth/register"
+  "/auth/register",
+  "/events"
 ];
 const UNIVERSITIES: string[] = [
   "unsw"
@@ -17,6 +18,10 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(function (req, res, next) {
+  res.header("Content-Type",'application/json');
+  next();
+});
 app.use(async (req, res, next) => {
   if (NO_AUTH_ROUTES.includes(req.path)) {
     next();
@@ -85,6 +90,7 @@ app.get('/user/badges', async (req, res) => {
   /*const user: User = await db.getUser(req.uid);
   if (user) res.send(user);
   else res.sendStatus(400);*/
+  res.send("not implemented yet");
 });
 
 /*
@@ -97,11 +103,6 @@ app.get('/user/badges', async (req, res) => {
 app.get('/timetable/faculties:university', async (req, res) => {
   if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
   const classes = await db.getFaculties(req.params.university);
-  res.send(classes);
-});
-
-app.get('/timetable/classes', async (req, res) => {
-  const classes = await db.getClasses();
   res.send(classes);
 });
 
