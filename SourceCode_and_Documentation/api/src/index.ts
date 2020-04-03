@@ -2,18 +2,7 @@ import express from "express";
 import bodyParser from 'body-parser';
 var cors = require('cors');
 
-import {
-  getUID,
-  registerUser,
-  getFaculties,
-  getClasses,
-  getEvents,
-  getUser,
-  deleteUser,
-  updateUser,
-  getEvent,
-  selectEvent
-} from "./common/database";
+import * as db from "./common/database";
 import { User } from "./common/models/user";
 
 const PORT = 5001;
@@ -36,7 +25,7 @@ app.use(async (req, res, next) => {
     return;
   } else {
     const token: string = req.headers.authorization;
-    const error: string = await getUID(token, req);
+    const error: string = await db.getUID(token, req);
     if (error) res.status(401).send(error);
     else next();
   }
@@ -55,14 +44,14 @@ app.get('/', (req, res) => res.send({
 */
 
 app.post('/auth/register', async (req, res) => {
-  const error = await registerUser(req.body);
+  const error = await db.registerUser(req.body);
   console.log(error);
   if (error) res.status(400).send(error);
   else res.sendStatus(200);
 });
 
 app.delete('/auth/delete', async (req, res) => {
-  const result: boolean = await deleteUser(req.uid);
+  const result: boolean = await db.deleteUser(req.uid);
   if (result) res.sendStatus(200);
   else res.sendStatus(400);
 });
@@ -75,15 +64,27 @@ app.delete('/auth/delete', async (req, res) => {
 */
 
 app.get('/user', async (req, res) => {
-  const user: User = await getUser(req.uid);
+  const user: User = await db.getUser(req.uid);
   if (user) res.send(user);
   else res.sendStatus(400);
 });
 
 app.put('/user', async (req, res) => {
-  const result: boolean = await updateUser(req.uid, req.body);
+  const result: boolean = await db.updateUser(req.uid, req.body);
   if (result) res.sendStatus(203);
   else res.sendStatus(400);
+});
+
+app.get('/user/events', async (req, res) => {
+  const user: User = await db.getUser(req.uid);
+  if (user) res.send(user);
+  else res.sendStatus(400);
+});
+
+app.get('/user/badges', async (req, res) => {
+  /*const user: User = await db.getUser(req.uid);
+  if (user) res.send(user);
+  else res.sendStatus(400);*/
 });
 
 /*
@@ -95,12 +96,12 @@ app.put('/user', async (req, res) => {
 
 app.get('/timetable/faculties:university', async (req, res) => {
   if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
-  const classes = await getFaculties(req.params.university);
+  const classes = await db.getFaculties(req.params.university);
   res.send(classes);
 });
 
 app.get('/timetable/classes', async (req, res) => {
-  const classes = await getClasses();
+  const classes = await db.getClasses();
   res.send(classes);
 });
 
@@ -114,26 +115,26 @@ app.get('/timetable/classes', async (req, res) => {
 */
 
 app.get('/events', async (req, res) => {
-  const events = await getEvents();
+  const events = await db.getEvents(req.query.searchText, req.query.tags, req.query.startDate, req.query.endDate);
   res.send(events);
 });
 
 app.get('/event/:id', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
-  const events = await getEvent(req.params.id);
+  const events = await db.getEvent(req.params.id);
   res.send(events);
 });
 
-app.get('/event/:id/add_interest', async (req, res) => {
+app.post('/event/:id/add_interest', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
-  const error = await selectEvent(req.uid, req.params.id);
+  const error = await db.goingToEvent(req.uid, req.params.id);
   if (error) res.status(400).send(error);
   else res.send();
 });
 
-app.get('/event/:id/remove_interest', async (req, res) => {
+app.delete('/event/:id/remove_interest', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
-  const error = await selectEvent(req.uid, req.params.id);
+  const error = await db.undoGoingToEvent(req.uid, req.params.id);
   if (error) res.status(400).send(error);
   else res.send();
 });
@@ -146,8 +147,8 @@ app.get('/event/:id/remove_interest', async (req, res) => {
 */
 
 app.post('/match', async (req, res) => {
-  const classes = await getClasses();
-  res.send(JSON.stringify(classes));
+  //const classes = await db.getClasses();
+  res.send();
 });
 
 /*

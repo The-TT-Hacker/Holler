@@ -6,14 +6,12 @@ export class Event {
   time_finish: Date;
   description: string;
   location: string;
-  host_name: string;
-  host_url: string;
-  host_image: string;
-  image_url: string;
-  category: string;
+  hosts: string[];
+  categories: string[];
 }
 
 export class EventInterest {
   uid: string;
   eventId: string;
+  expiry: Date;
 }
