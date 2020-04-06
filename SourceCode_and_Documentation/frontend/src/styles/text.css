@@ -2,6 +2,7 @@
 .txt-md { font-size: 22px; line-height: 42px; }
 .txt-lg { font-size: 28px; line-height: 56px; }
 .txt-bold { font-weight: bold; }
+.txt-font { font-family: 'Poppins' }
 
 .txt-gradient {
   font-family: 'Poppins';

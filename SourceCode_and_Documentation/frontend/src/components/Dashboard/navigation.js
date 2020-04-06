@@ -4,11 +4,9 @@ import SignOutButton from './signout'
 import User from '../../icons/user.svg'
 import { Navbar, Nav, Image } from 'react-bootstrap'
 
-
-
 const Navigation = () => {
     return (
-        <Navbar collapseOnSelect expand="xl" variant="light" style={{padding: '0 5vw 0 5vw'}}>
+        <Navbar collapseOnSelect expand="xl" variant="light" style={{ padding: '0 5vw 0 5vw' }}>
             <Navbar.Brand href="#"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
@@ -20,10 +18,10 @@ const Navigation = () => {
 
 
                 </Nav>
-                <Nav className="ml-auto">
+                <Nav className="ml-auto" style={{ marginRight: '25px' }}>
                     <div className="d-flex flex-column justify-content-center align-items-center">
-                        <div class="circle"> <Image src={User}/> </div>
-                        <div className="active-user"> John Citizen </div>
+                        <div className="circle"> <Image src={User} /> </div>
+                        <div className="active-user"> Bob Cheers </div>
                     </div>
                 </Nav>
                 <SignOutButton />

@@ -5,8 +5,6 @@ import Explore from './explore'
 import Going from './going'
 import Matches from './matches'
 import Profile from './profile'
-import { Form,FormControl } from 'react-bootstrap'
-import Search from '../../icons/search.svg'
 
 import { withAuthorization } from '../Session'
 
@@ -18,11 +16,10 @@ const Dashboard = () => {
       <div>
         <Navigation />
       </div>
-
-
-    </div>
+     </div>
   )
 }
+
 // <div id="tempo" className="temp">
 //   <div className="topnav-title">
 //           Search Events

@@ -9,7 +9,7 @@ const withAuthentication = Component => {
       super(props)
 
       this.state = {
-        authUser: null
+        authUser: null,
       }
     }
 
@@ -19,6 +19,8 @@ const withAuthentication = Component => {
           authUser
             ? this.setState({ authUser })
             : this.setState({ authUser: null })
+
+          authUser.getIdToken().then(token => localStorage.setItem('token', token))
         }
       )
     }
@@ -29,7 +31,7 @@ const withAuthentication = Component => {
 
     render() {
       return (
-        <AuthUserContext.Provider value={this.state.authUser}>
+        <AuthUserContext.Provider value={this.state.token}>
           <Component {...this.props} />
         </AuthUserContext.Provider>
       )
