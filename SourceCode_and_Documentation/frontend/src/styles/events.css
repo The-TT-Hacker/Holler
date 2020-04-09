@@ -1,0 +1,67 @@
+.carousel {
+  width: 70vw;
+  margin: 1.5rem;
+}
+
+.carousel-inner {
+  height: auto;
+}
+
+.carousel-control-prev {
+  margin-left: -15%;
+}
+
+.carousel-control-next {
+  margin-right: -15%;
+}
+
+.carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+
+.carousel-control-next-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+}
+
+.card-going {
+  width: 40vw;
+  margin-bottom: 2vh;
+}
+
+@media only screen and (max-width: 600px) {
+  .card-going {
+    width: 80vw;
+    margin-bottom: 2vh;
+  }
+}
+
+.card-title {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: bold;
+  color: #21252A;
+}
+
+.card-subtitle {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: normal;
+  color: #868E96;
+}
+
+.chat-title {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+  color: #343A40;
+}
+
+.chat-time {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 21px;
+}

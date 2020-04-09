@@ -43,9 +43,9 @@ const ProfileSetup = () => {
           <SetupComponent />
           <div className="txt-subtext"> Step {step} of 4 </div>
 
-          <div class="d-flex" style={{ width: "600px" }}>
-            <div class="mr-auto p-2"> <BackButton /> </div>
-            <div class="p-2"> <ForwardButton /> </div>
+          <div className="d-flex" style={{ width: "600px" }}>
+            <div className="mr-auto p-2"> <BackButton /> </div>
+            <div className="p-2"> <ForwardButton /> </div>
           </div>
 
         </div>
@@ -56,3 +56,4 @@ const ProfileSetup = () => {
 
 const condition = authUser => !!authUser
 export default withAuthorization(condition)(ProfileSetup)
+export { Step1, Step2, Step3, Step4 }

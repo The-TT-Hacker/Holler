@@ -5,6 +5,7 @@ export class User {
   faculties: string[];
   classes: string[];
   signedUp: boolean;
+  firstLogin: boolean;
 }
 
 export class UserRegistration {

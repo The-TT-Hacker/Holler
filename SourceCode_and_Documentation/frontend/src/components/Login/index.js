@@ -5,14 +5,9 @@ import { compose } from 'recompose'
 import { withFirebase } from "../Firebase"
 import * as ROUTES from '../../constants/routes'
 
-// import axios from 'axios'
-
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
 
-// import { URL } from '../../constants/roles'
-// import { Link } from 'react-router-dom'
-// import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
 
 const LoginPage = () => {
@@ -55,19 +50,7 @@ class LoginFormBase extends Component {
       .doLoginWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE })
-        this.props.history.push(ROUTES.DASHBOARD)
-
-        // axios({
-        //   method: "get",
-        //   url: URL + '/user',
-        //   headers: {'Authorization': token}
-        // }).then(function (response) {
-        //   console.log(response)
-        // }).catch(function (error) {
-        //   console.log(error)
-        // })
-
-
+        this.props.history.push(ROUTES.EXPLORE)     
       })
       .catch(error => {
         this.setState({ error })
@@ -124,7 +107,7 @@ class LoginFormBase extends Component {
         <br />
 
         <div className="d-flex flex-column align-items-center justify-content-center">
-          <Button className="btn-gradient btn-lg" isDisabled={isInvalid} type="submit"> Login </Button>
+          <Button className="btn-gradient btn-lg" disabled={isInvalid} type="submit"> Login </Button>
           {error && <p className="text-danger txt-align-center">{error.message}</p>}
         </div>
         

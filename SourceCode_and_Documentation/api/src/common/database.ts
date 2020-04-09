@@ -17,6 +17,7 @@ import { db, admin, client } from "./dbConnect";
 
 export async function getUID(token: string, req: any): Promise<string> {
   try {
+    console.log(token)
     const decodedToken = await admin.verifyIdToken(token);
     const user = await admin.getUser(decodedToken.uid);
     if (!user.emailVerified) return "User had not been verified";
@@ -67,7 +68,8 @@ export async function registerUser(registration: UserRegistration): Promise<stri
       email: registration.email,
       faculties: null,
       classes: null,
-      signedUp: false
+      signedUp: false,
+      firstLogin: true
     });
 
     const cred = await client.signInWithEmailAndPassword(registration.email, registration.password);
