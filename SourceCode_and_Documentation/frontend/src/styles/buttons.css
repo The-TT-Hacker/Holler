@@ -68,3 +68,39 @@
 .btn-interests.active {
   background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%) !important;
 }
+
+
+.btn-explore-search{
+  width: 25px; 
+  height: 25px; 
+  padding: 7px 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  border: none !important;
+
+  background: white !important;
+  background-image: url('../icons/magnifying-glass.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center  !important;
+}
+
+.btn-explore-search.active{
+  background-image: url('../icons/back.svg') !important;
+  background-color: white !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  
+}
+
+
+.btn-filters {
+  background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%) !important;
+  border-radius: 25px !important;
+  width: 120px;
+  border-style: none !important;
+  margin: 15px;
+  justify-content: left;
+}
+
