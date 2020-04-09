@@ -65,3 +65,11 @@
   font-size: 14px;
   line-height: 21px;
 }
+
+.search-box-form {
+  width: 20vw;
+}
+
+#search-box-input {
+  display: none;
+}
