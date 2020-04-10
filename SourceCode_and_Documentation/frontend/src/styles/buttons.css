@@ -106,3 +106,32 @@
   justify-content: left;
 }
 
+.btn-tags {
+  background-color: #6c757d !important;
+  border-radius: 25px !important;
+  width: 120px;
+  border-style: none !important;
+
+  margin-top: 22px;
+  margin-bottom: 22px;
+  margin-left: 36px;
+  margin-right: 36px;
+}
+
+.btn-tags.active {
+  background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%) !important;
+}
+
+.btn-modal-done {
+  font-family: 'Poppins';
+  font-weight: bold;
+  font-size: 14px;
+  background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);
+  border-radius: 3px;
+
+  border: none !important;
+  line-height: 1.5em;
+  margin: 22px !important;
+  margin-top: 10px !important;
+  width: 170px;
+}
