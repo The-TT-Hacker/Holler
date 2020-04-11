@@ -37,3 +37,7 @@
 .txt-align-center {
   text-align: center;
 }
+
+.txt-poppins {
+  font-family: 'Poppins' !important;
+}
