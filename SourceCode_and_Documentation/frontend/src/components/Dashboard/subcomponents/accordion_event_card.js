@@ -1,13 +1,24 @@
 import React, { useState } from 'react'
 
+import Marker from '../../../icons/marker.png'
 import ChatBubble from '../../../icons/chat.svg'
 import RSVPMan from '../../../icons/user-check.svg'
-import { Accordion, Card, Image, ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
+import { Accordion, Card, ToggleButtonGroup, ToggleButton, Image } from 'react-bootstrap'
+import GoogleMapReact from 'google-map-react'
 
 const AccordionEventCard = (props) => {
 
   const [value, setValue] = useState([])
   const handleChange = (val) => setValue(val)
+  const AnyReactComponent = ({ text }) => <Image src={Marker} />
+
+  const mapValue = {
+    center: {
+      lat: -33.917,
+      lng: 151.232
+    },
+    zoom: 11
+  }
 
   return (
     <Card className="card-going">
@@ -22,12 +33,29 @@ const AccordionEventCard = (props) => {
 
       <Accordion.Collapse eventKey={props.id}>
         <Card.Body>
+    
           <div className="card-title"> Description </div>
           {props.description} <br /><br />
           <div className="card-title">RSVP &nbsp;<Image src={RSVPMan} /></div>
           {props.rsvp} <br /><br />
           <div className="card-title">Location</div>
           {props.location}
+          
+          <div className="container" style={{ height: '400px', width: '100%', padding: '0', margin: '0' }}>
+              <GoogleMapReact
+                bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+                defaultCenter={mapValue.center}
+                defaultZoom={mapValue.zoom}
+              >
+
+              <AnyReactComponent
+                lat={mapValue.center.lat}
+                lng={mapValue.center.lng}
+              />
+
+              </GoogleMapReact>
+          </div>
+
         </Card.Body>
       </Accordion.Collapse>
 
@@ -48,6 +76,7 @@ const AccordionEventCard = (props) => {
         </div>
       </Accordion.Toggle>
     </Card>
+
   )
 }
 

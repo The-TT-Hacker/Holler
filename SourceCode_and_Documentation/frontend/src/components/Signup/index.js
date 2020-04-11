@@ -14,6 +14,7 @@ import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
 
 
 const SignupPage = () => {
+  document.body.style.overflow = "hidden"
   return (
     <div className="container-fluid h-100">
       <div className="row mx-auto align-items-center h-100" style={{ maxWidth: "550px" }}>

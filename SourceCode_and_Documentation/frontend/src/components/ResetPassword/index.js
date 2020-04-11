@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom'
 import { Nav, Form, InputGroup, Image, Button } from 'react-bootstrap'
 
 const ResetPassword = () => {
+  document.body.style.overflow = "hidden" 
+  
   const [email, setEmail] = useState("")
 
   const PostReset = () => {
