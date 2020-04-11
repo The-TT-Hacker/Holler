@@ -7,6 +7,10 @@
   color: #21252A;
 }
 
+.modal-content{
+  margin:auto;
+  max-width:100%;
+}
 .modal-header {
   border-bottom: none !important;
 }
