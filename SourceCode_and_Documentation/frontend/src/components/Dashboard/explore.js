@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
+
+import { DateRangePicker } from 'react-date-range'
 import { ToggleButtonGroup, ToggleButton, Carousel, Card, Form, FormControl, Button, Modal } from 'react-bootstrap'
+
 import EventImage from '../../icons/event-image.svg'
 import EventImage2 from '../../icons/event-image-2.svg'
 import ChatBubble from '../../icons/chat.svg'
-import '../../styles/events.css'
+
 import '../../styles/explore.css'
-import { DateRangePicker } from 'react-date-range'
+import '../../styles/events.css'
+
 import 'react-date-range/dist/styles.css' // main css file
 import 'react-date-range/dist/theme/default.css' // theme css file
-
 
 const Explore = () => {
   const [index, setIndex] = useState(0)
