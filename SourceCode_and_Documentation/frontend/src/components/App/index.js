@@ -23,7 +23,7 @@ import { Matches } from '../Dashboard'
 import { Profile } from '../Dashboard'
 import { withAuthentication } from '../Session'
 
-const App = () => {
+const App = (props) => {
   return (
     <Router>
       <Route exact path={ROUTES.LANDING} component={Landing} />
