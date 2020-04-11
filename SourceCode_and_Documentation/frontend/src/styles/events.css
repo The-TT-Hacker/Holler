@@ -35,6 +35,10 @@
   }
 }
 
+.card-header-info {
+  padding: 1rem 1.25rem;
+}
+
 .card-title {
   font-family: 'Poppins';
   font-style: normal;
@@ -72,4 +76,38 @@
 
 #search-box-input {
   display: none;
+}
+
+.main-content {
+  width: 90vw;
+}
+
+@media screen and (min-width: 1200px) {
+  .main-content {
+    width: 50vw;
+  }
+}
+
+.card-going {
+  width: auto;
+  box-shadow: 2px 2px 15px rgba(69, 69, 69, 0.25);
+  border-radius: 5px;
+}
+
+.card-going > .card-img {
+}
+
+.card-going > .card-header {
+  border-bottom: none !important;
+  background-color: white !important;
+  padding: 0 !important;
+}
+
+.card-going > .card-footer {
+  border-top: none !important;
+  background-color: white !important;
+}
+
+.card-body {
+  background-color: #F9F9F9 !important;
 }

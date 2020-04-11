@@ -53,7 +53,7 @@ const Explore = () => {
       <div className="container-fluid" style={{ width: '72%' }}>
         <div className="row">
           <div className="col-7 d-flex align-items-start justify-content-start">
-            <div className="explore-title" >Explore</div>
+            <div className="page-title"> Explore </div>
           </div>
           <div className="col-5 d-flex justify-content-end align-items-center">
             <Form className="search-box-form" id="search-box-input" style={{ marginRight: '15px' }}>

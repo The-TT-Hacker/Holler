@@ -7,7 +7,7 @@ import Matches from './matches'
 import Profile from './profile'
 
 import { withAuthorization } from '../Session'
-
+import  '../../styles/events.css'
 
 const Dashboard = () => {
 
