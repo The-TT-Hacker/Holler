@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-import { Carousel, Form, FormControl, Button, Accordion } from 'react-bootstrap'
+import { Carousel, Accordion } from 'react-bootstrap'
 import '../../styles/explore.css'
 import '../../styles/events.css'
 
-import { AccordionEventCard, TagsModal, DateModal, SearchButton} from './subcomponents'
+import { AccordionEventCard, TagsModal, DateModal, ExploreHeader, PageTitle } from './subcomponents'
 import CSESocImage from '../../icons/event-image.svg'
 import EventImage from '../../icons/event-image.svg'
 import EventImage2 from '../../icons/event-image-2.svg'
@@ -17,19 +17,13 @@ const Explore = () => {
   }
 
   return (
-    <div>
 
-      <div className="container-fluid d-flex flex-column justify-content-center align-items-center" style={{ height: '86.5%' }}>
+
+      <div className="container-fluid d-flex flex-column align-items-center" style={{ height: '86.5%' }}>
         <div className="main-content">
 
-          <div className="row" style={{ width: '100%', marginBottom: '1rem' }}>
-            <div className="col-6">
-              <div className="page-title"> Explore </div>
-            </div>
-            <div className="col-6 d-flex justify-content-end align-items-end">
-              <SearchButton/>
-            </div>
-          </div>
+        
+          <ExploreHeader/>
 
           <div className="row" style={{ width: '100%', marginBottom: '1rem' }}>
             <TagsModal />
@@ -84,7 +78,7 @@ const Explore = () => {
           </div>
         </div>
       </div>
-    </div>
+
   )
 }
 

@@ -106,6 +106,12 @@
   justify-content: left;
 }
 
+@media (max-width:600px){
+  .btn-filters{
+    width: 100px;
+  }
+}
+
 .btn-tags {
   background-color: #6c757d !important;
   border-radius: 25px !important;

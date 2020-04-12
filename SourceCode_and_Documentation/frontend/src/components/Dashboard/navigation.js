@@ -4,6 +4,8 @@ import SignOutButton from './signout'
 import User from '../../icons/user.svg'
 import { Navbar, Nav, Image} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import '../../styles/responsive.css'
+import '../../styles/text.css'
 
 const Navigation = () => {
 
@@ -23,7 +25,6 @@ const Navigation = () => {
                         <Link to="/dashboard/profile"> 
                             <div className="circle"> 
                                 <Image src={User} /> 
-                                {/* <div className="active-user"> Bob Cheers </div> */}
                             </div>
                         </Link>
 

@@ -42,8 +42,8 @@
   font-family: 'Poppins' !important;
 }
 
-@media (min-width: 0px) and (max-width: 600px){
+@media (max-width: 600px){
   .txt-title {
-    font-size: 4rem;
+    font-size: 3.5rem;
   }
 }
