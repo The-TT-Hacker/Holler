@@ -30,8 +30,25 @@
 
 @media only screen and (max-width: 600px) {
   .card-going {
-    width: 80vw;
+    width: auto;
     margin-bottom: 2vh;
+  }
+
+  .carousel{
+   width: 90vw;
+  }
+  
+  .carousel-control-prev-icon{
+    display: none !important;
+  }
+
+  .carousel-control-next-icon{
+    display: none !important;
+  }
+
+  .navbar-toggler-icon{
+    width: 1.25em !important;
+    height: 1.25em !important ;
   }
 }
 
@@ -75,7 +92,7 @@
 }
 
 #search-box-input {
-  display: none;
+  display: block;
 }
 
 .main-content {

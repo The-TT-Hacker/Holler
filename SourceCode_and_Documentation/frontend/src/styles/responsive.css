@@ -85,6 +85,13 @@
 
 }
 
+@media (max-width: 600px){
+
+  .dot {
+    height: 0.8rem;
+    width: 0.8rem;
+  }
+}
 
 
 
