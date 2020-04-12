@@ -1,5 +1,5 @@
 {
-  "name": "connect_on_campus",
+  "name": "holler",
   "version": "1.0.0",
   "description": "An app to connect students at UNSW with similar interests through university related events",
   "main": "dist/index.js",
@@ -7,9 +7,10 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node .",
-    "test": "node dist/test.js",
+    "test": "node dist/tests/add_event_interest.js",
     "unsw_timetable": "node dist/data_collection/unsw_timetable",
-    "unsw_events": "node dist/data_collection/unsw_events"
+    "unsw_events": "node dist/data_collection/unsw_events",
+    "match": "node dist/match_generator/match_generator.js"
   },
   "repository": {
     "type": "git",

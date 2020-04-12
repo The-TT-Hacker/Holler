@@ -4,6 +4,7 @@ export class User {
   email: string;
   faculties: string[];
   classes: string[];
+  interests: string[];
   signedUp: boolean;
 }
 

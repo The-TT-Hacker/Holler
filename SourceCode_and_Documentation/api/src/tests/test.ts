@@ -1,5 +1,5 @@
-import * as db from "./common/database";
-import { Event } from "./common/models/event";
+import * as db from "../common/database";
+import { Event } from "../common/models/event";
 
 /*
 db.registerUser({

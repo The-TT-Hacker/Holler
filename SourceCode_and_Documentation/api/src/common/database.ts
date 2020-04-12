@@ -319,7 +319,7 @@ export async function setTags(tags: string[]): Promise<boolean> {
   }
 }
 
-export async function goingToEvent(uid: string, eventId: string) {
+export async function addEventInterest(uid: string, eventId: string) {
   try {
     const docRef = await db.collection("events").doc(eventId).get();
     const event: Event = <Event> docRef.data();
@@ -341,7 +341,7 @@ export async function goingToEvent(uid: string, eventId: string) {
   }
 }
 
-export async function undoGoingToEvent(uid: string, eventId: string) {
+export async function removeEventInterest(uid: string, eventId: string) {
   try {
     const snapshot = await db.collection('event_interests')
       .where("uid", "==", uid)
