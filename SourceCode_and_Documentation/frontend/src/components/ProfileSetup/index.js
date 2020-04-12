@@ -8,8 +8,12 @@ import Step4 from './step4'
 import { Link } from 'react-router-dom'
 import { Nav, Button } from 'react-bootstrap'
 import { withAuthorization } from '../Session'
+import { updateScrollability } from '../../constants'
 
-const ProfileSetup = () => {
+const ProfileSetup = (props) => {
+  
+  updateScrollability(props.scroll)
+
   const componentList = [<Step1 />, <Step2 />, <Step3 />, <Step4 />]
   const [step, setStep] = useState(1)
 

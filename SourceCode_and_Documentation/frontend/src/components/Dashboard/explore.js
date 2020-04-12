@@ -8,11 +8,13 @@ import TagsModal from './subcomponents/tags_modal'
 import DateModal from './subcomponents/date_modal'
 import {AccordionEventCard } from './subcomponents'
 import CSESocImage from '../../icons/event-image.svg'
-import EventImage from '../../icons/event-image.svg'
-import EventImage2 from '../../icons/event-image-2.svg'
+import { updateScrollability } from '../../constants'
 
 
-const Explore = () => {
+const Explore = (props) => {
+
+  updateScrollability(props.scroll)
+
   const [index, setIndex] = useState(0)
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex)
@@ -56,7 +58,7 @@ const Explore = () => {
         <Carousel activeIndex={index} onSelect={handleSelect} slide={true} interval={null}>
 
           <Carousel.Item className="carousel-item">
-            <Accordion className="accordion-going">
+            <Accordion className="accordion-going" key="accordion-one">
               <AccordionEventCard
                 id="1"
                 image={CSESocImage}
@@ -69,10 +71,10 @@ const Explore = () => {
           </Carousel.Item>
 
           <Carousel.Item className="carousel-item">
-            <Accordion className="accordion-going">
+            <Accordion className="accordion-going" key="accordion-two">
               <AccordionEventCard
                 id="2"
-                image={EventImage2}
+                image={"https://cdn.eventlink.me/event/1368737013329249.jpg"}
                 title="Arc Goes to Blue Mountains"
                 subtitle="March 22, 7am-6pm, UNSW Student..."
                 description="Description"
@@ -82,10 +84,10 @@ const Explore = () => {
           </Carousel.Item>
 
           <Carousel.Item className="carousel-item">
-            <Accordion className="accordion-going">
+            <Accordion className="accordion-going" key="accordion-three">
               <AccordionEventCard
                 id="3"
-                image={EventImage}
+                image={CSESocImage}
                 title="Event 3"
                 subtitle="Tomorrow, 12-2pm, John Lion's Garden (J17)"
                 description="Description"

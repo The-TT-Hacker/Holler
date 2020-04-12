@@ -4,8 +4,11 @@ import { Image, Card, Button } from 'react-bootstrap'
 import User from '../../icons/user.svg'
 import { Area, AreaChart, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import '../../styles/explore.css'
+import { updateScrollability } from '../../constants';
 
-const Profile = () => {
+const Profile = (props) => {
+
+  updateScrollability(props.scroll)
 
   const data = [{ name: 'Week 1', 'Groups Joined': 3, 'Total Badges': 2 },
   { name: 'Week 2', 'Groups Joined': 3, 'Total Badges': 2 },

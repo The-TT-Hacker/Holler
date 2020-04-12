@@ -4,8 +4,11 @@ import CSESocImage from '../../icons/event-image.svg'
 
 import { Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard } from './subcomponents'
+import { updateScrollability } from '../../constants'
 
-const Going = () => {
+const Going = (props) => {
+
+  updateScrollability(props.scroll)
 
   return (
 
