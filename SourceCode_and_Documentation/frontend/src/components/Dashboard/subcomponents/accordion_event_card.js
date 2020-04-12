@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 
+// Images
 import Marker from '../../../icons/marker.png'
 import ChatBubble from '../../../icons/chat.svg'
 import RSVPMan from '../../../icons/user-check.svg'
+
+// Components
 import { Accordion, Card, ToggleButtonGroup, ToggleButton, Image } from 'react-bootstrap'
 import GoogleMapReact from 'google-map-react'
 
@@ -24,7 +27,7 @@ const AccordionEventCard = (props) => {
     <Card className="card-going">
 
       <Accordion.Toggle as={Card.Header} eventKey={props.id}>
-        <Card.Img src={props.image} />
+        <Card.Img src={props.image} style={{ maxHeight: '45vh', width: '100%' }} />
         <div className="card-header-info">
           <div className="card-title"> {props.title} </div>
           <div className="card-subtitle"> {props.subtitle} </div>

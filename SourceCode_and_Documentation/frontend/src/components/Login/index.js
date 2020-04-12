@@ -9,8 +9,12 @@ import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
 
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
+import { updateScrollability } from '../../constants'
 
-const LoginPage = () => {
+const LoginPage = (props) => {
+
+  updateScrollability(props.scroll)
+
   return (
     <div className="container-fluid h-100">
       <div className="row mx-auto align-items-center h-100" style={{maxWidth: "550px"}}>

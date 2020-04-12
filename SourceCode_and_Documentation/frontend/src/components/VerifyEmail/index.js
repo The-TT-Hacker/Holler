@@ -4,8 +4,12 @@ import Success from '../../icons/success.svg'
 
 import { Link } from 'react-router-dom'
 import { Image, Button } from 'react-bootstrap'
+import { updateScrollability } from '../../constants'
 
-const VerifyEmail = () => {
+const VerifyEmail = (props) => {
+  
+  updateScrollability(props.scroll)
+
   return (
     <div className="container-fluid h-100">
       <div className="row mx-auto align-items-center h-100">
