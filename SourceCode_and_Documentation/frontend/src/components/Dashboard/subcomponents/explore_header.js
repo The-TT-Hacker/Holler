@@ -30,12 +30,13 @@ const ExploreHeader = () => {
     return (
         <div>
             <div className="row" style={{ width: '100%', marginBottom: '1rem' }}>
+                
                 <div className="col">
                     <div className="page-title"> Explore </div>
                 </div>
+
                 <div className="col d-flex align-items-center justify-content-end">
                     <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
-
                         <ToggleButton
                             onClick={() => { setOpen(!open); }}
                             aria-controls="collapse-search"
@@ -47,16 +48,18 @@ const ExploreHeader = () => {
 
             </div>
 
-            <div className="row" style={{ width: '100%'}}m>
-                <div className="col d-flex align-items-end justify-content-end" style={{ 'margin-right':'15px'}}>
+            <div className="row" style={{ width: '100%' }}>
+                <div className="col d-flex align-items-end justify-content-end" style={{ 'margin-right': '15px' }}>
+
                     <Collapse in={open} >
-                        <div  className="row d-flex align-items-center justify-content-center" >
+                        <div className="row d-flex align-items-center justify-content-center" >
                             <Form className="search-box-form" id="search-box-input" onSubmit={onFormSubmit} inline>
                                 <FormControl type="text" placeholder="Search" />
                             </Form>
                         </div>
                     </Collapse>
                 </div>
+
             </div>
         </div>
 

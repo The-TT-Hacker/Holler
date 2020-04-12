@@ -64,17 +64,19 @@ const AccordionEventCard = (props) => {
 
       <Accordion.Toggle as={Card.Footer} eventKey={props.id}>
         <div className="row">
-          <div className="col-1 d-flex justify-content-center align-items-center">
-            <img alt="" src={ChatBubble} />
-          </div>
-          <div className="col-8">
-            <div className="chat-title"> Next Match </div>
-            <div className="chat-time"> 21 Hours </div>
-          </div>
-          <div className="col-3 d-flex justify-content-end">
+          <div className="col-12 d-flex justify-content-between">
+            <div className="d-flex flex-row">
+              <img alt="" src={ChatBubble} className="spacer-right" />
+              <div className="d-flex flex-column">
+                <div className="chat-title"> Next Match </div>
+                <div className="chat-time"> 21 Hours </div>
+              </div>
+            </div>
+            <div>
             <ToggleButtonGroup className="" type="checkbox" value={value} onChange={handleChange}>
               <ToggleButton className="btn-gradient-circle" value={0}></ToggleButton>
             </ToggleButtonGroup>
+            </div>
           </div>
         </div>
       </Accordion.Toggle>

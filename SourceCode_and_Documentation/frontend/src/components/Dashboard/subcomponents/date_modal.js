@@ -20,7 +20,7 @@ const DateModal = () => {
 
     return (
         <div>
-            <Button onClick={() => setDateModalShow(true)} className="btn-filters">Date</Button>
+            <Button onClick={() => setDateModalShow(true)} className="btn-interests active no-margin"> Date </Button>
             <Modal show={dateModalShow}
                 onHide={() => setDateModalShow(false)}
                 aria-labelledby="date-modal-title">

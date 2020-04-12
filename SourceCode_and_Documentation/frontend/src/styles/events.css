@@ -179,3 +179,9 @@
   height: 400px;
   background-color: grey;
 }
+
+.no-margin { margin: 0;}
+.spacer-up { margin-top: 1rem; }
+.spacer-right { margin-right: 1rem; }
+.spacer-down { margin-bottom: 1rem; }
+.spacer-left { margin-left: 1rem; }

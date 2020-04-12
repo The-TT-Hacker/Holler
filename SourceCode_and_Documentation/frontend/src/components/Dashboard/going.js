@@ -11,7 +11,6 @@ const Going = (props) => {
   updateScrollability(props.scroll)
 
   return (
-
     <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll' }}>
       <div className="main-content">
         <PageTitle title="Upcoming" />
