@@ -6,7 +6,7 @@ import AppDescription from './app-description'
 const Landing = () => {
   return (
     <div className="landing">
-      < Navigation />
+      <Navigation />
       <AppDescription />
     </div>
   )

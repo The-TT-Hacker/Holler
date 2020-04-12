@@ -6,6 +6,7 @@ export class User {
   classes: string[];
   interests: string[];
   signedUp: boolean;
+  firstLogin: boolean;
 }
 
 export class UserRegistration {

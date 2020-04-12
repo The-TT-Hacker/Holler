@@ -15,6 +15,11 @@ const Dashboard = () => {
     <div>
       <div>
         <Navigation />
+        {
+        /* React Router draws the other component after the navigation:
+        [explore, going, matches, profile] depending on the current frontend route
+        i.e. /dashboard/explore, /dashboard/going etc. */
+        }
       </div>
      </div>
   )

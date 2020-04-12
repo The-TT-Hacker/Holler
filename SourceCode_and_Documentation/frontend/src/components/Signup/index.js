@@ -141,7 +141,7 @@ class SignupFormBase extends Component {
           <br />
 
           <div className="d-flex flex-column align-items-center justify-content-center">
-            <Button className="btn-gradient btn-lg" isDisabled={isInvalid} type="submit"> Sign Up </Button>
+            <Button className="btn-gradient btn-lg" disabled={isInvalid} type="submit"> Sign Up </Button>
             {error && <p className="text-danger txt-align-center">{error.message}</p>}
           </div>
         </Form.Group>
