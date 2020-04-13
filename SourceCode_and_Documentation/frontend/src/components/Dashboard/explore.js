@@ -16,7 +16,7 @@ const Explore = (props) => {
 
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll', overflowX: 'hidden'}}>
-      <div className="main-content">
+      <div className="main-content" style={{overflowX: 'hidden'}}>
 
         <div className="row">
           <div className="col-sm-11"> <PageTitle title="Events" /> </div>
@@ -56,7 +56,7 @@ const Explore = (props) => {
               <Carousel.Item className="carousel-item">
                 <Accordion className="accordion-going" key="accordion-one">
                   <AccordionEventCard
-                    id="1"
+                    id="2"
                     image={CSESocImage}
                     title="CSESoc Weekly BBQ"
                     subtitle="Tomorrow, 12-2pm, John Lion's Garden (J17)"

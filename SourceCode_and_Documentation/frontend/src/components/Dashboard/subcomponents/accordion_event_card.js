@@ -42,9 +42,9 @@ const AccordionEventCard = (props) => {
           <div className="card-title">RSVP &nbsp;<Image src={RSVPMan} /></div>
           {props.rsvp} <br /><br />
           <div className="card-title">Location</div>
-          {props.location}
+          {props.location} <br />
           
-          <div className="container" style={{ height: '400px', width: '100%', padding: '0', margin: '0' }}>
+          <div className="container" className="map-container">
               <GoogleMapReact
                 bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
                 defaultCenter={mapValue.center}
