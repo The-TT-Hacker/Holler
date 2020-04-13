@@ -24,7 +24,7 @@ const AccordionEventCard = (props) => {
   }
 
   return (
-    <Card className="card-going">
+    <Card className="card-going" key={props.id}>
 
       <Accordion.Toggle as={Card.Header} eventKey={props.id}>
         <Card.Img src={props.image} style={{ maxHeight: '45vh', width: '100%' }} />
@@ -35,6 +35,34 @@ const AccordionEventCard = (props) => {
       </Accordion.Toggle>
 
       <Accordion.Collapse eventKey={props.id}>
+        <Card.Body>
+
+          <div className="card-title"> Description </div>
+          {props.descripton} <br /><br />
+          <div className="card-title">RSVP &nbsp;<Image src={RSVPMan} /></div>
+          {props.rsvp} <br /><br />
+          <div className="card-title">Location</div>
+          {props.location} <br /> 
+
+          <div className="map-container">
+              <GoogleMapReact
+                bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+                defaultCenter={mapValue.center}
+                defaultZoom={mapValue.zoom}
+              >
+
+              <AnyReactComponent
+                lat={mapValue.center.lat}
+                lng={mapValue.center.lng}
+              />
+
+              </GoogleMapReact>
+          </div>
+
+        </Card.Body>
+      </Accordion.Collapse>
+
+      {/* <Accordion.Collapse eventKey={props.id}>
         <Card.Body>
     
           <div className="card-title"> Description </div>
@@ -60,7 +88,7 @@ const AccordionEventCard = (props) => {
           </div>
 
         </Card.Body>
-      </Accordion.Collapse>
+      </Accordion.Collapse> */}
 
       <Accordion.Toggle as={Card.Footer} eventKey={props.id}>
         <div className="row">

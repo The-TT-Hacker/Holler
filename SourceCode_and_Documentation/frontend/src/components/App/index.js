@@ -35,7 +35,7 @@ const App = () => {
       <Route path={ROUTES.DASHBOARD} component={Dashboard} />
       <Route path={ROUTES.PROFILE} component={() => <Profile scroll={true} />} />
       <Route path={ROUTES.EXPLORE} component={() => <Explore scroll={false} />} />
-      <Route path={ROUTES.GOING} component={() => <Going scroll={true} />} />
+      <Route path={ROUTES.GOING} component={() => <Going scroll={false} />} />
       <Route path={ROUTES.MATCHES} component={() => <Matches scroll={true} />} />
     </Router>
   )

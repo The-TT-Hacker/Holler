@@ -1,8 +1,8 @@
 import React from 'react'
 
 import SignOutButton from './signout'
-import User from '../../icons/user.svg'
-import { Navbar, Nav, Image } from 'react-bootstrap'
+import { Avatar } from './subcomponents'
+import { Navbar, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import '../../styles/responsive.css'
 import '../../styles/text.css'
@@ -24,11 +24,8 @@ const Navigation = () => {
                     <Nav className="ml-auto" style={{ marginRight: '25px' }}>
                         <div className="d-flex flex-column justify-content-center align-items-center">
                             <Link to="/dashboard/profile">
-                                <div className="circle">
-                                    <Image src={User} />
-                                </div>
+                                <Avatar />
                             </Link>
-
                         </div>
                     </Nav>
                     <SignOutButton />

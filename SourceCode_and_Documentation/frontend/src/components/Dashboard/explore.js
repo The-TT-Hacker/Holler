@@ -15,8 +15,8 @@ const Explore = (props) => {
   const [showSearchInput, setShowSearchInput] = useState(false)
 
   return (
-    <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll', overflowX: 'hidden'}}>
-      <div className="main-content" style={{overflowX: 'hidden'}}>
+    <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll'}}>
+      <div className="main-content">
 
         <div className="row">
           <div className="col-sm-11"> <PageTitle title="Events" /> </div>
@@ -67,6 +67,10 @@ const Explore = (props) => {
               </Carousel.Item>
             </Carousel>
           </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12 swipe-to-browse"> &lt;&lt; Swipe to Browse &gt;&gt; </div>
         </div>
 
       </div>
