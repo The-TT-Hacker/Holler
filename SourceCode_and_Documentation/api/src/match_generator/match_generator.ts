@@ -1,11 +1,13 @@
 import * as db from "../common/database";
+import * as chat from "../chat/chatService";
+import { v4 as uuidv4 } from 'uuid';
 import { EventInterest } from "../common/models/event";
 import { User } from "../common/models/user";
 import { Match } from "../common/models/match";
 
 interface CompiledEventInterest {
     uid: string;
-    user: User
+    user: User;
 }
 
 var sortedEventInterests: {
@@ -13,7 +15,7 @@ var sortedEventInterests: {
 } = {};
 
 // Get all interests
-db.getAllEventInterests(new Date()).then(async (eventInterests) => {
+db.getAllEventInterests().then(async (eventInterests) => {
 
     var promises: Promise<void>[] = [];
 
@@ -51,7 +53,7 @@ db.getAllEventInterests(new Date()).then(async (eventInterests) => {
 
         var matchPermutations: { [matchPoints: string]: Match[] } = {};
 
-        var matches: Match[] = [];
+        var matches: Match[] = []; // for testing
         var matchedUsers: string[] = [];
 
         // Compute match points
@@ -80,12 +82,14 @@ db.getAllEventInterests(new Date()).then(async (eventInterests) => {
                 if (matchPermutations[`${matchPoints}`]) {
                     matchPermutations[`${matchPoints}`].push({
                         uids: [ compiledEventInterests[i].uid, compiledEventInterests[j].uid ],
-                        eventIds: [ eventId ]
+                        eventIds: [ eventId ],
+                        chatId: null
                     });
                 } else {
                     matchPermutations[`${matchPoints}`] = [{
                         uids: [ compiledEventInterests[i].uid, compiledEventInterests[j].uid ],
-                        eventIds: [ eventId ]
+                        eventIds: [ eventId ],
+                        chatId: null
                     }];
                 }
 
@@ -105,8 +109,30 @@ db.getAllEventInterests(new Date()).then(async (eventInterests) => {
                     if (matchedUsers.includes(uid)) userAlreadyMatched = true;
                 });
 
-                // Add match
+                // If any of the users have been matched before then skip this potential match
+                // Otherwise make the match
+                if (userAlreadyMatched) {
+                    return;
+                } else {
+                    matchedUsers.concat(match.uids);
+                }
+
+                // Add match - debugging
                 matches.push(match);
+
+                match.chatId = uuidv4();
+
+                // Add match to firestore
+                db.makeMatch(match);
+
+                // Create chat
+                chat.createConverstaion({
+                    id: uuidv4(),
+                    subject: "",
+                    participants: match.uids,
+                    //welcomeMessages?: string[];
+                    //custom?: { [name: string]: string };
+                });
             });
         });
 

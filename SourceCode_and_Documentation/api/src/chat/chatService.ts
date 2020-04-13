@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from './models/ChatUser';
 import { CreateConversationRequest, Conversation } from './models/Conversation';
 
@@ -44,7 +44,7 @@ export const createChatUser = (newUser: CreateChatUserRequest) => {
  * Returns ChatUser by ID (UID in Firestore) or throws an error if not found.
  */
 export const getChatUserById = (uid: string) => {
-  return client.get(`/users/${uid}`).then((response) => response.data as ChatUser);
+  return client.get(`/users/${uid}`).then((response: AxiosResponse) => response.data as ChatUser);
 };
 
 /**
@@ -52,7 +52,7 @@ export const getChatUserById = (uid: string) => {
  * Creates the ChatUser if no ChatUser with the specified ID exists.
  */
 export const updateUser = (uid: string, update: UpdateUserRequest) => {
-  return client.put(`/users/${uid}`, update).then((response) => response.data);
+  return client.put(`/users/${uid}`, update).then((response: AxiosResponse) => response.data);
 };
 
 /****************************
@@ -76,7 +76,7 @@ export const createConverstaion = (newConversation: CreateConversationRequest) =
  * Returns Conversation by ID (should be match ID in Firestore) or throws an error if not found.
  */
 export const getConverstaionById = (conversationId: string) => {
-  return client.get(`/conversations/${conversationId}`).then((response) => {
+  return client.get(`/conversations/${conversationId}`).then((response: AxiosResponse) => {
     response.data.participants = Object.keys(response.data.participants);
     return response.data as Conversation;
   });

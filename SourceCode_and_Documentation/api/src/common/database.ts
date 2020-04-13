@@ -10,6 +10,19 @@ import {
 } from "./models/user";
 
 import { db, admin, client } from "./dbConnect";
+import * as chat from "../chat/chatService";
+
+declare global {
+  interface Date {
+    addDays(days: number): Date;
+  }
+}
+
+Date.prototype.addDays = function (days: number): Date {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
 
 /*
   Authentication
@@ -75,9 +88,17 @@ export async function registerUser(registration: UserRegistration): Promise<stri
     const cred = await client.signInWithEmailAndPassword(registration.email, registration.password);
     cred.user.sendEmailVerification();
     //const token = await cred.user.getIdToken();
+
+    const result = await chat.createChatUser({
+        id: userRecord.uid,
+        name: "",
+        //photoUrl?: string;
+        //custom?: { [name: string]: string };
+    });
   
     return null;
   } catch (e) {
+    console.log(e);
     if (e.errorInfo) return e.errorInfo.message;
     else return "Error";
   }
@@ -359,12 +380,13 @@ export async function removeEventInterest(uid: string, eventId: string) {
   }
 }
 
-export async function getAllEventInterests(date: Date) {
+// Gets all event interests for events occuring in the next 2 days
+export async function getAllEventInterests() {
   try {
-    const snapshot = await db.collection("event_interests").where('expiry', '>', date).get();
+    const snapshot = await db.collection("event_interests").where('expiry', '>', new Date()).get();
     const eventInterests: EventInterest[] = <EventInterest[]> snapshot.docs.map(doc => doc.data());
 
-    return eventInterests;
+    return eventInterests.filter(eventInterest => eventInterest.expiry < (new Date).addDays(2));
   } catch (e) {
     console.log(e);
     throw "Error"
@@ -375,14 +397,15 @@ export async function getAllEventInterests(date: Date) {
   Matches
 */
 
-export async function makeMatch(eventIds: string[], uids: string[]) {
+export async function makeMatch(match: Match) {
   try {
-    const match: Match = {
-      uids: uids,
-      eventIds: eventIds
+    const matchToAdd: Match = {
+      chatId: match.chatId,
+      uids: match.uids,
+      eventIds: match.eventIds
     };
 
-    db.collection("matches").add(match);
+    db.collection("matches").add(matchToAdd);
 
     return null;
   } catch (e) {
