@@ -1,72 +1,46 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-import ChatBubble from '../../icons/chat.svg'
 import CSESocImage from '../../icons/event-image.svg'
-import { Card, ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 
-const Going = () => {
+import { Accordion } from 'react-bootstrap'
+import { PageTitle, AccordionEventCard } from './subcomponents'
+import { updateScrollability } from '../../constants'
 
-  const [value, setValue] = useState([])
-  const handleChange = (val) => setValue(val)
+const Going = (props) => {
+
+  updateScrollability(props.scroll)
 
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll' }}>
+      <div className="main-content">
+        <PageTitle title="Upcoming" />
 
-      <Card className="card-going">
-        <Card.Img src={CSESocImage}/>
-        <Card.Body>
+        <div className="row">
+          <div className="col">
+            <Accordion className="accordion-going">
 
-          <div className="card-title"> CSESoc Weekly BBQ </div>
-          <div className="card-subtitle"> Tomorrow, 12-2pm, John Lion's Garden (J17) </div>
+              <AccordionEventCard
+                id="1"
+                image={CSESocImage}
+                title="CSESoc Weekly BBQ"
+                subtitle="Tomorrow, 12-2pm, John Lion's Garden (J17)"
+                description="Description"
+                rsvp="72"
+                location="Unknown" />
 
-          <br />
+              <AccordionEventCard
+                id="2"
+                image={CSESocImage}
+                title="Atlassian"
+                subtitle="Someplace"
+                description="Description"
+                rsvp="72"
+                location="Unknown" />
 
-          <div className="row">
-            <div className="col-1 d-flex justify-content-center align-items-center">
-              <img alt="" src={ChatBubble}/>
-            </div>
-            <div className="col-8">
-              <div className="chat-title"> Next Match </div>
-              <div className="chat-time"> 21 Hours </div>
-            </div>
-            <div className="col-3 d-flex justify-content-end">
-                <ToggleButtonGroup className="" type="checkbox" value={value} onChange={handleChange}>
-                  <ToggleButton className="btn-gradient-circle" value={0}></ToggleButton>
-                </ToggleButtonGroup>
-            </div>
+            </Accordion>
           </div>
-
-        </Card.Body>
-      </Card>
-
-      <Card className="card-going">
-        <Card.Img src={CSESocImage}/>
-        <Card.Body>
-
-          <div className="card-title"> CSESoc Weekly BBQ </div>
-          <div className="card-subtitle"> Tomorrow, 12-2pm, John Lion's Garden (J17) </div>
-
-          <br />
-
-          <div className="row">
-            <div className="col-1 d-flex justify-content-center align-items-center">
-              <img alt="" src={ChatBubble}/>
-            </div>
-            <div className="col-8">
-              <div className="chat-title"> Next Match </div>
-              <div className="chat-time"> 21 Hours </div>
-            </div>
-            <div className="col-3 d-flex justify-content-end">
-                <ToggleButtonGroup className="" type="checkbox" value={value} onChange={handleChange}>
-                  <ToggleButton className="btn-gradient-circle" value={0}></ToggleButton>
-                </ToggleButtonGroup>
-            </div>
-          </div>
-
-        </Card.Body>
-      </Card>
-
-
+        </div>
+      </div>
     </div>
   )
 }

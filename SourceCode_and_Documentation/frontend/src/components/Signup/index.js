@@ -11,9 +11,12 @@ import Mail from '../../icons/mail.svg'
 
 import { URL } from '../../constants/roles'
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
+import { updateScrollability } from '../../constants'
 
+const SignupPage = (props) => {
 
-const SignupPage = () => {
+  updateScrollability(props.scroll)
+
   return (
     <div className="container-fluid h-100">
       <div className="row mx-auto align-items-center h-100" style={{ maxWidth: "550px" }}>

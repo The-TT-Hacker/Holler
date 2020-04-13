@@ -37,3 +37,13 @@
 .txt-align-center {
   text-align: center;
 }
+
+.txt-poppins {
+  font-family: 'Poppins' !important;
+}
+
+@media (max-width: 600px){
+  .txt-title {
+    font-size: 3.5rem;
+  }
+}

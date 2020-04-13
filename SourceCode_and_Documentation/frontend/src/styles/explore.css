@@ -1,4 +1,4 @@
-.explore-title{
+.page-title {
   font-family: Poppins;
   font-style: normal;
   font-weight: bold;
@@ -7,6 +7,10 @@
   color: #21252A;
 }
 
+.modal-content{
+  margin:auto;
+  max-width:100%;
+}
 .modal-header {
   border-bottom: none !important;
 }
@@ -48,4 +52,12 @@
 .rdrDateRangePickerWrapper{
   zoom: 1.27;
     -moz-transform: scale(0.5);
+}
+
+.graph-percentage{
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
 }

@@ -5,8 +5,12 @@ import Mail from '../../icons/mail.svg'
 
 import { Link } from 'react-router-dom'
 import { Nav, Form, InputGroup, Image, Button } from 'react-bootstrap'
+import { updateScrollability } from '../../constants'
 
-const ResetPassword = () => {
+const ResetPassword = (props) => {
+
+  updateScrollability(props.scroll)
+
   const [email, setEmail] = useState("")
 
   const PostReset = () => {
