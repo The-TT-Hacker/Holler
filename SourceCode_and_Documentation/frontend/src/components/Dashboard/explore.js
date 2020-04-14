@@ -32,7 +32,7 @@ const Explore = (props) => {
 
 
   return (
-    <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll', overflowX: 'hidden'}}>
+    <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll'}}>
       <div className="main-content">
 
         <div className="row">
@@ -84,7 +84,7 @@ const Explore = (props) => {
               <Carousel.Item className="carousel-item">
                 <Accordion className="accordion-going" key="accordion-one">
                   <AccordionEventCard
-                    id="1"
+                    id="2"
                     image={CSESocImage}
                     title="CSESoc Weekly BBQ"
                     subtitle="Tomorrow, 12-2pm, John Lion's Garden (J17)"
@@ -95,6 +95,10 @@ const Explore = (props) => {
               </Carousel.Item>
             </Carousel>
           </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12 swipe-to-browse"> &lt;&lt; Swipe to Browse &gt;&gt; </div>
         </div>
 
       </div>

@@ -1,10 +1,12 @@
 import React from 'react'
 
-import { Image, Card, Button } from 'react-bootstrap'
-import User from '../../icons/user.svg'
-import { Area, AreaChart, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import '../../styles/explore.css'
+import { Card, Button } from 'react-bootstrap'
+
+import { Avatar } from './subcomponents'
 import { updateScrollability } from '../../constants';
+import { Area, AreaChart, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
+import '../../styles/explore.css'
 
 const Profile = (props) => {
 
@@ -18,7 +20,7 @@ const Profile = (props) => {
   return (
     <div>
       <div className="d-flex flex-column justify-content-center align-items-center">
-        <div className="circle"> <Image src={User} /> </div>
+        <Avatar />
         <br />
         <div className="txt-subtitle"> John Citizen </div>
       </div>

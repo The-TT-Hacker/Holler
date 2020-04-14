@@ -20,6 +20,8 @@ const withAuthentication = Component => {
           authUser
             ? this.setState({ authUser })
             : this.setState({ authUser: null })
+
+            authUser.getIdToken().then((token) => localStorage.setItem('token', token))
         }
       )
     }

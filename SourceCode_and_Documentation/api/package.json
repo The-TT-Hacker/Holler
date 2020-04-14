@@ -1,5 +1,5 @@
 {
-  "name": "connect_on_campus",
+  "name": "holler",
   "version": "1.0.0",
   "description": "An app to connect students at UNSW with similar interests through university related events",
   "main": "dist/index.js",
@@ -7,9 +7,10 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node .",
-    "test": "node dist/test.js",
+    "test": "node dist/tests/add_event_interest.js",
     "unsw_timetable": "node dist/data_collection/unsw_timetable",
-    "unsw_events": "node dist/data_collection/unsw_events"
+    "unsw_events": "node dist/data_collection/unsw_events",
+    "match": "node dist/match_generator/match_generator.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,8 @@
   "dependencies": {
     "@types/cheerio": "^0.22.16",
     "@types/node-fetch": "^2.5.5",
+    "@types/uuid": "^7.0.2",
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
     "cors": "^2.8.5",
@@ -32,7 +35,8 @@
     "firebase-admin": "^8.9.2",
     "install": "^0.13.0",
     "node-fetch": "^2.6.0",
-    "npm": "^6.14.2"
+    "npm": "^6.14.2",
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@types/express": "^4.17.2",

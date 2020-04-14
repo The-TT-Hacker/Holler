@@ -128,14 +128,14 @@ app.get('/event/:id', async (req, res) => {
 
 app.post('/event/:id/add_interest', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
-  const error = await db.goingToEvent(req.uid, req.params.id);
+  const error = await db.addEventInterest(req.uid, req.params.id);
   if (error) res.status(400).send(error);
   else res.send();
 });
 
 app.delete('/event/:id/remove_interest', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
-  const error = await db.undoGoingToEvent(req.uid, req.params.id);
+  const error = await db.removeEventInterest(req.uid, req.params.id);
   if (error) res.status(400).send(error);
   else res.send();
 });

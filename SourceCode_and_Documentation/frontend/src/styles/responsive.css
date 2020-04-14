@@ -16,18 +16,14 @@
   margin-bottom: 4vh;
 }
 
-.circle {
-  fill: none;
-  border-width: 10px;
-  border: solid;
-  border-radius: 48px;
+.avatar {
+  background-repeat: no-repeat;
+  background-size: 96px 96px;
   width: 96px;
   height: 96px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: black;
+  border-radius: 48px;
+  border-style: solid;
+  border-color: #ED2B5F;
 }
 
 .d-nav {

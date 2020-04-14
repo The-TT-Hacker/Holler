@@ -13,9 +13,9 @@ export default class TemplateListItem extends React.Component{
         var link = "#" + this.props.key // Remove href warning
 
         return(
-            <div className="col-md-4 col-sm-6">
+            <div className="col">
                 <a href={link} className="thumbnail" onClick={this.localAddToCanvas}>
-                    <img className="img-fluid" alt="" src={this.props.url} />
+                    <img alt="" src={this.props.url}  style={{ width: '64px', height: '64px' }} className="spacer-up spacer-down" />
                 </a>
             </div>
         );
