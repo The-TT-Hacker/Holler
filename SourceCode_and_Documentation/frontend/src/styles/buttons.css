@@ -16,6 +16,11 @@
   box-shadow: none !important;
 }
 
+.btn-interests-responsive-group {
+  overflow: hidden;
+  height: auto;
+}
+
 .btn-gradient-circle {
 
   width: 50px; 
@@ -62,7 +67,7 @@
   border-radius: 25px !important;
   width: 120px;
   border-style: none !important;
-  margin: 15px;
+  margin: 15px 15px 15px 0px;
 }
 
 .btn-interests.active {
@@ -109,6 +114,10 @@
 @media (max-width:600px){
   .btn-filters{
     width: 100px;
+  }
+  .btn-interests-responsive-group {
+    overflow-y: scroll;
+    height: 250px;
   }
 }
 

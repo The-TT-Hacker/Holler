@@ -16,19 +16,34 @@ const LoginPage = (props) => {
   updateScrollability(props.scroll)
 
   return (
-    <div className="container-fluid h-100">
-      <div className="row mx-auto align-items-center h-100" style={{maxWidth: "550px"}}>
-        <div className="col d-flex flex-column align-items-center">
-          <Nav.Link href="/"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Nav.Link>
+    <div className="container d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', maxWidth: '600px'}}>
+      <div className="container-fluid">
+
+        {/* Application Title & Login Page Title */}
+        <div className="row">
+          <div className="col">
+            <Nav.Link href="/"> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
             <h6 className="txt-subtitle txt-align-center"> Welcome Back! </h6>
             <p className="txt-subtext txt-align-center"> Sign in to your account! </p>
-            <LoginForm />
-            <div className="d-flex">
-             <Link to="/signup"> <p className="txt-gradient txt-sm txt-bold"> Create Account! </p> </Link>
-             <p className="txt-sm txt-bold" style={{margin: "0 5px 0 5px"}}> or </p>
-             <Link to="/reset-pw"> <p className="txt-gradient txt-sm txt-bold"> Reset Password... </p> </Link>
-           </div>
+          </div>
         </div>
+
+        {/* Login Form */}
+        <div className="row">
+          <div className="col">
+            <LoginForm />
+          </div> 
+        </div>
+
+        {/* Create account, reset password redirects */}
+        <div className="row">
+          <div className="col d-flex justify-content-center">
+            <Link to="/signup"> <p className="txt-gradient txt-sm txt-bold"> Create Account! </p> </Link>
+            <p className="txt-sm txt-bold" style={{margin: "0 5px 0 5px"}}> or </p>
+            <Link to="/reset-pw"> <p className="txt-gradient txt-sm txt-bold"> Reset Password... </p> </Link>
+          </div>
+        </div>
+
       </div>
     </div>
   )
