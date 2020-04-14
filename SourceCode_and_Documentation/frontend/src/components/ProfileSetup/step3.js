@@ -62,7 +62,7 @@ const Step4 = () => {
         <div className="row spacer-up">
           <div className="col d-flex justify-content-around">
             <Link to="/ps-2"> <Button className="btn-secondary btn-lg"> ← Go Back </Button> </Link>
-            <Link to="/dashboard/explore"> <Button className="btn-gradient btn-lg"> Finish </Button> </Link>
+            <Link to="/dashboard/explore"> <Button className="btn-gradient btn-lg" onClick={sendUserInfo}> Finish </Button> </Link>
           </div>
         </div>
 

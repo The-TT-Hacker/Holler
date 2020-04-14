@@ -27,10 +27,15 @@
 }
 
 .d-nav {
-  margin-left: 2vw;
   border: solid;
   border-color: #1E2125;
   border-width: 0 0 4px 0;
+}
+
+@media screen and (max-width: 1200px) {
+  .d-nav {
+    border: none;
+  }
 }
 
 .d-nav-link {
@@ -67,8 +72,6 @@
   padding: 0;
 }
 
-
-
 @media (min-width: 0px) and (max-width: 1199px) {
 
   .dashboard-nav {
@@ -87,7 +90,6 @@
 }
 
 @media (max-width: 600px){
-
   .dot {
     height: 0.7rem;
     width: 0.7rem;

@@ -22,13 +22,14 @@ const Step1 = () => {
       }
     })
     .then(function (response) {
-      console.log(response)
+      setMajors(response.data)
     })
     .catch(function (error) {
       console.log(error)
     })
   
   }
+  getSchools()
 
   const [name, setName] = useState("")
   const [dob, setDOB] = useState("")
@@ -38,6 +39,7 @@ const Step1 = () => {
     console.log(name)
     console.log(dob)
     console.log(myMajor)
+    console.log(majors)
   }
 
   return (
@@ -85,7 +87,7 @@ const Step1 = () => {
         {/* Continue to second step */}
         <div className="row">
           <div className="col d-flex justify-content-around">
-            <Link to="/ps-2"> <Button className="btn-gradient btn-lg" onClick={getSchools}> Continue </Button> </Link>
+            <Link to="/ps-2"> <Button className="btn-gradient btn-lg" onClick={sendUserInfo}> Continue </Button> </Link>
           </div>
         </div>
 
