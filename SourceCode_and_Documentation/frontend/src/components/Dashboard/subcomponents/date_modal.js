@@ -25,7 +25,7 @@ const DateModal = () => {
                 onHide={() => setDateModalShow(false)}
                 aria-labelledby="date-modal-title">
                 <Modal.Header>
-                    <Modal.Title id="date-modal-title">Select Dates</Modal.Title>
+                    <Modal.Title id="date-modal-title">Filter By Date</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="col d-flex flex-column align-items-center" style={{ padding: 0 }}>

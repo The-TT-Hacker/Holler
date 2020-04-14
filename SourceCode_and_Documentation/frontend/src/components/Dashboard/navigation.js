@@ -11,6 +11,7 @@ const Navigation = () => {
 
     return (
         <div>
+            <div className="coloured-strip"></div>
             <Navbar collapseOnSelect expand="xl" variant="light" style={{ padding: '0 5vw 0 5vw' }}>
                 <Navbar.Brand href="/dashboard/explore"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

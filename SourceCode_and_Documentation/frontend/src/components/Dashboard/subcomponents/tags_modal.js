@@ -7,7 +7,7 @@ const TagsModal = () => {
 
     return (
         <div>
-            <Modal show={tagModalShow}
+            <Modal scrollable={true} show={tagModalShow}
                 onHide={() => setTagModalShow(false)}
                 aria-labelledby="tag-modal-title">
                 <Modal.Header>
@@ -16,22 +16,51 @@ const TagsModal = () => {
                 <Modal.Body>
                     <div className="container-fluid" style={{ width: '100%' }}>
                         <div className="d-flex align-items-center justify-content-center" style={{ width: '100%' }}>
-                            <div className="row">
-                                <div className="col-sm-4">
-                                    <Button className="btn-interests"> A </Button>
-                                    <Button className="btn-interests"> B </Button>
-                                    <Button className="btn-interests"> C </Button>
+                            <div className="row d-flex align-items-center justify-content-center">
+                                
+                                <div className="row">
+                                    <div className="col">
+                                        <div className="row">
+                                            <Button className="btn-interests"> A </Button>
+                                            <Button className="btn-interests"> B </Button>
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <div className="row">
+                                            <Button className="btn-interests"> A </Button>
+                                            <Button className="btn-interests"> B </Button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col-sm-4">
-                                    <Button className="btn-interests"> A </Button>
-                                    <Button className="btn-interests"> B </Button>
-                                    <Button className="btn-interests"> C </Button>
+                                <div className="row">
+                                    <div className="col">
+                                        <div className="row">
+                                            <Button className="btn-interests"> A </Button>
+                                            <Button className="btn-interests"> B </Button>
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <div className="row">
+                                            <Button className="btn-interests"> A </Button>
+                                            <Button className="btn-interests"> B </Button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col-sm-4">
-                                    <Button className="btn-interests"> A </Button>
-                                    <Button className="btn-interests"> B </Button>
-                                    <Button className="btn-interests"> C </Button>
+                                <div className="row">
+                                    <div className="col">
+                                        <div className="row">
+                                            <Button className="btn-interests"> A </Button>
+                                            <Button className="btn-interests"> B </Button>
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <div className="row">
+                                            <Button className="btn-interests"> A </Button>
+                                            <Button className="btn-interests"> B </Button>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>          
                     </div>

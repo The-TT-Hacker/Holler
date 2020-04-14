@@ -10,7 +10,9 @@
 .modal-content{
   margin:auto;
   max-width:100%;
+  width: auto;
 }
+
 .modal-header {
   border-bottom: none !important;
 }
@@ -54,10 +56,28 @@
     -moz-transform: scale(0.5);
 }
 
+@media (max-width:460px){
+  .rdrDateRangePickerWrapper{
+    zoom: 1;
+      -moz-transform: scale(0.5);
+  }
+}
+
+@media (max-width:370px){
+  .rdrDateRangePickerWrapper{
+    zoom: 0.75;
+      -moz-transform: scale(0.5);
+  }
+}
+
 .graph-percentage{
   font-family: Poppins;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
   line-height: 18px;
+}
+
+.modal-dialog{
+  max-width: 650px !important;
 }

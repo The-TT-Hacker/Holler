@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, FormControl, ToggleButton, ToggleButtonGroup, Collapse } from 'react-bootstrap'
 
-
+/* PRETTY MUCH IRRELEVANT, KEEPING THIS FILE JUST IN CASE AS A REFERENCE */
 
 const ExploreHeader = () => {
     /* All of this is for toggling the search bar */

@@ -14,13 +14,41 @@ const Explore = (props) => {
   updateScrollability(props.scroll)
   const [showSearchInput, setShowSearchInput] = useState(false)
 
+  const [index, setIndex] = useState(0);
+  const changeCarousel = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+
+  };
+
+  const [active, setActive] = useState(false)
+  const changeSearchIcon = () => {
+    if (active) 
+        document.getElementsByClassName("btn-explore-search")[0].classList.remove("active");
+     else 
+        document.getElementsByClassName("btn-explore-search")[0].classList.add("active");
+    
+    setActive(!active);
+}
+
+
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll', overflowX: 'hidden'}}>
       <div className="main-content">
 
         <div className="row">
-          <div className="col-sm-11"> <PageTitle title="Events" /> </div>
-          <div className="col-sm-1">  <Button className="btn-explore-search" onClick={() => setShowSearchInput(!showSearchInput)}></Button> </div>
+          <div className="col-12 d-flex justify-content-between">
+              <div className="d-flex flex-row">
+                <PageTitle title="Events" /> 
+              </div>
+              <div >
+                <Button className="btn-explore-search" onClick={() => {
+                    setShowSearchInput(!showSearchInput);
+                      changeSearchIcon();
+                    }}>
+                </Button> 
+              </div>
+          </div>
+          
         </div>
 
         <div className="row spacer-down">
@@ -40,7 +68,7 @@ const Explore = (props) => {
 
         <div className="row spacer-down">
           <div className="col-12">
-            <Carousel slide={true} interval={null} style={{ width: '100%', margin: '0', overflowY: 'scrollable'}}>
+            <Carousel slide={true} interval={null} activeIndex={index} style={{ width: '100%', margin: '0', overflowY: 'scrollable'}} onSelect={changeCarousel}>
               <Carousel.Item className="carousel-item">
                 <Accordion className="accordion-going" key="accordion-one">
                   <AccordionEventCard
