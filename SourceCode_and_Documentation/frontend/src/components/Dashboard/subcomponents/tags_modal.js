@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { Button, Modal} from 'react-bootstrap'
+import { Button, Modal, ToggleButton, ToggleButtonGroup} from 'react-bootstrap'
 
 
 const TagsModal = () => {
     const [tagModalShow, setTagModalShow] = useState(false);
 
+    const [value, setValue] = useState([])
+    const handleChange = (val) => setValue(val)
+  
     return (
         <div>
             <Modal scrollable={true} show={tagModalShow}
@@ -15,67 +18,43 @@ const TagsModal = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="container-fluid" style={{ width: '100%' }}>
-                        <div className="d-flex align-items-center justify-content-center" style={{ width: '100%' }}>
-                            <div className="row d-flex align-items-center justify-content-center">
-                                
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="row">
-                                            <Button className="btn-interests"> A </Button>
-                                            <Button className="btn-interests"> B </Button>
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <div className="row">
-                                            <Button className="btn-interests"> A </Button>
-                                            <Button className="btn-interests"> B </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="row">
-                                            <Button className="btn-interests"> A </Button>
-                                            <Button className="btn-interests"> B </Button>
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <div className="row">
-                                            <Button className="btn-interests"> A </Button>
-                                            <Button className="btn-interests"> B </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="row">
-                                            <Button className="btn-interests"> A </Button>
-                                            <Button className="btn-interests"> B </Button>
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <div className="row">
-                                            <Button className="btn-interests"> A </Button>
-                                            <Button className="btn-interests"> B </Button>
-                                        </div>
-                                    </div>
-                                </div>
 
-                            </div>
-                        </div>          
+                        <div className="btn-interests-responsive-group">
+                            <ToggleButtonGroup className="flex-wrap" type="checkbox" value={value} onChange={handleChange}>
+                                <ToggleButton className="btn-interests" value={0}> Photography </ToggleButton>
+                                <ToggleButton className="btn-interests" value={1}> Family </ToggleButton>
+                                <ToggleButton className="btn-interests" value={2}> Concerts </ToggleButton>
+                                <ToggleButton className="btn-interests" value={3}> Running </ToggleButton>
+                                <ToggleButton className="btn-interests" value={4}> Gaming </ToggleButton>
+                                <ToggleButton className="btn-interests" value={5}> Science </ToggleButton>
+                                <ToggleButton className="btn-interests" value={6}> Cinema </ToggleButton>
+                                <ToggleButton className="btn-interests" value={7}> Dance </ToggleButton>
+                                <ToggleButton className="btn-interests" value={8}> Music </ToggleButton>
+                                <ToggleButton className="btn-interests" value={9}> Study </ToggleButton>
+                                <ToggleButton className="btn-interests" value={10}> Hiking </ToggleButton>
+                                <ToggleButton className="btn-interests" value={11}> Beach </ToggleButton>
+                                <ToggleButton className="btn-interests" value={12}> Gambling </ToggleButton>
+                                <ToggleButton className="btn-interests" value={13}> Partying </ToggleButton>
+                                <ToggleButton className="btn-interests" value={14}> Trivia </ToggleButton>
+                                <ToggleButton className="btn-interests" value={15}> Karaoke </ToggleButton>
+                                <ToggleButton className="btn-interests" value={16}> Squash </ToggleButton>
+                                <ToggleButton className="btn-interests" value={17}> Food </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
                     </div>
 
 
+
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button className="btn-modal-done btn-lg" variant="primary" onClick={() => setTagModalShow(false)}>
-                        Done
+            <Modal.Footer>
+                <Button className="btn-modal-done btn-lg" variant="primary" onClick={() => setTagModalShow(false)}>
+                    Done
                     </Button>
 
-                </Modal.Footer>
+            </Modal.Footer>
             </Modal>
-            <Button onClick={() => setTagModalShow(true)} className="btn-interests active no-margin spacer-right"> Tags </Button>
-        </div>
+        <Button onClick={() => setTagModalShow(true)} className="btn-interests active no-margin spacer-right"> Tags </Button>
+        </div >
     )
 }
 

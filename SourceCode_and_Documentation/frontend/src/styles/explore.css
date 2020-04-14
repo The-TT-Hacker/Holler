@@ -52,13 +52,19 @@
 }
 
 .rdrDateRangePickerWrapper{
-  zoom: 1.27;
-    -moz-transform: scale(0.5);
+  zoom: 1.725;
+}
+
+@media (max-width:660px){
+  .rdrDateRangePickerWrapper{
+    zoom: 1.25;
+      -moz-transform: scale(0.5);
+  }
 }
 
 @media (max-width:460px){
   .rdrDateRangePickerWrapper{
-    zoom: 1;
+    zoom: 0.95;
       -moz-transform: scale(0.5);
   }
 }
@@ -80,4 +86,14 @@
 
 .modal-dialog{
   max-width: 650px !important;
+}
+
+@media (max-width:670){
+  .modal-dialog{
+    position: relative;
+    width: auto;
+    margin: 0.5rem !important;
+    max-width: 500px !important;
+    pointer-events: none;
+  }
 }
