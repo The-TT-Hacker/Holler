@@ -21,7 +21,7 @@ const Profile = (props) => {
     <div className="container-fluid d-flex flex-column align-items-center">
       <div className="main-content">
 
-        <PageTitle title="Your Presence" />
+        <PageTitle title="Your Profile" />
 
         {/* Avatar Image */}
         <div className="row spacer-up">

@@ -40,7 +40,7 @@ const Explore = (props) => {
         <div className="row">
           <div className="col-12 d-flex justify-content-between">
             <div className="d-flex flex-row">
-              <PageTitle title="Events" />
+              <PageTitle title="Explore" />
             </div>
             <div >
               <Button className="btn-explore-search" onClick={() => {

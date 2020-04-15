@@ -19,7 +19,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "recharts": "^1.8.5",
-    "recompose": "^0.30.0"
+    "recompose": "^0.30.0",
+    "talkjs": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",

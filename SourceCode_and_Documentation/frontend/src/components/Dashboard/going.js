@@ -13,7 +13,7 @@ const Going = (props) => {
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%'}}>
       <div className="main-content" style={{ overflowX: 'hidden' }}>
-        <PageTitle title="Upcoming" />
+        <PageTitle title="Going" />
 
         <div className="row">
           <div className="col">

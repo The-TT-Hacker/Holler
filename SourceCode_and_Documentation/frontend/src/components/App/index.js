@@ -7,6 +7,8 @@ import '../../styles/text.css'
 import '../../styles/buttons.css'
 import '../../styles/search_bar.css'
 import '../../styles/explore.css'
+import '../../styles/MatchList.css'
+import '../../styles/Chat.css'
 
 import * as ROUTES from '../../constants/routes'
 
@@ -18,7 +20,7 @@ import ResetPassword from '../ResetPassword'
 import VerifyEmail from '../VerifyEmail'
 
 import { Step1, Step2, Step3 } from '../ProfileSetup'
-import { Explore, Going, Matches, Profile } from '../Dashboard'
+import { Explore, Going, Matches, Profile, GroupChat } from '../Dashboard'
 import { withAuthentication } from '../Session'
 
 const App = () => {
@@ -39,6 +41,7 @@ const App = () => {
       <Route path={ROUTES.EXPLORE} component={() => <Explore scroll={true} />} />
       <Route path={ROUTES.GOING} component={() => <Going scroll={true} />} />
       <Route path={ROUTES.MATCHES} component={() => <Matches scroll={true} />} />
+      <Route path={ROUTES.GROUP_CHAT} render={(matchProps) => <GroupChat {...matchProps} />} />
     </Router>
   )
 }
