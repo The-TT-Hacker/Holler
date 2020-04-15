@@ -32,7 +32,7 @@ const withAuthentication = Component => {
 
     render() {
       return (
-        <AuthUserContext.Provider value={this.state.token}>
+        <AuthUserContext.Provider>
           <Component {...this.props} />
         </AuthUserContext.Provider>
       )
