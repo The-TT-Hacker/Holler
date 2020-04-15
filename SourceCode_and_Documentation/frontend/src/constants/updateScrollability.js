@@ -1,8 +1,8 @@
 const updateScrollability = (scroll) => {
   if (!scroll) 
-    document.body.style.overflow = "hidden"
+    document.body.style.overflowY = "hidden"
   else
-    document.body.style.overflow = "scrollable"
+    document.body.style.overflowY = "scrollable"
 }
 
 export default updateScrollability
