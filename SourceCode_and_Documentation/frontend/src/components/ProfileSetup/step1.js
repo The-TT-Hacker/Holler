@@ -1,49 +1,110 @@
-import React, { useState } from 'react'
-
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+
 import { Link  } from 'react-router-dom'
 import { URL } from '../../constants/roles'
-import { withAuthorization } from '../Session'
+import { withAuthentication } from '../Session'
 import { Form, Button } from 'react-bootstrap'
+import { Typeahead } from 'react-bootstrap-typeahead'
 
+// CSS for Typeahead
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const onDateFocus = (e) => { e.currentTarget.type = "date" }
 const onDateBlur = (e) => { if (e.currentTarget.value === "") e.currentTarget.type = "text" }
 
-const Step1 = () => {
-
-  const [majors, setMajors] = useState("")
-  const getSchools = () => {
-
-    const token = localStorage.getItem('token')
-    axios.get(URL + '/faculties/unsw', {
-      headers: {
-        'Authorization': `${token}`
-      }
-    })
-    .then(function (response) {
-      setMajors(response.data)
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+const Step1 = (props) => {
   
-  }
-  getSchools()
-
+  // global error variable
+  const token = localStorage.getItem('token')
+  const [hasError, setError] = useState(false)
+  
+  // information received from requests
+  const [faculties, setFaculties] = useState([]) 
+  
+  // values we will post
   const [name, setName] = useState("")
   const [dob, setDOB] = useState("")
-  const [myMajor, setMyMajor] = useState("")
+  const [majors, setMajors] = useState([])
 
-  const sendUserInfo = () => {
-    console.log(name)
-    console.log(dob)
-    console.log(myMajor)
-    console.log(majors)
-  }
+  // get information from backend
+  useEffect(() => {
+    
+    // Flag to use for cleanup
+    const source = axios.CancelToken.source()  
+    
+    // Request Function
+    const fetchData = async () => {
+  
+      // Make a request to get all the faculties, faculty codes, classes and class codes
+      await axios({
+        url: URL + "/timetable/faculties/unsw",
+        method:"GET",
+        cancelToken: source.token,
+        headers: {
+          'Authorization': `${token}`
+        },
+      })
+      .then(res => {
+        
+        // Filter the data to only the name of the major
+        var majors = res.data.map(({ name }) => name)
+  
+        // Convert it into a set to remove duplicates
+        const uniqueSet = new Set(majors)
+  
+        // Convert it back to an array
+        majors = [...uniqueSet]
+  
+        // Save it to the state
+        setFaculties(majors)
+  
+      })
+      .catch(err => {
+
+        if (axios.isCancel(err)) {
+          console.log('Request cancelled', err.message)
+        } else {
+          console.log(err)
+        }
+
+      })
+    }
+
+    // Make the request
+    fetchData()
+
+    // Cancel other requests
+    return () => {
+      source.cancel()
+    }
+
+  }, [])
+
+  // send user data to the backend
+  const postData = async () => {
+
+    await axios({
+      url: URL + '/user',
+      method: "PUT",
+      headers: {
+        'Authorization': `${token}`
+      },
+      data: {
+        firstName: name.split(" ")[0], // first element
+        lastName: name.split(" ")[name.split(" ").length -1], // last element
+        dob: dob,
+        faculties: majors
+      }
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+
+  } 
 
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', maxWidth: '600px'}}>
+            
       <div className="container-fluid">
       
         {/* Application Title & Page description */}
@@ -69,16 +130,27 @@ const Step1 = () => {
               <Form.Control size="lg" type="text" placeholder="Birthdate" className="spacer-down" onChange={(e) => setDOB(e.currentTarget.value)}
                 onFocus={(event) => onDateFocus(event)} onBlur={(event) => onDateBlur(event)} />
               
-              {/* Degree Major */}
-              <Form.Control size="lg" type="text" placeholder="Major" onChange={(e) => setMyMajor(e.currentTarget.value)} />
-            
+  
             </Form.Group>
+          
+            {/* Degree Major */}
+            <Typeahead
+              style={{ width: "80%" }}
+              size="lg"
+              clearButton
+              id="basic-typeahead-example"
+              labelKey="majors"
+              multiple={true}
+              onChange={setMajors}
+              options={faculties}
+              selected={majors}
+              placeholder="Select your major(s)" />
           
           </div>
         </div>
 
         {/* How many steps in setup indicator */}
-        <div className="row">
+        <div className="row spacer-up">
           <div className="col">
             <p className="txt-form txt-align-center"> Step 1 of 3 </p>
           </div>
@@ -87,7 +159,7 @@ const Step1 = () => {
         {/* Continue to second step */}
         <div className="row">
           <div className="col d-flex justify-content-around">
-            <Link to="/ps-2"> <Button className="btn-gradient btn-lg" onClick={sendUserInfo}> Continue </Button> </Link>
+            <Link to="/ps-2"> <Button className="btn-gradient btn-lg" onClick={postData}> Continue </Button> </Link>
           </div>
         </div>
 
@@ -97,5 +169,6 @@ const Step1 = () => {
 
 }
 
-const condition = authUser => !!authUser
-export default withAuthorization(condition)(Step1)
+// const condition = authUser => !!authUser
+// export default withAuthorization(condition)(Step1)
+export default withAuthentication(Step1)
