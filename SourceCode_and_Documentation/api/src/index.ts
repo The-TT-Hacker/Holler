@@ -7,7 +7,7 @@ import { User } from "./common/models/user";
 
 const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
-  "/auth/register",
+  "/register",
   "/events"
 ];
 const UNIVERSITIES: string[] = [

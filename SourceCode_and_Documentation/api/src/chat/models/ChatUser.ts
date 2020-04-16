@@ -14,9 +14,6 @@ export interface ChatUser {
 
 export interface CreateChatUserRequest {
   id: ChatUserId;
-  name: string;
-  photoUrl?: string;
-  custom?: { [name: string]: string };
 }
 
 export interface UpdateUserRequest {

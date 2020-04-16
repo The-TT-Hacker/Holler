@@ -3,15 +3,15 @@ import { Event, EventInterest } from "./models/event";
 import { Match } from "./models/match";
 import {
   User,
-  UserRegistration,
-  UserLogin,
-  UserPasswordResetRequest,
+  UserRegistrationRequest,
+  UpdateUserRequest,
   UpdateUser
 } from "./models/user";
 
-
 import { db, admin, client } from "./dbConnect";
 import * as chat from "../chat/chatService";
+import { captureRejectionSymbol } from "events";
+import * as ids from "./ids";
 
 declare global {
   interface Date {
@@ -43,7 +43,7 @@ export async function getUID(token: string, req: any): Promise<string> {
   }
 }
 
-export async function registerUser(registration: UserRegistration): Promise<string> {
+export async function registerUser(registration: UserRegistrationRequest): Promise<string> {
   try {
     if (!registration.email) return "Email is required";
     if (!registration.password) return "Password is required";
@@ -57,10 +57,11 @@ export async function registerUser(registration: UserRegistration): Promise<stri
 
     const userData: User = {
       signupCompleted: false,
+      chatUserCreated: false,
       firstName: null,
       lastName: null,
-      email: registration.email,
       dob: null,
+      image: null,
       faculties: [],
       classes: [],
       interests: [],
@@ -69,16 +70,9 @@ export async function registerUser(registration: UserRegistration): Promise<stri
 
     const userRecord = await admin.createUser(userAuthData);
     const writeResult = await db.collection("users").doc(userRecord.uid).set(userData);
-    const result = await chat.createChatUser({
-      id: userRecord.uid,
-      name: ""
-      //photoUrl?: string;
-      //custom?: { [name: string]: string };
-    });
 
     const cred = await client.signInWithEmailAndPassword(registration.email, registration.password);
     cred.user.sendEmailVerification();
-    //const token = await cred.user.getIdToken();
   
     return null;
   } catch (e) {
@@ -100,21 +94,94 @@ export async function verifyEmail(oobCode: string): Promise<void> {
   Users
 */
 
-export async function updateUser(uid: string, user: User): Promise<boolean> {
+export async function updateUser(uid: string, updateUserRequest: UpdateUserRequest): Promise<boolean> {
   try {
 
-    const userUpdateValues: UpdateUser = {};
+    const currentUser = await db.collection("users").doc(uid).get();
+    const currentUserData = <User> currentUser.data();
 
-    userUpdateValues.signupCompleted = true;
-    if (user.firstName) userUpdateValues.firstName = user.firstName;
-    if (user.lastName) userUpdateValues.lastName = user.lastName;
-    if (user.dob) userUpdateValues.dob = user.dob;
-    if (user.faculties) userUpdateValues.faculties = user.faculties;
-    if (user.classes) userUpdateValues.classes = user.classes;
-    if (user.interests) userUpdateValues.interests = user.interests;
-    if (user.badges) userUpdateValues.badges = user.badges;
+    const updateUserValues: UpdateUser = {};
 
-    await db.collection("users").doc(uid).update(userUpdateValues);
+    // Update first name
+    if (updateUserRequest.firstName) {
+      updateUserValues.firstName = updateUserRequest.firstName;
+      currentUserData.firstName = updateUserValues.firstName;
+    }
+    
+    // Update last name
+    if (updateUserRequest.lastName) {
+      updateUserValues.lastName = updateUserRequest.lastName;
+      currentUserData.lastName = updateUserValues.lastName;
+    }
+
+    // TODO Update email
+    
+    // Update dob
+    if (updateUserRequest.dob) {
+      updateUserValues.dob = updateUserRequest.dob;
+      currentUserData.dob = updateUserValues.dob;
+    }
+
+    // Update image
+    if (updateUserRequest.image) {
+      updateUserValues.image = updateUserRequest.image;
+      currentUserData.image = updateUserValues.image;
+    }
+
+    // Update faculties
+    if (updateUserRequest.faculties) {
+      if (updateUserRequest.appendFaculties) updateUserValues.faculties = currentUserData.faculties.concat(updateUserRequest.faculties);
+      else updateUserValues.faculties = updateUserRequest.faculties;
+
+      currentUserData.dob = updateUserValues.dob;
+    }
+    
+    // Update classes
+    if (updateUserRequest.classes) {
+      if (updateUserRequest.appendClasses) updateUserValues.classes = currentUserData.faculties.concat(updateUserRequest.classes);
+      else updateUserValues.classes = updateUserRequest.classes;
+
+      currentUserData.classes = updateUserValues.classes;
+    }
+
+    // Update interests
+    if (updateUserRequest.interests) {
+      if (updateUserRequest.appendInterests) updateUserValues.interests = currentUserData.interests.concat(updateUserRequest.interests);
+      else updateUserValues.interests = updateUserRequest.interests;
+
+      currentUserData.interests = updateUserValues.interests;
+    }
+
+    // Check if signup has just been completed
+    if (!currentUserData.signupCompleted &&
+        currentUserData.firstName &&
+        currentUserData.lastName &&
+        currentUserData.dob &&
+        currentUserData.image &&
+        currentUserData.faculties.length &&
+        currentUserData.classes.length &&
+        currentUserData.interests.length) {
+
+      updateUserValues.signupCompleted = true;
+
+      // Add signup badge
+      updateUserValues.badges = currentUserData.badges.concat([ ids.badges.completedProfile ]);
+
+    }
+
+    if (updateUserValues.signupCompleted) {
+      
+      // Create chat user
+      const result = await chat.createChatUser({
+        id: uid
+      });
+
+      // Check if chat user was created successfully
+      if (result) updateUserValues.chatUserCreated = true;
+      
+    }
+
+    await db.collection("users").doc(uid).update(updateUserValues);
 
     return true;
   } catch (e) {
