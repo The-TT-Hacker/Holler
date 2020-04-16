@@ -2,9 +2,9 @@ import cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import fs from 'fs';
 
-import { setFaculties } from '../common/services/database';
-import { Faculty } from "../common/models/faculty";
-import { Class } from "../common/models/class";
+import * as dataService from '../services/dataService';
+import { Faculty } from "../models/faculty";
+import { Class } from "../models/class";
 
 export async function getUnswTimetable(): Promise<Faculty[]> {
   return fetch("http://timetable.unsw.edu.au/2020/subjectSearch.html")
@@ -72,7 +72,7 @@ function fetchClasses(body: string, facultyCode: string, facultyName: string) {
 getUnswTimetable()
   .then((faculties) => {
     fs.writeFileSync("./data/unsw_timetable.json", JSON.stringify(faculties, null, 2));
-    return setFaculties("unsw", faculties);
+    return dataService.setFaculties("unsw", faculties);
   })
   .then((result) => console.log(result));
 

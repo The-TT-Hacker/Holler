@@ -1,146 +1,216 @@
-import * as db from "../common/services/database";
-import * as chat from "../common/services/chat";
+// Import dependencies
 import { v4 as uuidv4 } from 'uuid';
-import { EventInterest } from "../common/models/event";
-import { User } from "../common/models/user";
-import { Match } from "../common/models/match";
 
-interface CompiledEventInterest {
-    uid: string;
-    user: User;
+// Import services
+import * as eventService from "../services/eventService";
+import * as userService from "../services/userService";
+import * as chatService from "../services/chatService";
+import * as matchService from "../services/matchService";
+
+// Import models
+import { Event, EventInterest } from "../models/event";
+import { User } from "../models/user";
+import { Match } from "../models/match";
+
+// Define types
+
+type SortedEventInterests = {
+  [eventId: string]: InterestedUser[]
 }
 
-var sortedEventInterests: {
-    [eventId: string]: CompiledEventInterest[]
-} = {};
+type MatchCombinations = {
+  [matchPoints: string]: Match[]
+};
 
-// Get all interests
-db.getAllEventInterests().then(async (eventInterests) => {
+interface InterestedUser {
+  uid: string;
+  user: User;
+}
 
-    var promises: Promise<void>[] = [];
+const HOURS_BETWEEN_MATCHES = 1
 
-    eventInterests.forEach((eventInterest: EventInterest) => {
+setInterval(async () => {
 
-        const promise: Promise<void> = db.getUser(eventInterest.uid)
-            .then((user: User) => {
-                if (sortedEventInterests[eventInterest.eventId]) {
-                    sortedEventInterests[eventInterest.eventId].push({
-                        uid: eventInterest.uid,
-                        user: user
-                    });
-                } else {
-                    sortedEventInterests[eventInterest.eventId] = [{
-                        uid: eventInterest.uid,
-                        user: user
-                    }];
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+  // Get all event interests
+  const eventInterests = await eventService.getAllEventInterests();
 
-        promises.push(promise);
+  const sortedEventInterests: SortedEventInterests = await compileAndSortEventInterests(eventInterests);
 
-    });
+  Object.entries(sortedEventInterests).forEach(async ([eventId, interestedUsers]) => {
 
-    await Promise.all(promises);
+    const event = await eventService.getEvent(eventId);
 
-    for (const eventId in sortedEventInterests) {
+    // 
+    const matchCombinations = getWeightedCombinations(eventId, event, interestedUsers);
 
-        const event = await db.getEvent(eventId);
+    makeMatches(event, matchCombinations);
 
-        const compiledEventInterests = sortedEventInterests[eventId];
-        console.log(sortedEventInterests[eventId]);
+  });
 
-        // Loop through all of the event interests and find the users who have the most in common
+}, HOURS_BETWEEN_MATCHES * 60 * 60 * 1000);
 
-        var matchPermutations: { [matchPoints: string]: Match[] } = {};
+/**
+ * Compiles a list of event interests into an object containing lists of users + user data for each event
+ * @param eventInterests 
+ */
+async function compileAndSortEventInterests(eventInterests: EventInterest[]): Promise<SortedEventInterests> {
 
-        var matches: Match[] = []; // for testing
-        var matchedUsers: string[] = [];
+  var sortedEventInterests: SortedEventInterests = {};
+  var promises: Promise<void>[] = [];
 
-        // Compute match points
-        for (var i = 0; i < compiledEventInterests.length; i++) {
+  eventInterests.forEach((eventInterest: EventInterest) => {
 
-            const currentUser: User = compiledEventInterests[i].user;
+    const promise: Promise<void> = userService.getUser(eventInterest.uid)
+      .then((user: User) => {
+        
+        const interestedUser: InterestedUser = {
+          uid: eventInterest.uid,
+          user: user
+        };
 
-            // loop through all of the users the current user hasn't been matches with
-            for (var j = i + 1; j < compiledEventInterests.length; j++) {
-
-                const tempUser: User = compiledEventInterests[i].user;
-
-                var matchPoints = 0;
-
-                // Check classes
-                currentUser.classes.forEach(className => {
-                    if (tempUser.classes.includes(className)) matchPoints++;
-                });
-
-                // Check interests
-                currentUser.interests.forEach((interest) => {
-                    if (tempUser.interests.includes(interest)) matchPoints++;
-                });
-
-                // Add potential match
-                if (matchPermutations[`${matchPoints}`]) {
-                    matchPermutations[`${matchPoints}`].push({
-                        uids: [ compiledEventInterests[i].uid, compiledEventInterests[j].uid ],
-                        eventIds: [ eventId ],
-                        chatId: null
-                    });
-                } else {
-                    matchPermutations[`${matchPoints}`] = [{
-                        uids: [ compiledEventInterests[i].uid, compiledEventInterests[j].uid ],
-                        eventIds: [ eventId ],
-                        chatId: null
-                    }];
-                }
-
-            }
-
+        if (sortedEventInterests[eventInterest.eventId]) {
+          sortedEventInterests[eventInterest.eventId].push(interestedUser);
+        } else {
+          sortedEventInterests[eventInterest.eventId] = [
+            interestedUser
+          ];
         }
 
-        // Get list of valid match points
-        var keys = Object.keys(matchPermutations).sort((a, b) => +b - +a);
+      })
+      .catch((error) => console.log(error));
 
-        keys.forEach((matchPoints: string) => {
-            matchPermutations[matchPoints].forEach(match => {
-                var userAlreadyMatched = false;
-                
-                // Check if any users have been matched before
-                match.uids.forEach(uid => {
-                    if (matchedUsers.includes(uid)) userAlreadyMatched = true;
-                });
+    promises.push(promise);
 
-                // If any of the users have been matched before then skip this potential match
-                // Otherwise make the match
-                if (userAlreadyMatched) {
-                    return;
-                } else {
-                    matchedUsers.concat(match.uids);
-                }
+  });
 
-                // Add match - debugging
-                matches.push(match);
+  return Promise.all(promises).then(() => sortedEventInterests);
 
-                match.chatId = uuidv4();
+}
 
-                // Add match to firestore
-                db.makeMatch(match);
+/**
+ * Loops through all of the users interested in a given event
+ * Returns on object with combinations sorted into groups depending on how much they have in common
+ * @param eventId 
+ * @param event 
+ * @param interestedUsers 
+ */
+function getWeightedCombinations(eventId: string, event: Event, interestedUsers: InterestedUser[]): MatchCombinations {
 
-                // Create chat
-                chat.createConverstaion({
-                    id: uuidv4(),
-                    subject: event.title,
-                    participants: match.uids,
-                    //welcomeMessages?: string[];
-                    //custom?: { [name: string]: string };
-                });
-            });
-        });
+  var matchCombinations: MatchCombinations = {};
 
-        console.log(`Matches for eventId: ${eventId}`);
-        console.log(matches);
+  // Loop over all combinations of groups of 3
+  for (var i = 0; i < interestedUsers.length; i++) {
 
+    const firstUser: User = interestedUsers[i].user;
+
+    for (var j = i + 1; j < interestedUsers.length; j++) {
+
+      const secondUser: User = interestedUsers[i].user;
+
+      const matchPoints = computeMatchPoints(firstUser, secondUser);
+
+      // Build potential match
+      const potentialMatch: Match = {
+        users: [
+          { 
+            uid: interestedUsers[i].uid,
+            firstName: firstUser.firstName,
+            lastName: firstUser.lastName
+          },
+          { 
+            uid: interestedUsers[j].uid,
+            firstName: secondUser.firstName,
+            lastName: secondUser.lastName
+          }
+        ],
+        events: [
+          {
+            eventId: eventId,
+            title: event.title,
+            time_start: event.time_start,
+            location: event.location
+          }
+        ],
+        chatId: null
+      }
+
+      // Add potential match to list with potential matches with an equal amount of match points
+      if (matchCombinations[matchPoints]) matchCombinations[matchPoints].push(potentialMatch);
+      else matchCombinations[matchPoints] = [ potentialMatch ];
     }
-});
+  }
+
+  return matchCombinations;
+}
+
+/**
+ * 
+ * @param firstUser 
+ * @param secondUser 
+ */
+function computeMatchPoints(firstUser: User, secondUser: User): number {
+
+  var matchPoints = 0;
+
+  // Check classes
+  firstUser.classes.forEach(className => {
+    if (secondUser.classes.includes(className)) matchPoints++;
+  });
+
+  // Check interests
+  firstUser.interests.forEach((interest) => {
+    if (secondUser.interests.includes(interest)) matchPoints++;
+  });
+
+  return matchPoints;
+
+}
+
+/**
+ * 
+ * @param event 
+ * @param matchCombinations 
+ */
+function makeMatches(event: Event, matchCombinations: MatchCombinations) {
+  var matches: Match[] = []; // for testing
+  var matchedUsers: string[] = [];
+
+  // Get list of valid match points
+  var keys = Object.keys(matchCombinations).sort((a, b) => +b - +a);
+
+  keys.forEach((matchPoints: string) => {
+    matchCombinations[matchPoints].forEach(match => {
+      var userAlreadyMatched = false;
+      
+      // Check if any users have been matched before
+      match.users.forEach(user => {
+        if (matchedUsers.includes(user.uid)) userAlreadyMatched = true;
+      });
+
+      // If any of the users have been matched before then skip this potential match
+      // Otherwise make the match
+      if (userAlreadyMatched) {
+        return;
+      } else {
+        matchedUsers.concat(match.users.map(user => user.uid));
+      }
+
+      matches.push(match); // debugging
+
+      match.chatId = uuidv4();
+
+      // Add match to firestore
+      matchService.setMatch(match);
+
+      // Create chat
+      chatService.createConverstaion({
+        id: match.chatId,
+        subject: event.title,
+        participants: match.users.map(user => user.uid),
+      });
+    });
+  });
+
+  console.log(`Matches for event: ${event.title}`);
+  console.log(matches);
+}

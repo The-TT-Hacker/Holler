@@ -1,4 +1,4 @@
-export class Event {
+export interface Event {
   id: string;
   url: string;
   title: string;
@@ -10,7 +10,7 @@ export class Event {
   categories: string[];
 }
 
-export class EventInterest {
+export interface EventInterest {
   uid: string;
   eventId: string;
   expiry: Date;

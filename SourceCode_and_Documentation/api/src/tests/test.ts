@@ -1,5 +1,5 @@
-import * as db from "../common/services/database";
-import { Event } from "../common/models/event";
+import * as dataService from "../services/dataService";
+import { Event } from "../models/event";
 
 /*
 db.registerUser({
@@ -35,4 +35,4 @@ db.loginUser({
 //db.getEvents().then((events: Event[]) => console.log(events));
 //db.getEvent("1026547577732258").then((event: Event) => console.log(event));
 
-db.getFaculties("unsw").then(res => console.log(res));
+dataService.getFaculties("unsw").then(res => console.log(res));

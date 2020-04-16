@@ -1,4 +1,7 @@
+// Import dependencies
 import axios, { AxiosResponse } from 'axios';
+
+// Import models
 import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from '../models/ChatUser';
 import { CreateConversationRequest, Conversation } from '../models/chatConversation';
 import { SendMessageRequest, Message } from '../models/chatMessage';
@@ -17,12 +20,8 @@ const client = axios.create({
   },
 });
 
-/****************************
- *
- * Chat User API
- *
- ****************************/
-// - Should have 1-to-1 mapping with users in Firestore.
+// Chat User API Service
+// Users have 1-to-1 mapping with users in Firestore.
 
 /**
  * Creates a new chat user to be able to use the API.
@@ -53,12 +52,8 @@ export const updateUser = (uid: string, update: UpdateUserRequest) => {
   return client.put(`/users/${uid}`, update).then((response: AxiosResponse) => response.data);
 };
 
-/****************************
- *
- * Conversations API
- *
- ****************************/
-// - Should have 1-to-1 relationship with matches in Firestore.
+// Conversations API
+// Has a 1-to-1 relationship with matches in Firestore.
 
 /**
  * Creates a new conversation.
@@ -100,12 +95,12 @@ export const removeUserFromConversation = (conversationId: string, uidToRemove: 
     .then(() => true);
 };
 
-/****************************
- *
- * Messages API
- *
- ****************************/
+// Messages API
 
+/**
+ * 
+ * @param conversationId 
+ */
 export const getAllMessages = (conversationId: string) => {
   return client
     .get(`conversations/${conversationId}/messages`, {
@@ -116,6 +111,10 @@ export const getAllMessages = (conversationId: string) => {
     .then((response) => response.data.data as Message[]);
 };
 
+/**
+ * 
+ * @param conversationId 
+ */
 export const getLastMessage = (conversationId: string) => {
   return client
     .get(`conversations/${conversationId}/messages`, {
@@ -126,6 +125,10 @@ export const getLastMessage = (conversationId: string) => {
     .then((response) => response.data.data as Message[]);
 };
 
+/**
+ * 
+ * @param newMessage 
+ */
 export const sendMessage = (newMessage: SendMessageRequest) => {
   return client.post(`/conversations/${newMessage.conversationId}/messages`, [
     {
