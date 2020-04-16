@@ -32,11 +32,7 @@ const client = axios.create({
  */
 export const createChatUser = (newUser: CreateChatUserRequest) => {
   return client
-    .put(`/users/${newUser.id}`, {
-      name: newUser.name,
-      photoUrl: newUser.photoUrl,
-      custom: newUser.custom,
-    })
+    .put(`/users/${newUser.id}`)
     .then(() => true);
 };
 
