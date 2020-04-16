@@ -1,17 +1,17 @@
-import { Faculty } from "./models/faculty";
-import { Event, EventInterest } from "./models/event";
-import { Match } from "./models/match";
+import { Faculty } from "../models/faculty";
+import { Event, EventInterest } from "../models/event";
+import { Match } from "../models/match";
 import {
   User,
   UserRegistrationRequest,
   UpdateUserRequest,
   UpdateUser
-} from "./models/user";
+} from "../models/user";
 
-import { db, admin, client } from "./dbConnect";
-import * as chat from "../chat/chatService";
+import { db, admin, client } from "../dbConnect";
+import * as chat from "./chat";
 import { captureRejectionSymbol } from "events";
-import * as ids from "./ids";
+import * as ids from "../ids";
 
 declare global {
   interface Date {

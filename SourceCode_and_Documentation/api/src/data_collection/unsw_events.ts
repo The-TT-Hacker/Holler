@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import * as db from "../common/database";
+import * as db from "../common/services/database";
 import { Event } from "../common/models/event";
 import { Society } from "../common/models/society";
 

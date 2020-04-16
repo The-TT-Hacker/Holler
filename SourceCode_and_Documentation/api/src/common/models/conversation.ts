@@ -1,4 +1,4 @@
-import { ChatUserId } from './ChatUser';
+import { ChatUserId } from './chatUser';
 
 export type ConversationId = string;
 type UnixMilliseconds = number;

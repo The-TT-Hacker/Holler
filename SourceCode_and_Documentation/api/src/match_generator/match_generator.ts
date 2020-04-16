@@ -1,5 +1,5 @@
-import * as db from "../common/database";
-import * as chat from "../chat/chatService";
+import * as db from "../common/services/database";
+import * as chat from "../common/services/chat";
 import { v4 as uuidv4 } from 'uuid';
 import { EventInterest } from "../common/models/event";
 import { User } from "../common/models/user";

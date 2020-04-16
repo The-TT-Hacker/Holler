@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from './models/ChatUser';
-import { CreateConversationRequest, Conversation } from './models/Conversation';
+import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from '../models/chatUser';
+import { CreateConversationRequest, Conversation } from '../models/conversation';
 
 // - For Messages API (send/get/etc) Front end should call TalkJS directly.
 // - All methods throw AxiosError and return JSON data directly if successful.

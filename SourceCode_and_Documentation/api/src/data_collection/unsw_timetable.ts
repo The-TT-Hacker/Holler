@@ -2,7 +2,7 @@ import cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import fs from 'fs';
 
-import { setFaculties } from '../common/database';
+import { setFaculties } from '../common/services/database';
 import { Faculty } from "../common/models/faculty";
 import { Class } from "../common/models/class";
 

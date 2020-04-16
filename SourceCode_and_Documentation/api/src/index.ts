@@ -2,13 +2,14 @@ import express from "express";
 import bodyParser from 'body-parser';
 var cors = require('cors');
 
-import * as db from "./common/database";
+import * as db from "./common/services/database";
 import { User } from "./common/models/user";
 
 const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
   "/register",
-  "/events"
+  "/events",
+  "/badges"
 ];
 const UNIVERSITIES: string[] = [
   "unsw"
