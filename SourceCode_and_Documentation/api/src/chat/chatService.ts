@@ -135,8 +135,3 @@ export const sendMessage = (newMessage: SendMessageRequest) => {
     },
   ]);
 };
-
-(async () => {
-  const messages = await getAllMessages('convId');
-  console.log(messages);
-})();
