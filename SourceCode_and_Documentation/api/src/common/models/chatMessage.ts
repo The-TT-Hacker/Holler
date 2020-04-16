@@ -1,6 +1,6 @@
 import { ChatUserId } from './ChatUser';
-import { ConversationId } from './Conversation';
-import { UnixMilliseconds } from './common';
+import { ConversationId } from './chatConversation';
+import { UnixMilliseconds } from './chatCommon';
 
 export type MessageId = string;
 

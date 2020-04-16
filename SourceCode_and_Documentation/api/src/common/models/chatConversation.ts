@@ -1,5 +1,5 @@
 import { ChatUserId } from './chatUser';
-import { UnixMilliseconds, CustomFields } from './chat';
+import { UnixMilliseconds, CustomFields } from './chatCommon';
 
 export type ConversationId = string;
 
