@@ -4,6 +4,11 @@
   width: 100vw;
   height: 100vh;
 }
+.coloured-strip{
+  width: 100%; 
+  height: 7px;
+  background-image: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);;
+}
 
 .form {
   width: 100%;
@@ -11,25 +16,26 @@
   margin-bottom: 4vh;
 }
 
-.circle {
-  fill: none;
-  border-width: 10px;
-  border: solid;
-  border-radius: 48px;
+.avatar {
+  background-repeat: no-repeat;
+  background-size: 96px 96px;
   width: 96px;
   height: 96px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: black;
+  border-radius: 48px;
+  border-style: solid;
+  border-color: #ED2B5F;
 }
 
 .d-nav {
-  margin-left: 2vw;
   border: solid;
   border-color: #1E2125;
   border-width: 0 0 4px 0;
+}
+
+@media screen and (max-width: 1200px) {
+  .d-nav {
+    border: none;
+  }
 }
 
 .d-nav-link {
@@ -66,8 +72,6 @@
   padding: 0;
 }
 
-
-
 @media (min-width: 0px) and (max-width: 1199px) {
 
   .dashboard-nav {
@@ -86,7 +90,6 @@
 }
 
 @media (max-width: 600px){
-
   .dot {
     height: 0.7rem;
     width: 0.7rem;

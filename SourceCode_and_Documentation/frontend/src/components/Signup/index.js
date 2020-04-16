@@ -18,17 +18,32 @@ const SignupPage = (props) => {
   updateScrollability(props.scroll)
 
   return (
-    <div className="container-fluid h-100">
-      <div className="row mx-auto align-items-center h-100" style={{ maxWidth: "550px" }}>
-        <div className="col d-flex flex-column align-items-center">
-          <Nav.Link href="/"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Nav.Link>
-          <h6 className="txt-subtitle txt-align-center"> Create a New Account </h6>
-          <p className="txt-subtext txt-align-center"> Join and meet more people in your University! </p>
-          <SignupForm />
-          <div className="d-flex">
+    <div className="container d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', maxWidth: '600px'}}>
+      <div className="container-fluid">
+
+        {/* Application Title & Login Page Title */}
+        <div className="row">
+          <div className="col">
+            <Nav.Link href="/"> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
+            <h6 className="txt-subtitle txt-align-center"> Create a New Account </h6>
+            <p className="txt-subtext txt-align-center"> Join and meet more people in your University! </p>
+          </div>
+        </div>
+
+        {/* Signup Form */}
+        <div className="row">
+          <div className="col">
+            <SignupForm />
+          </div> 
+        </div>
+
+        {/* Create account, reset password redirects */}
+        <div className="row">
+          <div className="col d-flex justify-content-center">
             <Link to="/login"> <p className="txt-gradient txt-sm txt-bold"> Already have an account? Login. </p> </Link>
           </div>
         </div>
+
       </div>
     </div>
   )

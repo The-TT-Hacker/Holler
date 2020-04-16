@@ -11,9 +11,9 @@ const Going = (props) => {
   updateScrollability(props.scroll)
 
   return (
-    <div className="container-fluid d-flex flex-column align-items-center" style={{ height: "86.5%", overflowY: 'scroll' }}>
-      <div className="main-content">
-        <PageTitle title="Upcoming" />
+    <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%'}}>
+      <div className="main-content" style={{ overflowX: 'hidden' }}>
+        <PageTitle title="Going" />
 
         <div className="row">
           <div className="col">
@@ -36,6 +36,7 @@ const Going = (props) => {
                 description="Description"
                 rsvp="72"
                 location="Unknown" />
+                
 
             </Accordion>
           </div>
