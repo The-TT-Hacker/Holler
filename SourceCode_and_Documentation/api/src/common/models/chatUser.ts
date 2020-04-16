@@ -1,23 +1,18 @@
+import { UnixMilliseconds, CustomFields } from './chatCommon';
+
 export type ChatUserId = string;
-type UnixMilliseconds = number;
 
 export interface ChatUser {
   id: ChatUserId;
-  name: string;
-  photoUrl?: string;
-  headerPhotoUrl?: string;
-  custom?: { [name: string]: string };
-  availabilityText?: string;
-  locale?: string;
+  custom?: CustomFields;
   createdAt: UnixMilliseconds;
 }
 
 export interface CreateChatUserRequest {
   id: ChatUserId;
+  custom?: CustomFields;
 }
 
 export interface UpdateUserRequest {
-  name?: string;
-  photoUrl?: string;
-  custom?: { [name: string]: string };
+  custom?: CustomFields;
 }
