@@ -119,7 +119,7 @@ app.get('/user/badges', async (req, res) => {
  */
 
 // Gets all of the faculties and classes for a given university
-app.get('/timetable/faculties:university', async (req, res) => {
+app.get('/timetable/faculties/:university', async (req, res) => {
   if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
   const classes = await db.getFaculties(req.params.university);
   res.send(classes);
