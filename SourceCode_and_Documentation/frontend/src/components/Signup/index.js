@@ -4,7 +4,6 @@ import axios from 'axios'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import { withFirebase } from "../Firebase"
-import * as ROUTES from '../../constants/routes'
 
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
@@ -33,7 +32,7 @@ const SignupPage = (props) => {
         {/* Signup Form */}
         <div className="row">
           <div className="col">
-            <SignupForm />
+            <SignupForm props={props} history={props.history} />
           </div> 
         </div>
 
@@ -60,27 +59,27 @@ const INITIAL_STATE = {
 class SignupFormBase extends Component {
   constructor(props) {
     super(props)
-
     this.state = { ...INITIAL_STATE }
   }
 
   onSubmit = event => {
     const { email, password } = this.state
-
+    const { props } = this.props
+    console.log(props)
+    
     axios({
+      url: URL + '/register',
       method: "post",
-      url: URL + '/auth/register',
       data: {
         email: email,
         password: password
       }
     }).then(function (response) {
       console.log(response)
-      this.props.history.push(ROUTES.VERIFY_EMAIL)
     }).catch(function (error) {
       console.log(error)
     })
-
+    
     event.preventDefault();
   }
 

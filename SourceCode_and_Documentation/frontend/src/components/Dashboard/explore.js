@@ -36,6 +36,8 @@ const Explore = (props) => {
     <div className="container-fluid d-flex flex-column align-items-center">
       <div className="main-content">
 
+        <div style={{marginBottom: '5vh'}}></div>
+
         {/* Page Title & Search Button*/}
         <div className="row">
           <div className="col-12 d-flex justify-content-between">
