@@ -49,6 +49,8 @@ class GroupChat extends Component {
       <div className="container-fluid d-flex justify-content-center center-on-desktop" style={{ width: '100%' }}>
         <div className="main-content">
 
+          <div style={{marginBottom: '5vh'}}></div>
+
           {/* Back button and Options Link */}
           <div className="row spacer-down">
             <div className="col-10"> <a href="/dashboard/matches"> <img className="image-as-button" alt="back" src={ArrowLeft} /> </a> </div>

@@ -199,12 +199,32 @@
   } 
 }
 
+.coloured-gradient-banner {
+  position: aboslute;
+  width: 100%;
+  margin-top: -1rem;
+  margin-bottom: 15vh;
+  height: 20vh;
+  background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 @media screen and (max-width: 600px) {
   .map-container {
     height: 150px !important;
     width: 100%;
     padding: 0;
     margin: 0;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .coloured-gradient-banner {
+    height: 25vh;
   }
 }
 

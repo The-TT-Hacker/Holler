@@ -7,7 +7,7 @@ import { Dropdown, ButtonGroup } from 'react-bootstrap'
 const SignOutButton = ({ firebase }) => {
   return (
     <Dropdown as={ButtonGroup} alignRight>
-      <Dropdown.Toggle className="btn-light-hover right-nav">  <Avatar /> </Dropdown.Toggle>
+      <Dropdown.Toggle className="btn-light-hover right-nav"> <Avatar size="small"/> </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item eventKey="1" href="/dashboard/profile"> Your Profile </Dropdown.Item>
         <Dropdown.Divider />

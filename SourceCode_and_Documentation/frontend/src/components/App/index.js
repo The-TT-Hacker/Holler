@@ -20,7 +20,7 @@ import ResetPassword from '../ResetPassword'
 import VerifyEmail from '../VerifyEmail'
 
 import { Step1, Step2, Step3 } from '../ProfileSetup'
-import { Explore, Going, Matches, Profile, GroupChat } from '../Dashboard'
+import { Explore, Going, Matches, Profile, GroupChat, Achievements } from '../Dashboard'
 import { withAuthentication } from '../Session'
 
 const App = () => {
@@ -38,6 +38,7 @@ const App = () => {
 
       <Route path={ROUTES.DASHBOARD} component={Dashboard} />
       <Route path={ROUTES.PROFILE} component={() => <Profile scroll={true} />} />
+      <Route path={ROUTES.ACHIEVEMENTS} component={Achievements} />
       <Route path={ROUTES.EXPLORE} component={() => <Explore scroll={true} />} />
       <Route path={ROUTES.GOING} component={() => <Going scroll={true} />} />
       <Route path={ROUTES.MATCHES} component={() => <Matches scroll={true} />} />

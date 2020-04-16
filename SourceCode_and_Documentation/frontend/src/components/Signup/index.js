@@ -4,7 +4,6 @@ import axios from 'axios'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import { withFirebase } from "../Firebase"
-import * as ROUTES from '../../constants/routes'
 
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'

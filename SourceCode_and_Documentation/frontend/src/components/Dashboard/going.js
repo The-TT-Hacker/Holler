@@ -13,6 +13,9 @@ const Going = (props) => {
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%'}}>
       <div className="main-content" style={{ overflowX: 'hidden' }}>
+        
+        <div style={{marginBottom: '5vh'}}></div>
+
         <PageTitle title="Going" />
 
         <div className="row">

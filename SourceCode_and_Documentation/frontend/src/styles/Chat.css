@@ -137,9 +137,27 @@
 	background-color: #555;
 }
 
+.responsive-card {
+  width: 45vw !important;
+  margin-bottom: 1vh !important;
+}
+
+.locked {
+  border-radius: inherit;
+  background: rgba(0,0,0,.6);
+  border-radius: 0.25em;
+}
+
 @media screen and (min-width: 1200px) {
   .center-on-desktop {
     height: 80%;
     align-items: center;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .responsive-card {
+    width: 90vw !important;
+    margin-bottom: 1vh !important;
   }
 }
