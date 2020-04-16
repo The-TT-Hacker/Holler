@@ -16,26 +16,30 @@ const onDateBlur = (e) => { if (e.currentTarget.value === "") e.currentTarget.ty
 const Step1 = (props) => {
   
   // global error variable
-  const token = localStorage.getItem('token')
-  const [hasError, setError] = useState(false)
+  const [error, setError] = useState("")
+  const g_token = localStorage.getItem('token') // global token
+  console.log(error)
   
   // information received from requests
   const [faculties, setFaculties] = useState([]) 
   
   // values we will post
   const [name, setName] = useState("")
-  const [dob, setDOB] = useState("")
+  const [dob, setDOB] = useState(new Date())
   const [majors, setMajors] = useState([])
-
+  
   // get information from backend
   useEffect(() => {
     
     // Flag to use for cleanup
     const source = axios.CancelToken.source()  
-    
+
+    // auth token - in useEffect to supress depdendency warnings
+    const token = localStorage.getItem('token')
+
     // Request Function
     const fetchData = async () => {
-  
+      
       // Make a request to get all the faculties, faculty codes, classes and class codes
       await axios({
         url: URL + "/timetable/faculties/unsw",
@@ -63,9 +67,9 @@ const Step1 = (props) => {
       .catch(err => {
 
         if (axios.isCancel(err)) {
-          console.log('Request cancelled', err.message)
+          setError(err)
         } else {
-          console.log(err)
+          setError(err)
         }
 
       })
@@ -83,22 +87,24 @@ const Step1 = (props) => {
 
   // send user data to the backend
   const postData = async () => {
+    var dobAsObject = new Date (dob)
+    console.log(dobAsObject)
 
     await axios({
       url: URL + '/user',
       method: "PUT",
       headers: {
-        'Authorization': `${token}`
+        'Authorization': `${g_token}`
       },
       data: {
         firstName: name.split(" ")[0], // first element
         lastName: name.split(" ")[name.split(" ").length -1], // last element
-        dob: dob,
+        dob: dobAsObject,
         faculties: majors
       }
     })
     .then(res => console.log(res))
-    .catch(err => console.log(err))
+    .catch(err => setError(err))
 
   } 
 
