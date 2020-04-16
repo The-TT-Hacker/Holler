@@ -1,13 +1,14 @@
 import { Faculty } from "./models/faculty";
-import { Class } from "./models/class";
 import { Event, EventInterest } from "./models/event";
 import { Match } from "./models/match";
 import {
   User,
   UserRegistration,
   UserLogin,
-  UserPasswordResetRequest
+  UserPasswordResetRequest,
+  UpdateUser
 } from "./models/user";
+
 
 import { db, admin, client } from "./dbConnect";
 import * as chat from "../chat/chatService";
@@ -33,7 +34,7 @@ export async function getUID(token: string, req: any): Promise<string> {
     console.log(token)
     const decodedToken = await admin.verifyIdToken(token);
     const user = await admin.getUser(decodedToken.uid);
-    if (!user.emailVerified) return "User had not been verified";
+    if (!user.emailVerified) return "User has not been verified";
     req.uid = decodedToken.uid;
     return null;
   } catch (e) {
@@ -42,59 +43,42 @@ export async function getUID(token: string, req: any): Promise<string> {
   }
 }
 
-export async function loginUser(login: UserLogin): Promise<string> {
-  try {
-    const cred = await client.signInWithEmailAndPassword(login.email, login.password);
-    const token = await cred.user.getIdToken();
-    return token;
-  } catch (e) {
-    return null;
-  };
-}
-
-export async function signOutUser(token: string): Promise<boolean> {
-  try {
-    await client.signInWithCustomToken(token);
-    await client.signOut();
-    return true;
-  } catch (e) {
-    console.log(e);
-    return false;
-  };
-}
-
 export async function registerUser(registration: UserRegistration): Promise<string> {
   try {
     if (!registration.email) return "Email is required";
     if (!registration.password) return "Password is required";
 
-    const userRecord = await admin.createUser({
+    const userAuthData = {
       email: registration.email,
       emailVerified: false,
       password: registration.password,
       disabled: false
-    });
-  
-    db.collection("users").doc(userRecord.uid).set({
+    }
+
+    const userData: User = {
+      signupCompleted: false,
       firstName: null,
       lastName: null,
       email: registration.email,
-      faculties: null,
-      classes: null,
-      signedUp: false,
-      firstLogin: true
+      dob: null,
+      faculties: [],
+      classes: [],
+      interests: [],
+      badges: []
+    }
+
+    const userRecord = await admin.createUser(userAuthData);
+    const writeResult = await db.collection("users").doc(userRecord.uid).set(userData);
+    const result = await chat.createChatUser({
+      id: userRecord.uid,
+      name: ""
+      //photoUrl?: string;
+      //custom?: { [name: string]: string };
     });
 
     const cred = await client.signInWithEmailAndPassword(registration.email, registration.password);
     cred.user.sendEmailVerification();
     //const token = await cred.user.getIdToken();
-
-    const result = await chat.createChatUser({
-        id: userRecord.uid,
-        name: "",
-        //photoUrl?: string;
-        //custom?: { [name: string]: string };
-    });
   
     return null;
   } catch (e) {
@@ -104,13 +88,11 @@ export async function registerUser(registration: UserRegistration): Promise<stri
   }
 }
 
-export async function resetPassword(token: string, req: UserPasswordResetRequest): Promise<boolean> {
+export async function verifyEmail(oobCode: string): Promise<void> {
   try {
-    await client.signInWithCustomToken(token);
-    await client.sendPasswordResetEmail(req.email);
-    return true;
+    await client.applyActionCode(oobCode);
   } catch (e) {
-    return false;
+    throw "Invalid oobCode";
   }
 }
 
@@ -120,14 +102,19 @@ export async function resetPassword(token: string, req: UserPasswordResetRequest
 
 export async function updateUser(uid: string, user: User): Promise<boolean> {
   try {
-    await db.collection("users").doc(uid).update({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      faculties: user.faculties,
-      classes: user.classes,
-      signedUp: true
-    });
+
+    const userUpdateValues: UpdateUser = {};
+
+    userUpdateValues.signupCompleted = true;
+    if (user.firstName) userUpdateValues.firstName = user.firstName;
+    if (user.lastName) userUpdateValues.lastName = user.lastName;
+    if (user.dob) userUpdateValues.dob = user.dob;
+    if (user.faculties) userUpdateValues.faculties = user.faculties;
+    if (user.classes) userUpdateValues.classes = user.classes;
+    if (user.interests) userUpdateValues.interests = user.interests;
+    if (user.badges) userUpdateValues.badges = user.badges;
+
+    await db.collection("users").doc(uid).update(userUpdateValues);
 
     return true;
   } catch (e) {
@@ -200,6 +187,16 @@ export async function setFaculties(university: string, faculties: Faculty[]): Pr
     console.log(e);
     return false;
   }
+}
+
+/*
+  Interests
+*/
+
+export async function getInterests(): Promise<string[]> {
+  const snapshot = await db.collection('interests').get();
+  const interests = snapshot.docs.map(doc => doc.id);
+  return interests;
 }
 
 /*
@@ -419,6 +416,21 @@ export async function getMatches(uid: string) {
     const snapshot = await db.collection("matches").where('uids', 'array-contains', uid).get();
     const matches: Match[] = <Match[]> snapshot.docs.map(doc => doc.data());
     return matches;
+  } catch (e) {
+    console.log(e);
+    throw "Error"
+  }
+}
+
+/**
+ * Badges
+ */
+
+export async function getBadges() {
+  try {
+    const snapshot = await db.collection("badges").get();
+    const badges = snapshot.docs.map(doc => doc.id);
+    return badges;
   } catch (e) {
     console.log(e);
     throw "Error"

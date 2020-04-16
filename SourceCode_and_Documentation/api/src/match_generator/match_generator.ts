@@ -46,6 +46,9 @@ db.getAllEventInterests().then(async (eventInterests) => {
     await Promise.all(promises);
 
     for (const eventId in sortedEventInterests) {
+
+        const event = await db.getEvent(eventId);
+
         const compiledEventInterests = sortedEventInterests[eventId];
         console.log(sortedEventInterests[eventId]);
 
@@ -128,7 +131,7 @@ db.getAllEventInterests().then(async (eventInterests) => {
                 // Create chat
                 chat.createConverstaion({
                     id: uuidv4(),
-                    subject: "",
+                    subject: event.title,
                     participants: match.uids,
                     //welcomeMessages?: string[];
                     //custom?: { [name: string]: string };
@@ -138,5 +141,6 @@ db.getAllEventInterests().then(async (eventInterests) => {
 
         console.log(`Matches for eventId: ${eventId}`);
         console.log(matches);
+
     }
 });

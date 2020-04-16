@@ -41,51 +41,72 @@ app.get('/', (req, res) => res.send({
   "version": "1.0.0"
 }));
 
-/*
-  Authentication end points
+/**
+ * New user end points
+ */
 
-  POST - Register user
-  DELETE - Deletes user
-*/
-
-app.post('/auth/register', async (req, res) => {
+// Register a new user
+app.post('/register', async (req, res) => {
   const error = await db.registerUser(req.body);
-  console.log(error);
   if (error) res.status(400).send(error);
   else res.sendStatus(200);
 });
 
-app.delete('/auth/delete', async (req, res) => {
-  const result: boolean = await db.deleteUser(req.uid);
-  if (result) res.sendStatus(200);
-  else res.sendStatus(400);
+// Confirm email address
+app.post('/email_handler', async (req, res) => {
+  if (!req.params.mode) res.status(400).send("No mode given");
+  if (!req.params.oobCode) res.status(400).send("No oobCode given");
+
+  try {
+    if (req.params.mode === "resetPassword") {
+      //error = await db.resetPassword(req.params.oobCode);
+    } else if (req.params.mode === "recoverEmail") {
+      //error = await db.recoverEmail(req.params.oobCode);
+    } else if (req.params.mode === "verifyEmail") {
+      await db.verifyEmail(req.params.oobCode);
+    } else {
+      throw "Unknown mode given";
+    }
+
+    res.sendStatus(200);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
-/*
-  User end points
+/**
+ * User end points
+ */
 
-  GET - User
-  PUT - User
-*/
-
+// Gets all the current user's information
 app.get('/user', async (req, res) => {
   const user: User = await db.getUser(req.uid);
   if (user) res.send(user);
   else res.sendStatus(400);
 });
 
+// Updates the current users infomation
 app.put('/user', async (req, res) => {
   const result: boolean = await db.updateUser(req.uid, req.body);
   if (result) res.sendStatus(203);
   else res.sendStatus(400);
 });
 
+// Deletes the current user
+app.delete('/user', async (req, res) => {
+  const result: boolean = await db.deleteUser(req.uid);
+  if (result) res.sendStatus(200);
+  else res.sendStatus(400);
+});
+
+// Gets the list of events the current user is interested in
 app.get('/user/events', async (req, res) => {
   const user: User = await db.getUser(req.uid);
   if (user) res.send(user);
   else res.sendStatus(400);
 });
 
+// Gets all of the current users badges
 app.get('/user/badges', async (req, res) => {
   /*const user: User = await db.getUser(req.uid);
   if (user) res.send(user);
@@ -93,39 +114,41 @@ app.get('/user/badges', async (req, res) => {
   res.send("not implemented yet");
 });
 
-/*
-  Timetable endpoints
+/**
+ * User metadata endpoints
+ */
 
-  GET - All faculties
-  GET - All classes
-*/
-
+// Gets all of the faculties and classes for a given university
 app.get('/timetable/faculties:university', async (req, res) => {
   if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
   const classes = await db.getFaculties(req.params.university);
   res.send(classes);
 });
 
-/*
-  Events end points
+// Gets all of the faculties and classes for a given university
+app.get('/interests', async (req, res) => {
+  const interests = await db.getInterests();
+  res.send(interests);
+});
 
-  GET - Latest events
-  GET - Event by id
-  POST - Going to event
-  DELETE - Undo going to event
-*/
+/**
+ * Events end points
+ */
 
+// Gets all current events
 app.get('/events', async (req, res) => {
   const events = await db.getEvents(req.query.searchText, req.query.tags, req.query.startDate, req.query.endDate);
   res.send(events);
 });
 
+// Gets the details about the specified event
 app.get('/event/:id', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
   const events = await db.getEvent(req.params.id);
   res.send(events);
 });
 
+// Sets the current user as interested in the specified event
 app.post('/event/:id/add_interest', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
   const error = await db.addEventInterest(req.uid, req.params.id);
@@ -133,6 +156,7 @@ app.post('/event/:id/add_interest', async (req, res) => {
   else res.send();
 });
 
+// Removes the current users interest in a specified event
 app.delete('/event/:id/remove_interest', async (req, res) => {
   if (!req.params.id) res.status(400).send("No event id provided");
   const error = await db.removeEventInterest(req.uid, req.params.id);
@@ -140,25 +164,17 @@ app.delete('/event/:id/remove_interest', async (req, res) => {
   else res.send();
 });
 
-/*
-  Group endpoints
+/**
+ * Badges
+ */
 
-  GET - Groups
-  GET - New groups
-*/
-
-app.post('/match', async (req, res) => {
-  //const classes = await db.getClasses();
-  res.send();
+// Gets a list of all possible badges
+app.get('/badges', async (req, res) => {
+  const badges = await db.getBadges();
+  res.send(badges);
 });
 
-/*
-  Chat endpoints
-
-  GET - Messages
-  GET - New message - could be websocket?
-*/
-
+// Run the API
 app.listen(PORT, () => {
   console.log(`server started at http://localhost:${PORT}`);
 });
