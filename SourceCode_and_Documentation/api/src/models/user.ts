@@ -6,6 +6,7 @@
 export interface User {
   signupCompleted: boolean;
   chatUserCreated: boolean;
+  oobCode: string;
   firstName: string;
   lastName: string;
   dob: Date;

@@ -12,12 +12,16 @@
             "*": [
                 "node_modules/*"
             ]
-        }
+        },
+        "typeRoots": [
+          "./types",
+          "./node_modules/@types"
+        ]
     },
     "include": [
         "src/**/*"
     ],
     "files": [
-        "src/request.d.ts"
+        "src/types/request.d.ts"
     ]
 }

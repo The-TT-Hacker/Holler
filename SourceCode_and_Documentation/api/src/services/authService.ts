@@ -1,6 +1,10 @@
+// Import types
+import { HollerRequest } from "../types/request";
 
 // Import services
 import { db, admin, client } from "./firebaseService";
+import * as sendgridService from "./sendgridService";
+import * as userService from "./userService";
 
 // Import models
 import {
@@ -9,21 +13,44 @@ import {
 } from "../models/user";
 
 /**
+ * Checks if user's email has been verified
+ * Adds the uid and user objects to req
+ * @param req 
+ * @param token 
+ */
+export async function verifyUser(req: any, token: string): Promise<void> {
+  try {
+    const uid = await getUID(token);
+
+    const authUser = await admin.getUser(uid);
+
+    if (!authUser.emailVerified) throw "Email has not been verified";
+
+    const user = await userService.getUser(uid);
+
+    if (!user.signupCompleted) throw "Signup hasn't been completed";
+
+    req.uid = uid;
+    req.user = user;
+
+  } catch (e) {
+    throw e;
+  }
+}
+
+/**
  * 
  * @param token 
  * @param req 
  */
-export async function getUID(token: string, req: any): Promise<string> {
+export async function getUID(token: string): Promise<string> {
   try {
-    console.log(token)
     const decodedToken = await admin.verifyIdToken(token);
-    const user = await admin.getUser(decodedToken.uid);
-    if (!user.emailVerified) return "User has not been verified";
-    req.uid = decodedToken.uid;
-    return null;
+    
+    return decodedToken.uid;
   } catch (e) {
-    if (e.errorInfo) return e.errorInfo.message;
-    else return "Error";
+    if (e.errorInfo) throw e.errorInfo.message;
+    else throw e;
   }
 }
 
@@ -43,9 +70,14 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
       disabled: false
     }
 
+    const userRecord = await admin.createUser(userAuthData);
+
+    const oobCode = await sendgridService.sendEmailVerfification(userRecord.uid, registration.email);
+
     const userData: User = {
       signupCompleted: false,
       chatUserCreated: false,
+      oobCode: oobCode,
       firstName: null,
       lastName: null,
       dob: null,
@@ -56,11 +88,10 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
       badges: []
     }
 
-    const userRecord = await admin.createUser(userAuthData);
     const writeResult = await db.collection("users").doc(userRecord.uid).set(userData);
 
-    const cred = await client.signInWithEmailAndPassword(registration.email, registration.password);
-    cred.user.sendEmailVerification();
+    //const cred = await client.signInWithEmailAndPassword(registration.email, registration.password);
+    //cred.user.sendEmailVerification();
   
     return null;
   } catch (e) {
@@ -74,10 +105,26 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
  * 
  * @param oobCode 
  */
-export async function verifyEmail(oobCode: string): Promise<void> {
+export async function verifyEmail(uid: string, oobCode: string): Promise<void> {
   try {
-    await client.applyActionCode(oobCode);
+    const doc = await db.collection("users").doc(uid).get();
+    const user = <User> doc.data();
+
+    // Check if code is valid
+    if (user.oobCode === oobCode) {
+      
+      // Reset oobCode
+      await db.collection("users").doc(uid).update({
+        oobCode: null
+      });
+
+      // Verify email
+      await admin.updateUser(uid, {
+        emailVerified: true
+      });
+
+    }
   } catch (e) {
-    throw "Invalid oobCode";
+    throw "Invalid uid";
   }
 }

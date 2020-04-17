@@ -29,6 +29,7 @@ interface InterestedUser {
 
 const HOURS_BETWEEN_MATCHES = 1
 
+// Run match generator on a given schedule defined by HOURS_BETWEEN_MATCHES
 setInterval(async () => {
 
   // Get all event interests
@@ -58,23 +59,24 @@ async function compileAndSortEventInterests(eventInterests: EventInterest[]): Pr
   var sortedEventInterests: SortedEventInterests = {};
   var promises: Promise<void>[] = [];
 
+  // Get user data from uid for each event interest
+  // and compile list of interested users for each event
   eventInterests.forEach((eventInterest: EventInterest) => {
 
+    // Only add interested user if successful in getting user data
     const promise: Promise<void> = userService.getUser(eventInterest.uid)
       .then((user: User) => {
         
+        // Build object with both the uid and user object
         const interestedUser: InterestedUser = {
           uid: eventInterest.uid,
           user: user
         };
 
-        if (sortedEventInterests[eventInterest.eventId]) {
-          sortedEventInterests[eventInterest.eventId].push(interestedUser);
-        } else {
-          sortedEventInterests[eventInterest.eventId] = [
-            interestedUser
-          ];
-        }
+        // Add interested user to list of interested users for the psrticular event
+        // Initialise list if it is the first user for the event
+        if (sortedEventInterests[eventInterest.eventId]) sortedEventInterests[eventInterest.eventId].push(interestedUser);
+        else sortedEventInterests[eventInterest.eventId] = [ interestedUser ];
 
       })
       .catch((error) => console.log(error));
@@ -83,6 +85,7 @@ async function compileAndSortEventInterests(eventInterests: EventInterest[]): Pr
 
   });
 
+  // Return promise which resolves when sortedEventInterests is compiled
   return Promise.all(promises).then(() => sortedEventInterests);
 
 }
@@ -144,7 +147,7 @@ function getWeightedCombinations(eventId: string, event: Event, interestedUsers:
 }
 
 /**
- * 
+ * Quantifies how much in common 2 users have in common
  * @param firstUser 
  * @param secondUser 
  */
@@ -167,7 +170,8 @@ function computeMatchPoints(firstUser: User, secondUser: User): number {
 }
 
 /**
- * 
+ * Loops over the potential matches from most match points to least
+ * creates the match if the users have not been matches already
  * @param event 
  * @param matchCombinations 
  */
@@ -180,7 +184,8 @@ function makeMatches(event: Event, matchCombinations: MatchCombinations) {
 
   keys.forEach((matchPoints: string) => {
     matchCombinations[matchPoints].forEach(match => {
-      var userAlreadyMatched = false;
+
+      var userAlreadyMatched: boolean;
       
       // Check if any users have been matched before
       match.users.forEach(user => {
@@ -189,13 +194,10 @@ function makeMatches(event: Event, matchCombinations: MatchCombinations) {
 
       // If any of the users have been matched before then skip this potential match
       // Otherwise make the match
-      if (userAlreadyMatched) {
-        return;
-      } else {
-        matchedUsers.concat(match.users.map(user => user.uid));
-      }
+      if (userAlreadyMatched) return;
+      else matchedUsers.concat(match.users.map(user => user.uid));
 
-      matches.push(match); // debugging
+      matches.push(match); // see matches for debugging
 
       match.chatId = uuidv4();
 
@@ -208,6 +210,7 @@ function makeMatches(event: Event, matchCombinations: MatchCombinations) {
         subject: event.title,
         participants: match.users.map(user => user.uid),
       });
+      
     });
   });
 
