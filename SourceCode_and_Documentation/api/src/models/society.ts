@@ -1,4 +1,4 @@
-export class Society {
+export interface Society {
   id: string;
   url: string;
   uni: string;

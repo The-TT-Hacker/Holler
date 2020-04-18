@@ -1,10 +1,12 @@
 // Import services
 import { db, admin } from "./firebaseService";
 import * as chatService from "./chatService";
+import * as sendgridService from "./sendgridService";
 
 // Import models
 import { EventInterest } from "../models/event";
 import { User, UpdateUserRequest, UpdateUser } from "../models/user";
+import { Notification } from "../models/notification";
 
 // Import UUIDs
 import * as ids from "../UUIDs";
@@ -33,8 +35,6 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
       updateUserValues.lastName = updateUserRequest.lastName;
       currentUserData.lastName = updateUserValues.lastName;
     }
-
-    // TODO Update email
     
     // Update dob
     if (updateUserRequest.dob) {
@@ -103,6 +103,18 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
 
     await db.collection("users").doc(uid).update(updateUserValues);
 
+    // Update email - TODO what if sendgrid fails? we will return an error but everything else updated
+    if (updateUserRequest.email) {
+
+      admin.updateUser(uid, {
+        email: updateUserRequest.email,
+        emailVerified: false
+      });
+
+      await sendgridService.sendEmailVerfification(uid, updateUserRequest.email);
+
+    }
+
     return true;
   } catch (e) {
     return false;
@@ -149,5 +161,82 @@ export async function getUserEventInterests(uid: string): Promise<EventInterest[
     return eventInterests;
   } catch (e) {
     return null;
+  }
+}
+
+/**
+ * Adds a new notification for a user
+ * @param uid 
+ * @param message 
+ */
+export async function setNotification(uid: string, message: string): Promise<void> {
+  try {
+
+    const notifcation: Notification = {
+      uid: uid,
+      time: new Date(),
+      message: message,
+      seen: false
+    }
+    
+    await db.collection("notifications").add(notifcation);
+  
+  } catch (e) {
+    if (e.errorInfo) throw e.errorInfo.message;
+    else throw "Error";
+  }
+}
+
+/**
+ * Gets all notifications for a user
+ * start and end define the pagination parameters
+ * @param uid 
+ * @param start 
+ * @param end 
+ */
+export async function getAllNotifications(uid: string, start: string="0", end: string="9"): Promise<Notification[]> {
+  try {
+
+    const pagStart = parseInt(start);
+    const pagEnd = parseInt(end);
+
+    if (pagStart === NaN) throw "start must be an integer";
+    if (pagEnd === NaN) throw "end must be an integer";
+    
+    const snapshot = await db.collection("notifications")
+      .where("uid", "==", uid)
+      .orderBy('time', 'desc')
+      .get();
+    
+      const notifcations: Notification[] = <Notification[]> snapshot.docs.map(doc => doc.data());
+
+    return notifcations.slice(pagStart, pagEnd);
+  
+  } catch (e) {
+    if (e.errorInfo) throw e.errorInfo.message;
+    else throw "Error";
+  }
+}
+
+/**
+ * Gets all unseen notifications
+ * @param uid 
+ */
+export async function getNewNotifications(uid: string): Promise<Notification[]> {
+  try {
+    
+    const snapshot = await db.collection("notifications")
+      .where("uid", "==", uid)
+      .where("seen", "==", false)
+      .orderBy('time', 'desc')
+      .get();
+
+    const notifcations: Notification[] = <Notification[]> snapshot.docs.map(doc => doc.data());
+
+    return notifcations;
+  
+  } catch (e) {
+    if (e.errorInfo) throw e.errorInfo.message;
+    else throw "Error";
   }
 }

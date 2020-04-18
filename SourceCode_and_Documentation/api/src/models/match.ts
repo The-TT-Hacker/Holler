@@ -1,4 +1,4 @@
-export class Match {
+export interface Match {
   chatId: string;
   users: MatchUserInfo[];
   events: MatchEventInfo[];

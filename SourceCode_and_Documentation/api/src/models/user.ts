@@ -28,7 +28,6 @@ export interface UpdateUser {
   chatUserCreated?: boolean;
   firstName?: string;
   lastName?: string;
-  email?: string;
   dob?: Date;
   image?: string;
   faculties?: string[];

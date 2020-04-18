@@ -6,6 +6,7 @@ var cors = require('cors');
 import { Response } from "express";
 import { HollerRequest } from "./types/request";
 
+
 // Import services
 import * as authService from "./services/authService";
 import * as dataService from "./services/dataService";
@@ -14,7 +15,9 @@ import * as userService from "./services/userService";
 import * as matchService from "./services/matchService";
 import * as chatService from "./services/chatService";
 
+// Import models
 import { User } from "./models/user";
+import { Notification } from "./models/notification";
 
 const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
@@ -87,17 +90,11 @@ app.post('/verify_email', async (req: HollerRequest, res: Response) => {
   if (!req.params.oobCode) res.status(400).send("No oobCode given");
 
   try {
-    if (req.params.mode === "resetPassword") {
-      //error = await db.resetPassword(req.params.oobCode);
-    } else if (req.params.mode === "recoverEmail") {
-      //error = await db.recoverEmail(req.params.oobCode);
-    } else if (req.params.mode === "verifyEmail") {
-      await authService.verifyEmail(req.params.uid, req.params.oobCode);
-    } else {
-      throw "Unknown mode given";
-    }
 
-    res.sendStatus(200);
+    await authService.verifyEmail(req.params.uid, req.params.oobCode);
+
+    res.redirect("http://localhost:3000/ps");
+
   } catch (e) {
     res.status(400).send(e);
   }
@@ -137,15 +134,29 @@ app.get('/user/events', async (req: HollerRequest, res: Response) => {
 
 // Gets all notifications
 app.get('/user/notifications', async (req: HollerRequest, res: Response) => {
-  res.send("not implemented yet");
+  try {
+    var notifications: Notification[];
+
+    // Pagination given
+    if (req.query.start && req.query.end) notifications = await userService.getAllNotifications(req.uid, req.query.start, req.query.end);
+    
+    // Returns first 10
+    else notifications = await userService.getAllNotifications(req.uid);
+
+    res.send(notifications);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
-// Gets all of the current users badges
-app.get('/user/badges', async (req: HollerRequest, res: Response) => {
-  /*const user: User = await db.getUser(req.uid);
-  if (user) res.send(user);
-  else res.sendStatus(400);*/
-  res.send("not implemented yet");
+// Gets all new notifications
+app.get('/user/new_notifications', async (req: HollerRequest, res: Response) => {
+  try {
+    const notifications = await userService.getNewNotifications(req.uid);
+    res.send(notifications);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 /**

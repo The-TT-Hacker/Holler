@@ -106,9 +106,17 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
  * @param oobCode 
  */
 export async function verifyEmail(uid: string, oobCode: string): Promise<void> {
+
+  var user: User;
+
   try {
     const doc = await db.collection("users").doc(uid).get();
-    const user = <User> doc.data();
+    user = <User> doc.data();
+  } catch (e) {
+    throw "Invalid uid";
+  }
+
+  try {
 
     // Check if code is valid
     if (user.oobCode === oobCode) {
@@ -123,8 +131,9 @@ export async function verifyEmail(uid: string, oobCode: string): Promise<void> {
         emailVerified: true
       });
 
-    }
+    } else throw "Invalid oobCode";
+
   } catch (e) {
-    throw "Invalid uid";
+    throw e;
   }
 }
