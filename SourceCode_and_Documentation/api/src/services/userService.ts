@@ -169,13 +169,14 @@ export async function getUserEventInterests(uid: string): Promise<EventInterest[
  * @param uid 
  * @param message 
  */
-export async function setNotification(uid: string, message: string): Promise<void> {
+export async function setNotification(uid: string, message: string, url: string): Promise<void> {
   try {
 
     const notifcation: Notification = {
       uid: uid,
       time: new Date(),
       message: message,
+      url: url,
       seen: false
     }
     

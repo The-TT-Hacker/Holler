@@ -32,19 +32,26 @@ const HOURS_BETWEEN_MATCHES = 1
 // Run match generator on a given schedule defined by HOURS_BETWEEN_MATCHES
 setInterval(async () => {
 
-  // Get all event interests
+  // Get list of all event interests
   const eventInterests = await eventService.getAllEventInterests();
 
+  // Sort event interests by their events
+  // and fetch user data from the uid in the event interests
   const sortedEventInterests: SortedEventInterests = await compileAndSortEventInterests(eventInterests);
 
+  // Loop over event interests for each event
   Object.entries(sortedEventInterests).forEach(async ([eventId, interestedUsers]) => {
 
+    // Get event from the eventId
     const event = await eventService.getEvent(eventId);
 
-    // 
+    // Get all possible combinations for matches and calculate a metric for how much in common the group has
+    // Sort the event interests by this metric
     const matchCombinations = getWeightedCombinations(eventId, event, interestedUsers);
 
-    makeMatches(event, matchCombinations);
+    // Make one match for each user
+    // Remove event interests for matched users
+    makeMatches(eventId, event, matchCombinations);
 
   });
 
@@ -110,36 +117,47 @@ function getWeightedCombinations(eventId: string, event: Event, interestedUsers:
 
       const secondUser: User = interestedUsers[i].user;
 
-      const matchPoints = computeMatchPoints(firstUser, secondUser);
+      for (var k = j + 1; j < interestedUsers.length; j++) {
 
-      // Build potential match
-      const potentialMatch: Match = {
-        users: [
-          { 
-            uid: interestedUsers[i].uid,
-            firstName: firstUser.firstName,
-            lastName: firstUser.lastName
-          },
-          { 
-            uid: interestedUsers[j].uid,
-            firstName: secondUser.firstName,
-            lastName: secondUser.lastName
-          }
-        ],
-        events: [
-          {
-            eventId: eventId,
-            title: event.title,
-            time_start: event.time_start,
-            location: event.location
-          }
-        ],
-        chatId: null
+        const thirdUser: User = interestedUsers[i].user;
+
+        const matchPoints = computeMatchPoints(firstUser, secondUser, thirdUser);
+
+        // Build potential match
+        const potentialMatch: Match = {
+          users: [
+            { 
+              uid: interestedUsers[i].uid,
+              firstName: firstUser.firstName,
+              lastName: firstUser.lastName
+            },
+            { 
+              uid: interestedUsers[j].uid,
+              firstName: secondUser.firstName,
+              lastName: secondUser.lastName
+            },
+            { 
+              uid: interestedUsers[k].uid,
+              firstName: thirdUser.firstName,
+              lastName: thirdUser.lastName
+            }
+          ],
+          events: [
+            {
+              eventId: eventId,
+              title: event.title,
+              time_start: event.time_start,
+              location: event.location
+            }
+          ],
+          chatId: null
+        }
+
+        // Add potential match to list with potential matches with an equal amount of match points
+        if (matchCombinations[matchPoints]) matchCombinations[matchPoints].push(potentialMatch);
+        else matchCombinations[matchPoints] = [ potentialMatch ];
+
       }
-
-      // Add potential match to list with potential matches with an equal amount of match points
-      if (matchCombinations[matchPoints]) matchCombinations[matchPoints].push(potentialMatch);
-      else matchCombinations[matchPoints] = [ potentialMatch ];
     }
   }
 
@@ -151,19 +169,32 @@ function getWeightedCombinations(eventId: string, event: Event, interestedUsers:
  * @param firstUser 
  * @param secondUser 
  */
-function computeMatchPoints(firstUser: User, secondUser: User): number {
+function computeMatchPoints(firstUser: User, secondUser: User, thirdUser: User): number {
 
   var matchPoints = 0;
 
+  var commonAttributes: { [attribute: string]: number } = {};
+
   // Check classes
-  firstUser.classes.forEach(className => {
-    if (secondUser.classes.includes(className)) matchPoints++;
-  });
+  firstUser.classes.forEach(className =>  commonAttributes[className] = (commonAttributes[className] || 0) + 1);
+  secondUser.classes.forEach(className => commonAttributes[className] = (commonAttributes[className] || 0) + 1);
+  thirdUser.classes.forEach(className =>  commonAttributes[className] = (commonAttributes[className] || 0) + 1);
 
   // Check interests
-  firstUser.interests.forEach((interest) => {
-    if (secondUser.interests.includes(interest)) matchPoints++;
-  });
+  firstUser.interests.forEach(interest =>  commonAttributes[interest] = (commonAttributes[interest] || 0) + 1);
+  secondUser.interests.forEach(interest => commonAttributes[interest] = (commonAttributes[interest] || 0) + 1);
+  thirdUser.interests.forEach(interest =>  commonAttributes[interest] = (commonAttributes[interest] || 0) + 1);
+
+  // Check faculties
+  firstUser.faculties.forEach(faculty =>  commonAttributes[faculty] = (commonAttributes[faculty] || 0) + 1);
+  secondUser.faculties.forEach(faculty => commonAttributes[faculty] = (commonAttributes[faculty] || 0) + 1);
+  thirdUser.faculties.forEach(faculty =>  commonAttributes[faculty] = (commonAttributes[faculty] || 0) + 1);
+
+  // Add square of how many in the group have the attribute in common
+  // This means the more group members have an attribute in common, the amount of matchpoints increases exponentially
+  Object.entries(commonAttributes).forEach(([attribute, numInCommon]) => matchPoints += numInCommon ** 2);
+
+  // TODO - Add match points for age
 
   return matchPoints;
 
@@ -175,8 +206,9 @@ function computeMatchPoints(firstUser: User, secondUser: User): number {
  * @param event 
  * @param matchCombinations 
  */
-function makeMatches(event: Event, matchCombinations: MatchCombinations) {
-  var matches: Match[] = []; // for testing
+function makeMatches(eventId: string, event: Event, matchCombinations: MatchCombinations) {
+
+  var matches: Match[] = []; // For debugging
   var matchedUsers: string[] = [];
 
   // Get list of valid match points
@@ -197,23 +229,32 @@ function makeMatches(event: Event, matchCombinations: MatchCombinations) {
       if (userAlreadyMatched) return;
       else matchedUsers.concat(match.users.map(user => user.uid));
 
-      matches.push(match); // see matches for debugging
+      matches.push(match); // Add matches for debugging
 
+      // Create unique ID for the chat
       match.chatId = uuidv4();
 
       // Add match to firestore
-      matchService.setMatch(match);
+      matchService.setMatch(match).catch(e => console.log(e));
 
       // Create chat
       chatService.createConverstaion({
         id: match.chatId,
         subject: event.title,
         participants: match.users.map(user => user.uid),
-      });
+      }).catch(e => console.log(e));
+
+      // Send notifications
+      match.users.forEach(user => userService.setNotification(user.uid, `You have been matched for ${event.title}`, `/conversation/${match.chatId}`).catch(e => console.log(e)));
       
     });
+    
   });
 
+  // Remove all event interests for matched users
+  matchedUsers.forEach((uid) => eventService.removeEventInterest(uid, eventId).catch(e => console.log(e)));
+
+  // Print matches for debugging
   console.log(`Matches for event: ${event.title}`);
   console.log(matches);
 }
