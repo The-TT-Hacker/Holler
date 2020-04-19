@@ -1,0 +1,104 @@
+/*! purgecss start ignore */
+@tailwind preflight;
+/*! purgecss end ignore */
+@tailwind components;
+
+/*********************************** 
+  Global Styles
+************************************/
+
+body {
+  @apply text-black leading-normal;
+}
+
+h1,
+h2,
+h3 {
+  @apply font-display leading-tight;
+}
+
+a {
+  @apply text-white no-underline;
+}
+
+a:hover {
+  @apply underline;
+}
+
+.icon {
+  @apply text-36;
+}
+
+/*********************************** 
+  Custom Utilities
+************************************/
+
+.transition {
+  transition: all 0.25s;
+}
+
+.bg-gradient {
+  background: linear-gradient(112.02deg, #fea31f 0%, #e3496b 100%);
+}
+
+.bg-top-curve-1 {
+  content: url('../assets/bg-section-top-mobile-1.svg');
+}
+
+.bg-bottom-curve-1 {
+  content: url('../assets/bg-section-bottom-mobile-1.svg');
+}
+
+.bg-top-curve-2 {
+  content: url('../assets/bg-section-top-mobile-2.svg');
+}
+
+.bg-bottom-curve-2 {
+  content: url('../assets/bg-section-bottom-mobile-2.svg');
+}
+
+.bg-footer-curve {
+  content: url('../assets//bg-footer-top-mobile.svg');
+}
+
+@media only screen and (min-width: 992px) {
+  .bg-top-curve-1 {
+    content: url('../assets/bg-section-top-desktop-1.svg');
+  }
+
+  .bg-bottom-curve-1 {
+    content: url('../assets/bg-section-bottom-desktop-1.svg');
+  }
+
+  .bg-top-curve-2 {
+    content: url('../assets/bg-section-top-desktop-2.svg');
+  }
+
+  .bg-bottom-curve-2 {
+    content: url('../assets/bg-section-bottom-desktop-2.svg');
+  }
+
+  .bg-footer-curve {
+    content: url('../assets//bg-footer-top-desktop.svg');
+  }
+}
+
+/*********************************** 
+  Custom Components
+************************************/
+
+.btn-primary {
+  @apply px-40 py-16 font-display font-bold text-white bg-gradient shadow-lg transition;
+}
+
+@media only screen and (min-width: 992px) {
+  .btn-primary {
+    @apply px-64 py-20;
+  }
+}
+
+.btn-primary:hover {
+  @apply bg-pink-light;
+}
+
+@tailwind utilities;
