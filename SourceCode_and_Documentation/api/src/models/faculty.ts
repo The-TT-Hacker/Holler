@@ -1,6 +1,6 @@
 import { Class } from './class';
 
-export class Faculty {
+export interface Faculty {
   university: string;
   name: string;
   code: string;

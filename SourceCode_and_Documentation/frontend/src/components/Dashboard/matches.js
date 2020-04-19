@@ -23,6 +23,8 @@ class Matches extends Component {
       <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%' }}>
         <div className="main-content">
 
+          <div style={{marginBottom: '5vh'}}></div>
+
           {/* Title of the Current Page */}
           <PageTitle title="Matches" />
 
@@ -34,9 +36,6 @@ class Matches extends Component {
               )}
             </ul>
 
-            <div className="chatbox-container" ref={c => this.container = c}>
-              <div id="talkjs-container" style={{ height: "300px" }}><i></i></div>
-            </div>
           </div>
         </div>
       </div>

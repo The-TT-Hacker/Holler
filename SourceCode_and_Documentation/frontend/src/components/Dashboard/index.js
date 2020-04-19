@@ -6,6 +6,7 @@ import Going from './going'
 import Matches from './matches'
 import Profile from './profile'
 import GroupChat from './GroupChat'
+import Achievements from './Achievements'
 
 import { withAuthorization } from '../Session'
 import  '../../styles/events.css'
@@ -50,4 +51,4 @@ const Dashboard = () => {
 
 const condition = authUser => !!authUser
 export default withAuthorization(condition)(Dashboard)
-export { Explore, Going, Matches, Profile, GroupChat }
+export { Explore, Going, Matches, Profile, GroupChat, Achievements }

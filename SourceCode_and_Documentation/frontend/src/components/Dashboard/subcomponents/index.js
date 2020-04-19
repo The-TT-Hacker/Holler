@@ -5,7 +5,6 @@ import TagsModal from './tags_modal'
 import ExploreHeader from './explore_header'
 import Avatar from './avatar'
 import Match from './Match'
-import Badges from './badges'
 import Chart from './chart'
 
-export { AccordionEventCard, PageTitle, DateModal, TagsModal, ExploreHeader, Avatar, Match, Badges, Chart }
+export { AccordionEventCard, PageTitle, DateModal, TagsModal, ExploreHeader, Avatar, Match, Chart }

@@ -7,7 +7,7 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node .",
-    "test": "node dist/tests/add_event_interest.js",
+    "test": "node dist/tests/test.js",
     "unsw_timetable": "node dist/data_collection/unsw_timetable",
     "unsw_events": "node dist/data_collection/unsw_events",
     "match": "node dist/match_generator/match_generator.js"
@@ -23,8 +23,10 @@
   },
   "homepage": "https://github.com/omarlotfi/SENG2021_BugFreeSince93#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.0.1",
     "@types/cheerio": "^0.22.16",
     "@types/node-fetch": "^2.5.5",
+    "@types/sendgrid": "^4.3.0",
     "@types/uuid": "^7.0.2",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
@@ -39,7 +41,7 @@
     "uuid": "^7.0.3"
   },
   "devDependencies": {
-    "@types/express": "^4.17.2",
+    "@types/express": "^4.17.6",
     "@types/node": "^13.7.7",
     "typescript": "^3.8.3"
   }

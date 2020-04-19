@@ -6,6 +6,7 @@
 export interface User {
   signupCompleted: boolean;
   chatUserCreated: boolean;
+  oobCode: string;
   firstName: string;
   lastName: string;
   dob: Date;
@@ -27,7 +28,6 @@ export interface UpdateUser {
   chatUserCreated?: boolean;
   firstName?: string;
   lastName?: string;
-  email?: string;
   dob?: Date;
   image?: string;
   faculties?: string[];

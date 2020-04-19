@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { Card} from 'react-bootstrap'
-
+import { Card } from 'react-bootstrap'
 
 import { Area, AreaChart, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import '../../../styles/explore.css'
@@ -34,8 +33,8 @@ const Chart = () => {
 
                                 <Legend />
 
-                                <XAxis axisLine={false} tick={false} dataKey="name" />
-                                <YAxis axisLine={false} tick={false} />
+                                <XAxis axisLine={false} tick={true} dataKey="name" />
+                                <YAxis axisLine={false} tick={true} />
 
                                 <Tooltip />
                                 <Area type="monotone" dataKey="Groups Joined" stroke="#E3496B" fillOpacity={1} fill="url(#colorGroupsJoined)" />
@@ -43,7 +42,6 @@ const Chart = () => {
                             </AreaChart>
                         </ResponsiveContainer>
 
-                        <div className="graph-percentage txt-align-center spacer-up">You’re in the top 10% of Holler users!</div>
                     </Card.Body>
                 </Card>
 

@@ -103,6 +103,25 @@
   box-shadow: none !important;
 }
 
+.btn-light-hover {
+  background-color: white !important;
+  border-color: white !important;
+  border-radius: 10px !important;
+}
+
+.btn-light-hover:hover {
+  background-color: #F1F1F1 !important;
+  border-color: white !important;
+}
+
+.btn-light-hover:focus {
+  box-shadow: none !important;
+}
+
+.dropdown-dark {
+  color: black;
+}
+
 .btn-filters {
   background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%) !important;
   border-radius: 25px !important;

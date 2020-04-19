@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
-import * as db from "../common/database";
-import { Event } from "../common/models/event";
-import { Society } from "../common/models/society";
+import * as eventService from "../services/eventService";
+import { Event } from "../models/event";
+import { Society } from "../models/society";
 
 export async function getEvents(): Promise<any[]> {
   return fetch("https://api.eventlink.me/events?uni=unsw")
@@ -43,14 +43,14 @@ getEvents().then(async (events) => {
     }
   });
 
-  var result = await db.setEvents(events);
+  var result = await eventService.setEvents(events);
 
   if (!result) {
     console.log("set events failed");
     return;
   }
 
-  result = await db.setTags(tags);
+  result = await eventService.setTags(tags);
 
   if (!result) {
     console.log("set tags failed");

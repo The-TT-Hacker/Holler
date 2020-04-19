@@ -2,13 +2,15 @@ import React from 'react'
 
 import SignOutButton from './signout'
 import { Navbar, Nav } from 'react-bootstrap'
+import { withFirebase } from '../Firebase'
+
 import '../../styles/responsive.css'
 import '../../styles/text.css'
 
-const Navigation = () => {
+const Navigation = ({ firebase }) => {
 
   return (
-    <div style={{ overflowX: 'hidden' }}>
+    <div style={{ overflowX: 'show' }}>
     
       {/* Coloured Bar */}
       <div className="row">
@@ -33,12 +35,17 @@ const Navigation = () => {
                 <Nav.Item> <Nav.Link className="d-nav-link" href="/dashboard/explore">  Explore </Nav.Link> </Nav.Item>
                 <Nav.Item> <Nav.Link className="d-nav-link" href="/dashboard/going"> Going </Nav.Link> </Nav.Item>
                 <Nav.Item> <Nav.Link className="d-nav-link" href="/dashboard/matches"> Matches </Nav.Link> </Nav.Item>
-                <Nav.Item> <Nav.Link className="d-nav-link" href="/dashboard/profile"> Profile </Nav.Link> </Nav.Item>
+                <Nav.Item> <Nav.Link className="d-nav-link" href="/dashboard/achievements"> Achievements </Nav.Link> </Nav.Item>
               </Nav>
 
               <Nav className="d-flex ml-auto">
                 <SignOutButton />
+                <div className="shown-on-mobile">
+                  <Nav.Item> <Nav.Link className="d-nav-link" href="/dashboard/profile"> Your Profile </Nav.Link> </Nav.Item>
+                  <Nav.Item> <Nav.Link className="txt-gradient d-nav-link" onClick={firebase.doSignOut}> Logout </Nav.Link> </Nav.Item>
+                </div>
               </Nav>
+              
             
             </Navbar.Collapse>
           </Navbar>
@@ -52,4 +59,4 @@ const Navigation = () => {
 
 
 
-export default Navigation
+export default withFirebase(Navigation)
