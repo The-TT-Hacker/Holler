@@ -228,8 +228,8 @@ app.get('/badges', async (req: HollerRequest, res: Response) => {
 */
 
 // Gets a list of all possible badges
-app.get('/chat/:chatId/messages', async (req: HollerRequest, res: Response) => {
-  const messages = await chatService.
+app.get('/chat/:conversationId/messages', async (req: HollerRequest, res: Response) => {
+  const messages = await chatService.getAllMessages(req.params.conversationId);
   res.send(messages);
 });
 
