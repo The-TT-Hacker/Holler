@@ -89,9 +89,9 @@ app.post('/register', async (req: HollerRequest, res: Response) => {
 });
 
 // Confirm email address
-app.post('/verify_email', async (req: HollerRequest, res: Response) => {
-  if (!req.query.uid) res.status(400).send("No uid given");
-  if (!req.query.oobCode) res.status(400).send("No oobCode given");
+app.get('/verify_email', async (req: HollerRequest, res: Response) => {
+  if (!req.query.uid) throw "No uid given";
+  if (!req.query.oobCode) throw "No oobCode given";
 
   try {
 

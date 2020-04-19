@@ -134,6 +134,7 @@ export async function verifyEmail(uid: string, oobCode: string): Promise<void> {
     } else throw "Invalid oobCode";
 
   } catch (e) {
+    console.log(e);
     throw e;
   }
 }
