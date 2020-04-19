@@ -114,6 +114,34 @@
   color: #868E96;
 }
 
+.btn-show-more {
+  width: 25px; 
+  height: 25px; 
+  padding: 7px 10px;
+  margin-top: 10px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  border: none !important;
+
+  background: white !important;
+  background-image: url('../icons/expand-arrow.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center  !important;
+}
+
+.btn-show-more.active {
+  background-image: url('../icons/collapse-arrow.png') !important;
+  background-color: white !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.btn-show-more:focus {
+  box-shadow: none !important;
+}
+
 .chat-title {
   font-family: Poppins;
   font-style: normal;
@@ -225,4 +253,13 @@
   width: 100%;
   padding: 0;
   margin: 0;
+}
+
+#button-tooltip{
+}
+
+@media screen and (max-width: 800px) {
+  #button-tooltip {
+    display:none;
+  }
 }
