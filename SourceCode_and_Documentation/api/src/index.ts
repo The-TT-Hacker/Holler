@@ -43,28 +43,32 @@ app.use(function (req, res, next) {
 });
 app.use(async (req: HollerRequest, res: Response, next) => {
 
-  try {
-
     // Skip if it is a non auth route
     if (NO_AUTH_ROUTES.includes(req.path)) next();
 
     // Check if the auth token exists
     else if (!req.headers.authorization) res.status(403).send("No authorization token");
     
+    // Handle authenticated routes
     else {
+
+      try {
       
-      // Check token and get uid, user object
-      await authService.verifyUser(req, req.headers.authorization);
-  
-      // Continue if route does not require sign up completion or sign up is completed
-      if (NO_SIGNUP_ROUTES.includes(req.path) || req.user.signupCompleted) next();
-      else throw "Sign up not completed";
+        // Check token and get uid, user object
+        await authService.verifyUser(req, req.headers.authorization);
+    
+        // Continue if route does not require sign up completion or sign up is completed
+        if (NO_SIGNUP_ROUTES.includes(req.path) || req.user.signupCompleted) next();
+        else throw "Sign up not completed";
+
+      } catch (e) {
+
+        // Error authenticating with token
+        res.status(401).send(e);
+      
+      }
     
     }
-
-  } catch (e) {
-    res.status(401).send(e);
-  }
 
 });
 
