@@ -90,12 +90,12 @@ app.post('/register', async (req: HollerRequest, res: Response) => {
 
 // Confirm email address
 app.post('/verify_email', async (req: HollerRequest, res: Response) => {
-  if (!req.params.uid) res.status(400).send("No uid given");
-  if (!req.params.oobCode) res.status(400).send("No oobCode given");
+  if (!req.query.uid) res.status(400).send("No uid given");
+  if (!req.query.oobCode) res.status(400).send("No oobCode given");
 
   try {
 
-    await authService.verifyEmail(req.params.uid, req.params.oobCode);
+    await authService.verifyEmail(req.query.uid, req.query.oobCode);
 
     res.redirect("http://localhost:3000/ps");
 
