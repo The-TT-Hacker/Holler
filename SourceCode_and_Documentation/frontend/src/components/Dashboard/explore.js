@@ -34,36 +34,46 @@ const Explore = (props) => {
 
 
   const [data, setData] = useState([])
-  // const getEventData = async () => {
-  //   // Flag to use for cleanup
-  //   const source = axios.CancelToken.source()
-
-  //   // auth token - in useEffect to supress depdendency warnings
-  //   const token = localStorage.getItem('token')
-  //   await axios({
-  //     url: URL + "/event/" + data[0].id,
-  //     method: "GET",
-  //     cancelToken: source.token,
-  //     headers: {
-  //       'Authorization': `${token}`
-  //     },
-  //     // No parameters to get default data
-  //   })
-  //     .then(res => {
-  //       console.log(res)
-
-  //     })
-  //     .catch(err => {
-
-  //       if (axios.isCancel(err)) {
-  //         setError(err)
-  //       } else {
-  //         setError(err)
-  //       }
-
-  //     })
-  // }
+  console.log(data)
   
+  const fetchEvents = async (params) => {
+
+    // Flag to use for cleanup
+    const source = axios.CancelToken.source()
+
+    // auth token - in useEffect to supress depdendency warnings
+    const token = localStorage.getItem('token')
+    await axios({
+      url: URL + "/events",
+      method: "GET",
+      cancelToken: source.token,
+      headers: {
+        'Authorization': `${token}`
+      },
+      parameters: {
+        searchText: params.searchText,
+        tags: params.tags,
+        start_date: params.start_date,
+        end_date: params.end_date
+      }
+    })
+      .then(res => {
+        setData(res.data)
+
+      })
+      .catch(err => {
+
+        if (axios.isCancel(err)) {
+          setError(err)
+        } else {
+          setError(err)
+        }
+
+      })
+  }
+
+
+
   // const getEvents = data.map((d) =>
   //   <AccordionEventCard
   //   id={d.id}
@@ -80,38 +90,14 @@ const Explore = (props) => {
 
     // Flag to use for cleanup
     const source = axios.CancelToken.source()
-
-    // auth token - in useEffect to supress depdendency warnings
-    const token = localStorage.getItem('token')
-    // Request Function
-    const fetchEvents = async () => {
-
-      await axios({
-        url: URL + "/events",
-        method: "GET",
-        cancelToken: source.token,
-        headers: {
-          'Authorization': `${token}`
-        },
-        // No parameters to get default data
-      })
-        .then(res => {
-          setData(res.data)
-
-        })
-        .catch(err => {
-
-          if (axios.isCancel(err)) {
-            setError(err)
-          } else {
-            setError(err)
-          }
-
-        })
+    const params = {
+      searchText: "",
+      tags: "",
+      start_date: "",
+      end_date: ""
     }
 
-    // Make the request
-    fetchEvents()
+    fetchEvents(params)
 
     // Cancel other requests
     return () => {
@@ -123,8 +109,6 @@ const Explore = (props) => {
   return (
     <div className="container-fluid d-flex flex-column align-items-center">
       <div className="main-content">
-
-        <div style={{marginBottom: '5vh'}}></div>
 
         {/* Page Title & Search Button*/}
         <div className="row">
@@ -146,7 +130,11 @@ const Explore = (props) => {
         <div className="row spacer-down">
           <div className="col-12">
             <Collapse in={showSearchInput}>
-              <div> <Form.Control type="text" placeholder="Enter query text" /> </div>
+              <div>
+                <Form >
+                  <Form.Control type="text" placeholder="Enter query text"/>
+                </Form>
+              </div>
             </Collapse>
           </div>
         </div>
