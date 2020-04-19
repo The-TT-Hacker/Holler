@@ -22,7 +22,7 @@ import { Notification } from "./models/notification";
 const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
   "/register",
-  "verify_email",
+  "/verify_email",
   "/events",
   "/badges"
 ];
@@ -216,6 +216,22 @@ app.delete('/event/:id/remove_interest', async (req: HollerRequest, res: Respons
 /**
  * Badges
  */
+
+// Gets a list of all possible badges
+app.get('/badges', async (req: HollerRequest, res: Response) => {
+  const badges = await dataService.getBadges();
+  res.send(badges);
+});
+
+/*
+  Chat
+*/
+
+// Gets a list of all possible badges
+app.get('/chat/:chatId/messages', async (req: HollerRequest, res: Response) => {
+  const messages = await chatService.
+  res.send(messages);
+});
 
 // Gets a list of all possible badges
 app.get('/badges', async (req: HollerRequest, res: Response) => {
