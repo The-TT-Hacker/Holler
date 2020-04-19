@@ -2,7 +2,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 // Import models
-import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from '../models/ChatUser';
+import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from '../models/chatUser';
 import { CreateConversationRequest, Conversation } from '../models/chatConversation';
 import { SendMessageRequest, Message } from '../models/chatMessage';
 

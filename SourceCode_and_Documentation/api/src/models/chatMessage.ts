@@ -1,4 +1,4 @@
-import { ChatUserId } from './ChatUser';
+import { ChatUserId } from './chatUser';
 import { ConversationId } from './chatConversation';
 import { UnixMilliseconds } from './chatCommon';
 
