@@ -7,6 +7,7 @@ import { withFirebase } from "../Firebase"
 
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
+import * as ROUTES from '../../constants/routes'
 
 import { URL } from '../../constants/roles'
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
@@ -74,10 +75,13 @@ class SignupFormBase extends Component {
         email: email,
         password: password
       }
-    }).then(function (response) {
-      console.log(response)
-    }).catch(function (error) {
-      console.log(error)
+    })
+    .then(response => {
+      this.setState({ ...INITIAL_STATE })
+      this.props.history.push(ROUTES.VERIFY_EMAIL)     
+    })
+    .catch(error => {
+      this.setState({error})
     })
     
     event.preventDefault();
