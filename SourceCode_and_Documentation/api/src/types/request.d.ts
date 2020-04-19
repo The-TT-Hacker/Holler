@@ -11,7 +11,10 @@ export interface HollerRequest extends Request {
     startDate: string;
     endDate: string;
     // Pagination
-    start: string
-    end: string
+    start: string;
+    end: string;
+    // Verify Email
+    uid: string;
+    oobCode: string;
   }
 }
