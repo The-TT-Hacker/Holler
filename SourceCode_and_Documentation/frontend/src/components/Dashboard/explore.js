@@ -23,6 +23,7 @@ const Explore = (props) => {
       document.getElementsByClassName("btn-explore-search")[0].classList.remove("active");
     else
       document.getElementsByClassName("btn-explore-search")[0].classList.add("active");
+
     setActive(!active);
   }
 
@@ -31,41 +32,74 @@ const Explore = (props) => {
   console.log(error)
 
   const [data, setData] = useState([])
-  const params = {
-    searchText: "",
-    tags: "",
-    startDate: "",
-    endDate: ""
-  }
-  const fetchEvents = async () => {
+  // const params = {
+  //   searchText: "",
+  //   tags: "",
+  //   startDate: "",
+  //   endDate: ""
+  // }
+  // const fetchEvents = async () => {
 
-    await axios({
-      url: BACKEND + "/events",
-      method: "GET",
-      parameters: {
-        searchText: params.searchText,
-        tags: params.tags,
-        start_date: params.startDate,
-        end_date: params.endDate
-      }
-    })
-      .then(res => {
-        setData(res.data)
-        console.log(res.data)
+  //   await axios({
+  //     url: BACKEND + "/events",
+  //     method: "GET",
+  //     parameters: {
+  //       searchText: params.searchText,
+  //       tags: params.tags,
+  //       start_date: params.startDate,
+  //       end_date: params.endDate
+  //     }
+  //   })
+  //     .then(res => {
+  //       setData(res.data)
+  //       console.log(res.data)
 
-      })
-      .catch(err => {
+  //     })
+  //     .catch(err => {
 
-        if (axios.isCancel(err)) {
-          setError(err)
-        } else {
-          setError(err)
-        }
+  //       if (axios.isCancel(err)) {
+  //         setError(err)
+  //       } else {
+  //         setError(err)
+  //       }
 
-      })
-  }
+  //     })
+  // }
 
+  // const fetchOneEvent = async () => {
+  //   // Flag to use for cleanup
+  //   const source = axios.CancelToken.source()  
 
+  //   // auth token - in useEffect to supress depdendency warnings
+  //   const token = localStorage.getItem('token')
+  //   await axios({
+  //     url: BACKEND + "/event/" + data[0].id,
+  //     method: "GET",
+  //     parameters: {
+  //       searchText: params.searchText,
+  //       tags: params.tags,
+  //       start_date: params.startDate,
+  //       end_date: params.endDate
+  //     },
+  //     cancelToken: source.token,
+  //     headers: {
+  //       'Authorization': `${token}`
+  //     },
+  //   })
+  //     .then(res => {
+  //       console.log(res.data)
+
+  //     })
+  //     .catch(err => {
+
+  //       if (axios.isCancel(err)) {
+  //         setError(err)
+  //       } else {
+  //         setError(err)
+  //       }
+
+  //     })
+  // }
 
   // const getEvents = data.map((d) =>
   //   <AccordionEventCard
@@ -85,7 +119,7 @@ const Explore = (props) => {
     const fetchEvents = async () => {
 
       await axios({
-        url: URL + "/events",
+        url: BACKEND + "/events",
         method: "GET",
         parameters: {
           searchText: "",
@@ -155,7 +189,7 @@ const Explore = (props) => {
         <div className="row spacer-down">
           <div className="col-12 d-flex">
             <TagsModal />
-            <DateModal fetchEvents={fetchEvents} params={params}/>
+            <DateModal />
           </div>
         </div>
 
