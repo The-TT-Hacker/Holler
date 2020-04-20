@@ -16,7 +16,7 @@ import * as ids from "../UUIDs";
  * @param uid 
  * @param updateUserRequest 
  */
-export async function updateUser(uid: string, updateUserRequest: UpdateUserRequest): Promise<boolean> {
+export async function updateUser(uid: string, updateUserRequest: UpdateUserRequest): Promise<void> {
   try {
 
     const currentUser = await db.collection("users").doc(uid).get();
@@ -114,10 +114,8 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
       await sendgridService.sendEmailVerfification(uid, updateUserRequest.email);
 
     }
-
-    return true;
   } catch (e) {
-    return false;
+    throw e;
   }
 }
 

@@ -28,77 +28,77 @@ Date.prototype.addDays = function (days: number): Date {
  */
 export async function getEvents(searchText: string, tags: string, startDate: string, endDate: string): Promise<Event[]> {
   try {
-      var time_start: Date;
+    var time_start: Date;
 
-      if (searchText) searchText = searchText.toUpperCase();
+    if (searchText) searchText = searchText.toUpperCase();
 
-      // Query events occuring after start date
-      if (startDate) {
+    // Query events occuring after start date
+    if (startDate) {
       time_start = new Date(startDate);
-      } else {
+    } else {
       time_start = new Date();
-      }
+    }
 
-      var query = db.collection('events').where('time_start', '>', time_start);
-      
-      // Get events
-      const snapshot = await query.get()
-      var events = <Event[]> snapshot.docs.map(doc => {
+    var query = db.collection('events').where('time_start', '>', time_start);
+    
+    // Get events
+    const snapshot = await query.get()
+    var events = <Event[]> snapshot.docs.map(doc => {
       const docData = doc.data();
       return {
-          id: docData.id,
-          url: docData.url,
-          title: docData.title,
-          time_start: docData.time_start.toDate(),
-          time_finish: docData.time_finish.toDate(),
-          description: docData.description,
-          location: docData.location,
-          hosts: docData.hosts,
-          categories: docData.categories
+        id: docData.id,
+        url: docData.url,
+        title: docData.title,
+        time_start: docData.time_start.toDate(),
+        time_finish: docData.time_finish.toDate(),
+        description: docData.description,
+        location: docData.location,
+        hosts: docData.hosts,
+        categories: docData.categories
       }
-      });
+    });
 
-      // Filter events
+    // Filter events
 
-      events = events.filter((event) => {
+    events = events.filter((event) => {
 
-      // Filter by matching search text with title
-      if (searchText) {
-          if (!event.title.toUpperCase().includes(searchText)) {
-          return false;
-          }
-      }
+    // Filter by matching search text with title
+    if (searchText) {
+        if (!event.title.toUpperCase().includes(searchText)) {
+        return false;
+        }
+    }
 
-      // Query events occuring after end date
-      if (endDate) {
-          if (event.time_start > new Date(endDate)) return false;
-      }
+    // Query events occuring after end date
+    if (endDate) {
+        if (event.time_start > new Date(endDate)) return false;
+    }
 
-      // Filter based on tags
-      if (tags) {
-          var tagList = tags.split(",");
+    // Filter based on tags
+    if (tags) {
+        var tagList = tags.split(",");
 
-          var valid = false;
+        var valid = false;
 
-          for (var i = 0; i < tagList.length; i++) {
-          if (event.categories.includes(tagList[i]) || event.hosts.includes(tagList[i])) {
-              valid = true;
-              break;
-          }
-          }
+        for (var i = 0; i < tagList.length; i++) {
+        if (event.categories.includes(tagList[i]) || event.hosts.includes(tagList[i])) {
+            valid = true;
+            break;
+        }
+        }
 
-          if (!valid) return false;
-      }
+        if (!valid) return false;
+    }
 
-      // Passed all filters
-      return true;
+    // Passed all filters
+    return true;
 
-      });
+    });
 
-      // Sort events in chronologically order
-      events.sort((a, b) => +a.time_start - +b.time_start);
+    // Sort events in chronologically order
+    events.sort((a, b) => +a.time_start - +b.time_start);
 
-      return events;
+    return events;
   } catch (e) {
       console.log(e);
   }
