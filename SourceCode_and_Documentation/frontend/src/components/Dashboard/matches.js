@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 import { PageTitle, Match } from './subcomponents'
-import { updateScrollability } from '../../constants'
 import { groupsDummy } from './groups_dummy'
 
 import ChatPlaceholder from '../../icons/chat-placeholder.svg'
@@ -10,7 +9,6 @@ class Matches extends Component {
 
   constructor(props) {
     super(props)
-    updateScrollability(props.scroll)
     let currentUser
     // Get the current user through a request
     this.state = {

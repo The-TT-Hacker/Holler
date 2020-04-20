@@ -13,7 +13,6 @@ import '../../styles/Chat.css'
 import * as ROUTES from '../../constants/routes'
 
 import Dashboard from '../Dashboard'
-import Landing from '../Landing'
 import Login from '../Login'
 import Signup from '../Signup'
 import ResetPassword from '../ResetPassword'
@@ -26,22 +25,21 @@ import { withAuthentication } from '../Session'
 const App = () => {
   return (
     <Router>
-      <Route exact path={ROUTES.LANDING} component={() => <Landing scroll={true} />} />
-      <Route path={ROUTES.SIGNUP} render={({history}) => <Signup scroll={false} history={history} />} />
-      <Route path={ROUTES.LOGIN} component={() => <Login scroll={false} />} />
-      <Route path={ROUTES.RESET_PASSWORD} component={() => <ResetPassword scroll={false} />} />
-      <Route path={ROUTES.VERIFY_EMAIL} component={() => <VerifyEmail scroll={false} />} />
+      <Route path={ROUTES.SIGNUP} render={({history}) => <Signup history={history} />} />
+      <Route path={ROUTES.LOGIN} component={() => <Login />} />
+      <Route path={ROUTES.RESET_PASSWORD} component={() => <ResetPassword />} />
+      <Route path={ROUTES.VERIFY_EMAIL} component={() => <VerifyEmail />} />
 
-      <Route exact path={ROUTES.PROFILE_SETUP} component={() => <Step1 scroll={false} />} />
-      <Route exact path={ROUTES.PROFILE_SETUP2} component={() => <Step2 scroll={false} />} />
-      <Route exact path={ROUTES.PROFILE_SETUP3} component={() => <Step3 scroll={false} />} />
+      <Route exact path={ROUTES.PROFILE_SETUP} component={() => <Step1 />} />
+      <Route exact path={ROUTES.PROFILE_SETUP2} component={() => <Step2 />} />
+      <Route exact path={ROUTES.PROFILE_SETUP3} component={() => <Step3 />} />
 
       <Route path={ROUTES.DASHBOARD} component={Dashboard} />
-      <Route path={ROUTES.PROFILE} component={() => <Profile scroll={true} />} />
+      <Route path={ROUTES.PROFILE} component={() => <Profile />} />
       <Route path={ROUTES.ACHIEVEMENTS} component={Achievements} />
-      <Route path={ROUTES.EXPLORE} component={() => <Explore scroll={true} />} />
-      <Route path={ROUTES.GOING} component={() => <Going scroll={true} />} />
-      <Route path={ROUTES.MATCHES} component={() => <Matches scroll={true} />} />
+      <Route path={ROUTES.EXPLORE} component={() => <Explore />} />
+      <Route path={ROUTES.GOING} component={() => <Going />} />
+      <Route path={ROUTES.MATCHES} component={() => <Matches />} />
       <Route path={ROUTES.GROUP_CHAT} render={(matchProps) => <GroupChat {...matchProps} />} />
     </Router>
   )

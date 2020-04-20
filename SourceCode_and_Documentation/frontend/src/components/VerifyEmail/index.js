@@ -4,12 +4,9 @@ import Success from '../../icons/success.svg'
 
 import { Link } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
-import { updateScrollability } from '../../constants'
 
 const VerifyEmail = (props) => {
   
-  updateScrollability(props.scroll)
-
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center" style={{ height: '80vh', maxWidth: '900px'}}>
       <div className="container-fluid">

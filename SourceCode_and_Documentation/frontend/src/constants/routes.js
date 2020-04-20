@@ -1,4 +1,4 @@
-export const LANDING         = '/'
+export const LANDING         = 'http://localhost:3000/'
 export const LOGIN           = '/login'
 export const SIGNUP          = '/signup'
 export const RESET_PASSWORD  = '/reset-pw' 

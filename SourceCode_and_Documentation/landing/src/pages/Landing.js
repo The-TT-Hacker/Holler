@@ -25,7 +25,9 @@ const Landing = () => {
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
           ullamco laboris nisi ut.
         </p>
-        <button className="btn-primary rounded-full">Join Now </button>
+        <form action="http://localhost:3001/signup">        
+          <button className="btn-primary rounded-full" type="submit"> Join Now </button>
+        </form>
       </section>
 
       <div className="text-center">
@@ -91,7 +93,9 @@ const Landing = () => {
 
       <div className="mt-80 px-16 text-center">
         <h2 className="mb-32 lg:mb-32 lg:text-36">Ready to meet your new friends?</h2>
-        <button className="btn-primary rounded-full">Join Now </button>
+        <form action="http://localhost:3001/signup">        
+          <button className="btn-primary rounded-full" type="submit"> Join Now </button>
+        </form>
       </div>
 
       <div className="mt-80">
