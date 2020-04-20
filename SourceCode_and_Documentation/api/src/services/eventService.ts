@@ -116,6 +116,7 @@ export async function getEvent(id: string): Promise<Event> {
     return {
       id: docData.id,
       url: docData.url,
+      image_url: docData.image_url,
       title: docData.title,
       time_start: docData.time_start.toDate(),
       time_finish: docData.time_finish.toDate(),
