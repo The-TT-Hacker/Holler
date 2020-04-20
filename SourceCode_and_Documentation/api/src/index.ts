@@ -27,7 +27,8 @@ const NO_AUTH_ROUTES: string[] = [
   "/badges"
 ];
 const NO_SIGNUP_ROUTES: string[] = [
-  "/user"
+  "/user",
+  "/timetable/faculties/unsw"
 ];
 const UNIVERSITIES: string[] = [
   "unsw"
@@ -42,6 +43,8 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(async (req: HollerRequest, res: Response, next) => {
+
+  console.log(req.path);
 
   // Skip if it is a non auth route
   if (NO_AUTH_ROUTES.includes(req.path)) next();
