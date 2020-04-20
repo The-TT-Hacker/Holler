@@ -7,7 +7,7 @@ import Mortarboard from '../../icons/mortarboard.png'
 import Paragliding from '../../icons/paragliding.png'
 import CheckMark from '../../icons/checkmark.svg'
 
-import { URL } from '../../constants/roles'
+import { BACKEND } from '../../constants/roles'
 import { Form, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Avatar } from './subcomponents'
 
@@ -85,7 +85,7 @@ useEffect(() => {
     
     // Make a request to get all the faculties, faculty codes, classes and class codes
     await axios({
-      url: URL + "/timetable/faculties/unsw",
+      BACKEND: BACKEND + "/timetable/faculties/unsw",
       method:"GET",
       cancelToken: source.token,
       headers: {

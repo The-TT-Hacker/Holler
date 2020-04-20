@@ -6,7 +6,7 @@ import CSESocImage2 from '../../icons/event-image-2.svg'
 
 import { Button, Collapse, Form, Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard, TagsModal, DateModal } from './subcomponents'
-import { URL } from '../../constants/roles'
+import { BACKEND } from '../../constants/roles'
 
 import '../../styles/explore.css'
 import '../../styles/events.css'
@@ -42,7 +42,7 @@ const Explore = (props) => {
     // auth token - in useEffect to supress depdendency warnings
     const token = localStorage.getItem('token')
     await axios({
-      url: URL + "/events",
+      url: BACKEND + "/events",
       method: "GET",
       cancelToken: source.token,
       headers: {

@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import { withFirebase } from "../Firebase"
 import * as ROUTES from '../../constants/routes'
-
+import { LANDING } from '../../constants/roles'
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
 
@@ -19,7 +19,7 @@ const LoginPage = (props) => {
         {/* Application Title & Login Page Title */}
         <div className="row">
           <div className="col">
-            <Nav.Link href="http://localhost:3000/"> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
+            <Nav.Link href={LANDING}> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
             <h6 className="txt-subtitle txt-align-center"> Welcome Back! </h6>
             <p className="txt-subtext txt-align-center"> Sign in to your account! </p>
           </div>

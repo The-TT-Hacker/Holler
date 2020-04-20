@@ -9,7 +9,7 @@ import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
 import * as ROUTES from '../../constants/routes'
 
-import { URL } from '../../constants/roles'
+import { BACKEND, LANDING } from '../../constants/roles'
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
 
 const SignupPage = (props) => {
@@ -21,7 +21,7 @@ const SignupPage = (props) => {
         {/* Application Title & Login Page Title */}
         <div className="row">
           <div className="col">
-            <Nav.Link href="http://localhost:3000/"> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
+            <Nav.Link href={LANDING}> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
             <h6 className="txt-subtitle txt-align-center"> Create a New Account </h6>
             <p className="txt-subtext txt-align-center"> Join and meet more people in your University! </p>
           </div>
@@ -66,7 +66,7 @@ class SignupFormBase extends Component {
     console.log(props)
     
     axios({
-      url: URL + '/register',
+      url: BACKEND + '/register',
       method: "post",
       data: {
         email: email,
