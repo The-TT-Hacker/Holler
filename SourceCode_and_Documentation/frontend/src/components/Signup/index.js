@@ -7,14 +7,12 @@ import { withFirebase } from "../Firebase"
 
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
+import * as ROUTES from '../../constants/routes'
 
-import { URL } from '../../constants/roles'
+import { BACKEND, LANDING } from '../../constants/roles'
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
-import { updateScrollability } from '../../constants'
 
 const SignupPage = (props) => {
-
-  updateScrollability(props.scroll)
 
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', maxWidth: '600px'}}>
@@ -23,7 +21,7 @@ const SignupPage = (props) => {
         {/* Application Title & Login Page Title */}
         <div className="row">
           <div className="col">
-            <Nav.Link href="/"> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
+            <Nav.Link href={LANDING}> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
             <h6 className="txt-subtitle txt-align-center"> Create a New Account </h6>
             <p className="txt-subtext txt-align-center"> Join and meet more people in your University! </p>
           </div>
@@ -52,6 +50,7 @@ const INITIAL_STATE = {
   email: "",
   password: "",
   confirmPassword: "",
+  submitText: "Sign Up",
   error: null,
 }
 
@@ -64,20 +63,24 @@ class SignupFormBase extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state
-    const { props } = this.props
-    console.log(props)
+
+    this.setState({ submitText: "Loading..." })
     
     axios({
-      url: URL + '/register',
+      url: BACKEND + '/register',
       method: "post",
       data: {
         email: email,
         password: password
       }
-    }).then(function (response) {
-      console.log(response)
-    }).catch(function (error) {
-      console.log(error)
+    })
+    .then(response => {
+      this.setState({ ...INITIAL_STATE })
+      this.props.history.push(ROUTES.VERIFY_EMAIL)
+      this.props.firebase.doLoginWithEmailAndPassword(email, password)
+    })
+    .catch(error => {
+      this.setState({error})
     })
     
     event.preventDefault();
@@ -158,7 +161,7 @@ class SignupFormBase extends Component {
           <br />
 
           <div className="d-flex flex-column align-items-center justify-content-center">
-            <Button className="btn-gradient btn-lg" disabled={isInvalid} type="submit"> Sign Up </Button>
+            <Button className="btn-gradient btn-lg" disabled={isInvalid} type="submit"> {this.state.submitText} </Button>
             {error && <p className="text-danger txt-align-center">{error.message}</p>}
           </div>
         </Form.Group>

@@ -1,0 +1,40 @@
+{
+  "name": "landing",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "PORT=3001 concurrently -k -p \"[{name}]\" -n \"CSS,React\" -c \"green.bold,cyan.bold\" \"npm:watch:css\" \"react-scripts start\"",
+    "build": "npm run build:css && react-scripts build",
+    "build:css": "postcss src/styling/index.src.css -o src/styling/index.css --env production",
+    "watch:css": "postcss src/styling/index.src.css -o src/styling/index.css -w",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "tailwindcss-grid": "^1.2.1"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^1.1.0",
+    "autoprefixer": "^9.5.1",
+    "concurrently": "^4.1.0",
+    "postcss-cli": "^6.1.2",
+    "tailwindcss": "^0.7.4"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omarlotfi/huddle"
+  },
+  "author": "OL"
+}

@@ -6,7 +6,7 @@ import ChatBubble from '../../../icons/chat.svg'
 import RSVPMan from '../../../icons/user-check.svg'
 
 // Components
-import { Accordion, Card, ToggleButtonGroup, ToggleButton, Image } from 'react-bootstrap'
+import { Accordion, Card, ToggleButtonGroup, ToggleButton, Image, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import GoogleMapReact from 'google-map-react'
 
 const AccordionEventCard = (props) => {
@@ -23,10 +23,26 @@ const AccordionEventCard = (props) => {
     zoom: 11
   }
 
+  /* Expansion toggling */
+  const showMore = (activate) => {
+    if (!activate)
+      document.getElementsByClassName("btn-show-more")[props.id - 1].classList.remove("active");
+    else
+      document.getElementsByClassName("btn-show-more")[props.id - 1].classList.add("active");
+  }
+
+  const renderTooltip = (values) => {
+    return (
+      <Tooltip id="button-tooltip" {...values}>
+        Join this event!
+      </Tooltip>
+    )
+  }
+
   return (
     <Card className="card-going" key={props.id}>
 
-      <Accordion.Toggle as={Card.Header} eventKey={props.id}>
+      <Accordion.Toggle as={Card.Header} eventKey={props.id} onClick={() => showMore(true)}>
         <div className="accordion-image-container">
           <img src={props.image} alt="event" className="accordion-image" />
         </div>
@@ -36,7 +52,7 @@ const AccordionEventCard = (props) => {
         </div>
       </Accordion.Toggle>
 
-      <Accordion.Collapse eventKey={props.id}>
+      <Accordion.Collapse eventKey={props.id} onExit={() => showMore(false)}>
         <Card.Body>
 
           <div className="card-title"> Description </div>
@@ -44,27 +60,27 @@ const AccordionEventCard = (props) => {
           <div className="card-title">RSVP &nbsp;<Image src={RSVPMan} /></div>
           {props.rsvp} <br /><br />
           <div className="card-title">Location</div>
-          {props.location} <br /> 
+          {props.location} <br />
 
           <div className="map-container">
-              <GoogleMapReact
-                bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-                defaultCenter={mapValue.center}
-                defaultZoom={mapValue.zoom}
-              >
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+              defaultCenter={mapValue.center}
+              defaultZoom={mapValue.zoom}
+            >
 
               <AnyReactComponent
                 lat={mapValue.center.lat}
                 lng={mapValue.center.lng}
               />
 
-              </GoogleMapReact>
+            </GoogleMapReact>
           </div>
 
         </Card.Body>
       </Accordion.Collapse>
 
-      <Accordion.Toggle as={Card.Footer} eventKey={props.id}>
+      <Accordion.Toggle as={Card.Footer} eventKey={props.id} onClick={() => showMore(true)}>
         <div className="row">
           <div className="col-12 d-flex justify-content-between">
             <div className="d-flex flex-row">
@@ -75,11 +91,21 @@ const AccordionEventCard = (props) => {
               </div>
             </div>
             <div>
-            <ToggleButtonGroup className="" type="checkbox" value={value} onChange={handleChange}>
-              <ToggleButton className="btn-gradient-circle" value={0}></ToggleButton>
-            </ToggleButtonGroup>
+              <OverlayTrigger
+                placement="left"
+                delay={{ show: 50, hide: 100 }}
+                overlay={renderTooltip}
+              >
+                <ToggleButtonGroup className="" type="checkbox" value={value} onChange={handleChange}>
+                  <ToggleButton className="btn-gradient-circle" value={0}></ToggleButton>
+                </ToggleButtonGroup>
+              </OverlayTrigger>
+
             </div>
           </div>
+        </div>
+        <div className="row d-flex justify-content-center align-items-center spacer-down">
+          <Button className="btn-show-more" />
         </div>
       </Accordion.Toggle>
     </Card>

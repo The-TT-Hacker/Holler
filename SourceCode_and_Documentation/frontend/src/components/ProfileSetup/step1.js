@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import { Link  } from 'react-router-dom'
-import { URL } from '../../constants/roles'
+import { BACKEND } from '../../constants/roles'
 import { withAuthentication } from '../Session'
 import { Form, Button } from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -42,7 +42,7 @@ const Step1 = (props) => {
       
       // Make a request to get all the faculties, faculty codes, classes and class codes
       await axios({
-        url: URL + "/timetable/faculties/unsw",
+        url: BACKEND + "/timetable/faculties/unsw",
         method:"GET",
         cancelToken: source.token,
         headers: {
@@ -91,7 +91,7 @@ const Step1 = (props) => {
     console.log(dobAsObject)
 
     await axios({
-      url: URL + '/user',
+      url: BACKEND + '/user',
       method: "PUT",
       headers: {
         'Authorization': `${g_token}`

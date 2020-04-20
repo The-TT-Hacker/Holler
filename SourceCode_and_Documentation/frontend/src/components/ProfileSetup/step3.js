@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { axios } from 'axios'
 import { Link  } from 'react-router-dom'
-import { URL } from '../../constants/roles'
+import { BACKEND } from '../../constants/roles'
 import { ToggleButtonGroup, ToggleButton, Button } from 'react-bootstrap'
 import { withAuthorization } from '../Session'
 
@@ -13,7 +13,7 @@ const Step4 = () => {
 
   const sendUserInfo = () => {
     axios({
-      url: URL + '/user',
+      url: BACKEND + '/user',
       method: 'put',
       data: {
 

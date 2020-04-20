@@ -47,6 +47,14 @@
   margin-left: 20px;
 }
 
+.responsive-form {
+  width: 30vw;
+}
+
+.hide-on-mobile {
+  visibility: visible;
+}
+
 .right-nav {
   width: 125px !important;
   display: flex !important;
@@ -135,6 +143,10 @@
 
   .avatar-margin-top {
     margin-top: 20vh;
+  }
+
+  .hide-on-mobile {
+    visibility: hidden;
   }
 }
 

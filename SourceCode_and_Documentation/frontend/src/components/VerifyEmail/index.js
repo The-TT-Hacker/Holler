@@ -2,14 +2,11 @@ import React from 'react'
 
 import Success from '../../icons/success.svg'
 
-import { Link } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
-import { updateScrollability } from '../../constants'
+import { LANDING } from '../../constants/roles'
 
 const VerifyEmail = (props) => {
   
-  updateScrollability(props.scroll)
-
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center" style={{ height: '80vh', maxWidth: '900px'}}>
       <div className="container-fluid">
@@ -48,7 +45,7 @@ const VerifyEmail = (props) => {
         {/* Redirect to the Login Page */}
         <div className="row">
           <div className="col d-flex justify-content-center">
-            <Link to="/login"> <Button className="btn-gradient"> Take me to the Login! </Button> </Link>
+            <a href={LANDING}> <Button className="btn-gradient"> Take me Home </Button> </a>
           </div>
         </div>
 
