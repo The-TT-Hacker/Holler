@@ -22,7 +22,7 @@ import { Notification } from "./models/notification";
 const PORT = 5001;
 const NO_AUTH_ROUTES: string[] = [
   "/register",
-  "verify_email",
+  "/verify_email",
   "/events",
   "/badges"
 ];
@@ -89,13 +89,13 @@ app.post('/register', async (req: HollerRequest, res: Response) => {
 });
 
 // Confirm email address
-app.post('/verify_email', async (req: HollerRequest, res: Response) => {
-  if (!req.params.uid) res.status(400).send("No uid given");
-  if (!req.params.oobCode) res.status(400).send("No oobCode given");
+app.get('/verify_email', async (req: HollerRequest, res: Response) => {
+  if (!req.query.uid) throw "No uid given";
+  if (!req.query.oobCode) throw "No oobCode given";
 
   try {
 
-    await authService.verifyEmail(req.params.uid, req.params.oobCode);
+    await authService.verifyEmail(req.query.uid, req.query.oobCode);
 
     res.redirect("http://localhost:3000/ps");
 
@@ -216,6 +216,22 @@ app.delete('/event/:id/remove_interest', async (req: HollerRequest, res: Respons
 /**
  * Badges
  */
+
+// Gets a list of all possible badges
+app.get('/badges', async (req: HollerRequest, res: Response) => {
+  const badges = await dataService.getBadges();
+  res.send(badges);
+});
+
+/*
+  Chat
+*/
+
+// Gets a list of all possible badges
+app.get('/chat/:conversationId/messages', async (req: HollerRequest, res: Response) => {
+  const messages = await chatService.getAllMessages(req.params.conversationId);
+  res.send(messages);
+});
 
 // Gets a list of all possible badges
 app.get('/badges', async (req: HollerRequest, res: Response) => {
