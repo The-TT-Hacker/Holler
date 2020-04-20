@@ -70,8 +70,6 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
 
     const userRecord = await admin.createUser(userAuthData);
 
-    //authclient.createUserWithEmailAndPassword(registration.email, registration.password);
-
     const oobCode = await sendgridService.sendEmailVerfification(userRecord.uid, registration.email);
 
     const userData: User = {
