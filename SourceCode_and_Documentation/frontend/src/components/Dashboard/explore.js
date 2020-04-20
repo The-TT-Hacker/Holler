@@ -43,11 +43,11 @@ const Explore = (props) => {
     await axios({
       url: BACKEND + "/events",
       method: "GET",
-      parameters: {
+      params: {
         searchText: params.searchText,
         tags: params.tags,
-        start_date: params.startDate,
-        end_date: params.endDate
+        startDate: params.startDate,
+        endDate: params.endDate
       }
     })
       .then(res => {
@@ -87,6 +87,12 @@ const Explore = (props) => {
       await axios({
         url: BACKEND + "/events",
         method: "GET",
+        params: {
+          searchText: "",
+          tags: "",
+          startDate: "",
+          endDate: ""
+        }
       })
         .then(res => {
           setData(res.data)
