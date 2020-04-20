@@ -5,3 +5,6 @@ npm install
 
 cd ../api
 npm install
+
+cd ../landing
+npm install

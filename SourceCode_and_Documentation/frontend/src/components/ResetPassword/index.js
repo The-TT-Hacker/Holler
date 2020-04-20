@@ -5,11 +5,9 @@ import Mail from '../../icons/mail.svg'
 
 import { Link } from 'react-router-dom'
 import { Nav, Form, InputGroup, Image, Button } from 'react-bootstrap'
-import { updateScrollability } from '../../constants'
+import { LANDING } from '../../constants/roles'
 
 const ResetPassword = (props) => {
-
-  updateScrollability(props.scroll)
 
   const [email, setEmail] = useState("")
 
@@ -29,7 +27,7 @@ const ResetPassword = (props) => {
     <div className="container-fluid h-100">
       <div className="row mx-auto align-items-center h-100" style={{ maxWidth: "600px" }}>
         <div className="col d-flex flex-column align-items-center">
-          <Nav.Link href="/"> <div className="txt-title"> Holler <span className="dot"></span> </div> </Nav.Link>
+          <Nav.Link href={LANDING}> <div className="txt-title"> Holler <span className="dot"></span> </div> </Nav.Link>
           <h6 className="txt-subtitle"> Oh No! </h6>
           <p className="txt-subtext txt-align-center"> Forgot your password? No worries. Reset it here. </p>
 

@@ -9,13 +9,10 @@ import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
 import * as ROUTES from '../../constants/routes'
 
-import { URL } from '../../constants/roles'
+import { BACKEND, LANDING } from '../../constants/roles'
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
-import { updateScrollability } from '../../constants'
 
 const SignupPage = (props) => {
-
-  updateScrollability(props.scroll)
 
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', maxWidth: '600px'}}>
@@ -24,7 +21,7 @@ const SignupPage = (props) => {
         {/* Application Title & Login Page Title */}
         <div className="row">
           <div className="col">
-            <Nav.Link href="/"> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
+            <Nav.Link href={LANDING}> <div className="txt-title txt-align-center"> Holler <span className="dot"></span> </div> </Nav.Link>
             <h6 className="txt-subtitle txt-align-center"> Create a New Account </h6>
             <p className="txt-subtext txt-align-center"> Join and meet more people in your University! </p>
           </div>
@@ -69,7 +66,7 @@ class SignupFormBase extends Component {
     console.log(props)
     
     axios({
-      url: URL + '/register',
+      url: BACKEND + '/register',
       method: "post",
       data: {
         email: email,
