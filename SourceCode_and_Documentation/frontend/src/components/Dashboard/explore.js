@@ -32,7 +32,6 @@ const Explore = (props) => {
   console.log(error)
 
   const [data, setData] = useState([])
-
   const params = {
     searchText: "",
     tags: "",
@@ -87,12 +86,6 @@ const Explore = (props) => {
       await axios({
         url: BACKEND + "/events",
         method: "GET",
-        params: {
-          searchText: "",
-          tags: "",
-          startDate: "",
-          endDate: ""
-        }
       })
         .then(res => {
           setData(res.data)
