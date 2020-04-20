@@ -6,7 +6,6 @@ var cors = require('cors');
 import { Response } from "express";
 import { HollerRequest } from "./types/request";
 
-
 // Import services
 import * as authService from "./services/authService";
 import * as dataService from "./services/dataService";
@@ -28,7 +27,10 @@ const NO_AUTH_ROUTES: string[] = [
 ];
 const NO_SIGNUP_ROUTES: string[] = [
   "/user",
-  "/timetable/faculties/unsw"
+  "/timetable/faculties/unsw",
+  "/timetable/classes/unsw",
+  "/timetable/class_codes/unsw",
+  "/interests"
 ];
 const UNIVERSITIES: string[] = [
   "unsw"
@@ -175,7 +177,19 @@ app.get('/user/new_notifications', async (req: HollerRequest, res: Response) => 
 // Gets all of the faculties and classes for a given university
 app.get('/timetable/faculties/:university', async (req: HollerRequest, res: Response) => {
   if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
-  const classes = await dataService.getFaculties(req.params.university);
+  const faculties = await dataService.getFaculties(req.params.university);
+  res.send(faculties);
+});
+
+app.get('/timetable/classes/:university', async (req: HollerRequest, res: Response) => {
+  if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
+  const classes = await dataService.getClasses(req.params.university);
+  res.send(classes);
+});
+
+app.get('/timetable/class_codes/:university', async (req: HollerRequest, res: Response) => {
+  if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
+  const classes = await dataService.getClassCodes(req.params.university);
   res.send(classes);
 });
 
@@ -245,9 +259,25 @@ app.get('/chat/:conversationId/messages', async (req: HollerRequest, res: Respon
 });
 
 // Gets a list of all possible badges
-app.get('/badges', async (req: HollerRequest, res: Response) => {
-  const badges = await dataService.getBadges();
-  res.send(badges);
+app.get('/chat/:conversationId/last_message', async (req: HollerRequest, res: Response) => {
+  const message = await chatService.getLastMessage(req.params.conversationId);
+  res.send(message);
+});
+
+// Gets a list of all possible badges
+app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Response) => {
+  
+  if (!req.body.message) {
+    res.status(400).send("No message provided");
+  }
+
+  try {
+    await chatService.sendMessage(req.body.message);
+    res.send();
+  } catch (e) {
+    res.status(400).send("Error sending message");
+  }
+  
 });
 
 // Run the API

@@ -3,6 +3,7 @@ import { db } from "./firebaseService";
 
 // Import models
 import { Faculty } from "../models/faculty";
+import { Class } from "../models/class";
 
 // Faculties
 
@@ -15,6 +16,32 @@ export async function getFaculties(university: string): Promise<Faculty[]> {
   const faculties: Faculty[] = <Faculty[]> snapshot.docs.map(doc => doc.data());
   
   return faculties;
+}
+
+export async function getClasses(university: string): Promise<Class[]> {
+  const snapshot = await db.collection('faculties').where("university", "==", university).get();
+  
+  var classes: Class[] = [];
+
+  snapshot.docs.forEach(doc => {
+    const faculty = <Faculty> doc.data();
+    classes = classes.concat(faculty.classes);
+  });
+  
+  return classes;
+}
+
+export async function getClassCodes(university: string): Promise<string[]> {
+  const snapshot = await db.collection('faculties').where("university", "==", university).get();
+  
+  var classes: string[] = [];
+
+  snapshot.docs.forEach(doc => {
+    const faculty = <Faculty> doc.data();
+    classes = classes.concat(faculty.classes.map(classObj => classObj.code));
+  });
+  
+  return classes;
 }
 
 /**
@@ -48,6 +75,10 @@ export async function setFaculties(university: string, faculties: Faculty[]): Pr
 }
 
 // Interests
+
+export async function setInterest(interest: string): Promise<void> {
+  const snapshot = await db.collection('interests').doc(interest).set({});
+}
 
 /**
  * 
