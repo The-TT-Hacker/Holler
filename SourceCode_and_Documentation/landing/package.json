@@ -1,6 +1,5 @@
 {
-  "name": "huddle",
-  "description": "Responsive landing page challenge from frontendmentor.io built using React and Tailwind.",
+  "name": "landing",
   "version": "1.0.0",
   "scripts": {
     "start": "PORT=3001 concurrently -k -p \"[{name}]\" -n \"CSS,React\" -c \"green.bold,cyan.bold\" \"npm:watch:css\" \"react-scripts start\"",
