@@ -27,7 +27,8 @@ const NO_AUTH_ROUTES: string[] = [
   "/badges"
 ];
 const NO_SIGNUP_ROUTES: string[] = [
-  "/user"
+  "/user",
+  "/timetable/faculties/unsw"
 ];
 const UNIVERSITIES: string[] = [
   "unsw"
@@ -43,32 +44,34 @@ app.use(function (req, res, next) {
 });
 app.use(async (req: HollerRequest, res: Response, next) => {
 
-    // Skip if it is a non auth route
-    if (NO_AUTH_ROUTES.includes(req.path)) next();
+  console.log(req.path);
 
-    // Check if the auth token exists
-    else if (!req.headers.authorization) res.status(403).send("No authorization token");
-    
-    // Handle authenticated routes
-    else {
+  // Skip if it is a non auth route
+  if (NO_AUTH_ROUTES.includes(req.path)) next();
 
-      try {
-      
-        // Check token and get uid, user object
-        await authService.verifyUser(req, req.headers.authorization);
-    
-        // Continue if route does not require sign up completion or sign up is completed
-        if (NO_SIGNUP_ROUTES.includes(req.path) || req.user.signupCompleted) next();
-        else throw "Sign up not completed";
+  // Check if the auth token exists
+  else if (!req.headers.authorization) res.status(403).send("No authorization token");
+  
+  // Handle authenticated routes
+  else {
 
-      } catch (e) {
+    try {
 
-        // Error authenticating with token
-        res.status(401).send(e);
-      
-      }
+      // Check token and get uid, user object
+      await authService.verifyUser(req, req.headers.authorization);
+  
+      // Continue if route does not require sign up completion or sign up is completed
+      if (NO_SIGNUP_ROUTES.includes(req.path) || req.user.signupCompleted) next();
+      else throw "Sign up not completed";
+
+    } catch (e) {
+
+      // Error authenticating with token
+      res.status(401).send(e);
     
     }
+  
+  }
 
 });
 
@@ -178,6 +181,12 @@ app.get('/timetable/faculties/:university', async (req: HollerRequest, res: Resp
 app.get('/interests', async (req: HollerRequest, res: Response) => {
   const interests = await dataService.getInterests();
   res.send(interests);
+});
+
+// Gets all of the faculties and classes for a given university
+app.get('/tags', async (req: HollerRequest, res: Response) => {
+  const tags = await dataService.getTags();
+  res.send(tags);
 });
 
 /**

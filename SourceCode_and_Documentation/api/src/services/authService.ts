@@ -28,8 +28,6 @@ export async function verifyUser(req: any, token: string): Promise<void> {
 
     const user = await userService.getUser(uid);
 
-    if (!user.signupCompleted) throw "Signup hasn't been completed";
-
     req.uid = uid;
     req.user = user;
 
@@ -89,9 +87,6 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
     }
 
     const writeResult = await db.collection("users").doc(userRecord.uid).set(userData);
-
-    //const cred = await client.signInWithEmailAndPassword(registration.email, registration.password);
-    //cred.user.sendEmailVerification();
   
     return null;
   } catch (e) {

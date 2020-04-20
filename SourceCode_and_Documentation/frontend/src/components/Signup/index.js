@@ -50,6 +50,7 @@ const INITIAL_STATE = {
   email: "",
   password: "",
   confirmPassword: "",
+  submitText: "Sign Up",
   error: null,
 }
 
@@ -62,8 +63,8 @@ class SignupFormBase extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state
-    const { props } = this.props
-    console.log(props)
+
+    this.setState({ submitText: "Loading..." })
     
     axios({
       url: BACKEND + '/register',
@@ -75,7 +76,8 @@ class SignupFormBase extends Component {
     })
     .then(response => {
       this.setState({ ...INITIAL_STATE })
-      this.props.history.push(ROUTES.VERIFY_EMAIL)     
+      this.props.history.push(ROUTES.VERIFY_EMAIL)
+      this.props.firebase.doLoginWithEmailAndPassword(email, password)
     })
     .catch(error => {
       this.setState({error})
@@ -159,7 +161,7 @@ class SignupFormBase extends Component {
           <br />
 
           <div className="d-flex flex-column align-items-center justify-content-center">
-            <Button className="btn-gradient btn-lg" disabled={isInvalid} type="submit"> Sign Up </Button>
+            <Button className="btn-gradient btn-lg" disabled={isInvalid} type="submit"> {this.state.submitText} </Button>
             {error && <p className="text-danger txt-align-center">{error.message}</p>}
           </div>
         </Form.Group>
