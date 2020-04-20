@@ -1,2 +1,1 @@
-curl http://localhost:5001/events
-    --header "Content-Type: application/json" \
+curl "http://localhost:5001/events?startDate=2020-03-20T08:47:34.617Z&endDate=2020-04-20T08:47:34.617Z"

@@ -18,7 +18,7 @@ getEvents().then(async (events) => {
 
   events = events.map((event) => {
 
-    event.categories[0].forEach((category: string) => {
+    event.categories.forEach((category: string) => {
       if (!tags.includes(category)) {
         tags.push(category);
       }
@@ -30,17 +30,20 @@ getEvents().then(async (events) => {
       }
     });
 
-    return {
+    const hollerEvent: Event = {
       id: event.id,
       url: event.url,
+      image_url: event.image_url,
       title: event.title,
       time_start: new Date(event.time_start),
       time_finish: new Date(event.time_finish),
       description: event.description,
       location: event.location,
       hosts: event.hosts.map((host: any) => host.name),
-      categories: event.categories[0]
+      categories: event.categories
     }
+
+    return hollerEvent;
   });
 
   var result = await eventService.setEvents(events);

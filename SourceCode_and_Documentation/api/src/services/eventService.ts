@@ -28,6 +28,7 @@ Date.prototype.addDays = function (days: number): Date {
  */
 export async function getEvents(searchText: string, tags: string, startDate: string, endDate: string): Promise<Event[]> {
   try {
+
     var time_start: Date;
 
     if (searchText) searchText = searchText.toUpperCase();
@@ -39,7 +40,9 @@ export async function getEvents(searchText: string, tags: string, startDate: str
       time_start = new Date();
     }
 
-    var query = db.collection('events').where('time_start', '>', time_start);
+    var query = db.collection('events')
+      .where('time_start', '>', time_start)
+      .orderBy('time_start', 'desc');
     
     // Get events
     const snapshot = await query.get()
@@ -59,48 +62,46 @@ export async function getEvents(searchText: string, tags: string, startDate: str
     });
 
     // Filter events
-
     events = events.filter((event) => {
 
-    // Filter by matching search text with title
-    if (searchText) {
+      // Filter by matching search text with title
+      if (searchText) {
         if (!event.title.toUpperCase().includes(searchText)) {
-        return false;
+          return false;
         }
-    }
+      }
 
-    // Query events occuring after end date
-    if (endDate) {
+      // Query events occuring after end date
+      if (endDate) {
         if (event.time_start > new Date(endDate)) return false;
-    }
+      }
 
-    // Filter based on tags
-    if (tags) {
+      // Filter based on tags
+      if (tags) {
         var tagList = tags.split(",");
 
         var valid = false;
 
         for (var i = 0; i < tagList.length; i++) {
-        if (event.categories.includes(tagList[i]) || event.hosts.includes(tagList[i])) {
+          if (event.categories.includes(tagList[i]) || event.hosts.includes(tagList[i])) {
             valid = true;
             break;
-        }
+          }
         }
 
         if (!valid) return false;
-    }
+      }
 
-    // Passed all filters
-    return true;
+      // Passed all filters
+      return true;
 
     });
 
-    // Sort events in chronologically order
-    events.sort((a, b) => +a.time_start - +b.time_start);
-
     return events;
+
   } catch (e) {
-      console.log(e);
+    console.log(e);
+    throw e;
   }
 }
 
@@ -115,6 +116,7 @@ export async function getEvent(id: string): Promise<Event> {
     return {
       id: docData.id,
       url: docData.url,
+      image_url: docData.image_url,
       title: docData.title,
       time_start: docData.time_start.toDate(),
       time_finish: docData.time_finish.toDate(),
