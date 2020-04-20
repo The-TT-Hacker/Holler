@@ -65,13 +65,13 @@ const Editable = ({
 
 const Profile = (props) => {
 
-  const [error, setError] = useState("")
-
   const [name, setName] = useState("")
   const [dob, setDOB] = useState("")
   const [majors, setMajors] = useState([])
   const [hobbies, setHobbies] = useState([])
   const [faculties, setFaculties] = useState([]) 
+  
+  console.log(faculties)
 
   // get information from backend
   useEffect(() => {
@@ -93,17 +93,17 @@ const Profile = (props) => {
           'Authorization': `${token}`
         },
       })
-      .then(res => {
-        var majors = res.data.map(({ name }) => name)
+      .then(response => {
+        var majors = response.data.map(({ name }) => name)
         const uniqueSet = new Set(majors)
         majors = [...uniqueSet]
         setFaculties(majors)
       })
-      .catch(err => {
-        if (axios.isCancel(err)) {
-          setError(err)
+      .catch(error => {
+        if (axios.isCancel(error)) {
+          // Cancelled
         } else {
-          setError(err)
+          console.log(error)
         }
       })
 

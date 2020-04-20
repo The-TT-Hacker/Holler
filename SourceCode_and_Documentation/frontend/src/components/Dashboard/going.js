@@ -1,7 +1,5 @@
 import React from 'react'
 
-import CSESocImage from '../../icons/event-image.svg'
-
 import { Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard } from './subcomponents'
 
@@ -19,22 +17,22 @@ const convertDates = (futureDate) => {
 
 
   if (days) {
-    if (days == 1)
+    if (days === 1)
       return days + " day!"
     else
       return days + " days!"
   } else if (hours) {
-    if (hours == 1) 
+    if (hours === 1) 
       return hours + " hour!"
     else
       return hours + " hours!"
   } else if (minutes) {
-    if (minutes == 1)
+    if (minutes === 1)
       return minutes + " minute!"
     else
       return minutes + " minutes!"
   } else {
-    if (seconds == 1)
+    if (seconds === 1)
       return seconds + " second!"
     else
       return seconds + " seconds!"

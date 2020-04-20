@@ -70,7 +70,7 @@ const AccordionEventCard = (props) => {
 
           <br /><br />
 
-          <div> <img src={FacebookLogo} style={{width: "32px", height: "32px"}}/> <a href={props.facebookLink}> View on Facebook </a> <br /><br /> </div>
+          <div> <img src={FacebookLogo} alt="facebook-logo" style={{width: "32px", height: "32px"}}/> <a href={props.facebookLink}> View on Facebook </a> <br /><br /> </div>
           <div className="card-title"> Description </div>
           {props.description} <br /><br />
           <div className="card-title">Location</div>
