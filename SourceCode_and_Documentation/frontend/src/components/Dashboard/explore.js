@@ -6,15 +6,13 @@ import CSESocImage2 from '../../icons/event-image-2.svg'
 
 import { Button, Collapse, Form, Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard, TagsModal, DateModal } from './subcomponents'
-import { updateScrollability } from '../../constants'
-import { URL } from '../../constants/roles'
+import { BACKEND } from '../../constants/roles'
 
 import '../../styles/explore.css'
 import '../../styles/events.css'
 
 const Explore = (props) => {
 
-  updateScrollability(props.scroll)
   const [showSearchInput, setShowSearchInput] = useState(false)
 
 
@@ -42,7 +40,7 @@ const Explore = (props) => {
   const fetchEvents = async () => {
 
     await axios({
-      url: URL + "/events",
+      url: BACKEND + "/events",
       method: "GET",
       parameters: {
         searchText: params.searchText,

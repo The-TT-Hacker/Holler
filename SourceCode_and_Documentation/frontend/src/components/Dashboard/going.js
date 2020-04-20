@@ -4,11 +4,8 @@ import CSESocImage from '../../icons/event-image.svg'
 
 import { Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard } from './subcomponents'
-import { updateScrollability } from '../../constants'
 
 const Going = (props) => {
-
-  updateScrollability(props.scroll)
 
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%'}}>
