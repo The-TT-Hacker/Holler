@@ -1,5 +1,8 @@
 import React from 'react';
-import {fabric} from 'fabric';
+
+import axios from 'axios'
+import { fabric } from 'fabric';
+import { BACKEND } from '../../constants/roles'
 
 class FabricCanvas extends React.Component {
 
@@ -46,10 +49,25 @@ class FabricCanvas extends React.Component {
         }
     }
 
+    async postAvatar() {
+      const token = localStorage.getItem('token')
+      var avatarAsBase64 = this.the_canvas.toDataURL({format: 'png'})
+      await axios({
+          url: BACKEND + '/user',
+          method: "PUT",
+          headers: {
+            'Authorization': `${token}`
+          },
+          data: {
+            image: avatarAsBase64
+          }
+        })
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    }
+
     componentWillUnmount = () => {
-        let link = document.createElement("a")
-        link.href = this.the_canvas.toDataURL({format: 'png'})      
-        localStorage.setItem('avatar', link.href)
+      this.postAvatar()
     }
 
     render(){
