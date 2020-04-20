@@ -31,6 +31,7 @@ const client = axios.create({
 export const createChatUser = (newUser: CreateChatUserRequest) => {
   return client
     .put(`/users/${newUser.id}`, {
+      name: newUser.name,
       custom: newUser.custom,
     })
     .then(() => true);
@@ -98,22 +99,23 @@ export const removeUserFromConversation = (conversationId: string, uidToRemove: 
 // Messages API
 
 /**
- * 
- * @param conversationId 
+ * Returns the most recent 100 messages in the given conversation.
+ * Empty array if no messages are sent in the conversation yet.
  */
 export const getAllMessages = (conversationId: string) => {
   return client
     .get(`conversations/${conversationId}/messages`, {
       params: {
-        limit: 1,
+        limit: 100,
       },
     })
     .then((response) => response.data.data as Message[]);
 };
 
 /**
- * 
- * @param conversationId 
+ *
+ * Returns the most recent message in the conversation (*in an array).
+ * Empty array if no messages are sent in the conversation yet.
  */
 export const getLastMessage = (conversationId: string) => {
   return client
@@ -126,8 +128,7 @@ export const getLastMessage = (conversationId: string) => {
 };
 
 /**
- * 
- * @param newMessage 
+ * Sends the given message on behalf of the user in the specified conversation.
  */
 export const sendMessage = (newMessage: SendMessageRequest) => {
   return client.post(`/conversations/${newMessage.conversationId}/messages`, [
