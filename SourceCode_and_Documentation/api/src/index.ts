@@ -124,9 +124,12 @@ app.get('/user', async (req: HollerRequest, res: Response) => {
 
 // Updates the current users infomation
 app.put('/user', async (req: HollerRequest, res: Response) => {
-  const result: boolean = await userService.updateUser(req.uid, req.body);
-  if (result) res.sendStatus(203);
-  else res.sendStatus(400);
+  try {
+    await userService.updateUser(req.uid, req.body);
+    res.sendStatus(203);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Deletes the current user
