@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
-    "start": "node .",
+    "start": "nodemon .",
     "test": "node dist/tests/test.js",
     "unsw_timetable": "node dist/data_collection/unsw_timetable",
     "unsw_events": "node dist/data_collection/unsw_events",
@@ -43,6 +43,7 @@
   "devDependencies": {
     "@types/express": "^4.17.6",
     "@types/node": "^13.7.7",
+    "nodemon": "^2.0.3",
     "typescript": "^3.8.3"
   }
 }

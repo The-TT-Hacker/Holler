@@ -73,3 +73,19 @@ export async function getBadges() {
     throw "Error"
   }
 }
+
+// Tags
+
+/**
+ * 
+ */
+export async function getTags() {
+  try {
+    const snapshot = await db.collection("tags").get();
+    const tags = snapshot.docs.map(doc => doc.id);
+    return tags;
+  } catch (e) {
+    console.log(e);
+    throw "Error"
+  }
+}
