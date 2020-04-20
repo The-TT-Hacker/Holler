@@ -32,33 +32,28 @@ const Explore = (props) => {
   const [error, setError] = useState("")
   console.log(error)
 
-
   const [data, setData] = useState([])
-  console.log(data)
-  
-  const fetchEvents = async (params) => {
+  const params = {
+    searchText: "",
+    tags: "",
+    startDate: "",
+    endDate: ""
+  }
+  const fetchEvents = async () => {
 
-    // Flag to use for cleanup
-    const source = axios.CancelToken.source()
-
-    // auth token - in useEffect to supress depdendency warnings
-    const token = localStorage.getItem('token')
     await axios({
       url: URL + "/events",
       method: "GET",
-      cancelToken: source.token,
-      headers: {
-        'Authorization': `${token}`
-      },
       parameters: {
         searchText: params.searchText,
         tags: params.tags,
-        start_date: params.start_date,
-        end_date: params.end_date
+        start_date: params.startDate,
+        end_date: params.endDate
       }
     })
       .then(res => {
         setData(res.data)
+        console.log(res.data)
 
       })
       .catch(err => {
@@ -87,18 +82,37 @@ const Explore = (props) => {
 
   // get information from backend
   useEffect(() => {
-
     // Flag to use for cleanup
     const source = axios.CancelToken.source()
-    const params = {
-      searchText: "",
-      tags: "",
-      start_date: "",
-      end_date: ""
+    const fetchEvents = async () => {
+
+      await axios({
+        url: URL + "/events",
+        method: "GET",
+        parameters: {
+          searchText: "",
+          tags: "",
+          start_date: "",
+          end_date: ""
+        }
+      })
+        .then(res => {
+          setData(res.data)
+          console.log(res.data)
+  
+        })
+        .catch(err => {
+  
+          if (axios.isCancel(err)) {
+            setError(err)
+          } else {
+            setError(err)
+          }
+  
+        })
     }
 
-    fetchEvents(params)
-
+    fetchEvents()
     // Cancel other requests
     return () => {
       source.cancel()
@@ -143,7 +157,7 @@ const Explore = (props) => {
         <div className="row spacer-down">
           <div className="col-12 d-flex">
             <TagsModal />
-            <DateModal />
+            <DateModal fetchEvents={fetchEvents} params={params}/>
           </div>
         </div>
 

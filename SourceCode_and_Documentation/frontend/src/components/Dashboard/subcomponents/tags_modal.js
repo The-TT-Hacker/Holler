@@ -6,7 +6,7 @@ const TagsModal = () => {
     const [tagModalShow, setTagModalShow] = useState(false);
 
     const [value, setValue] = useState([])
-    const handleChange = (val) => setValue(val)
+    const handleChange = (val) => {setValue(val); console.log(value)}
   
     return (
         <div>
