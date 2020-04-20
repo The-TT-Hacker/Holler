@@ -32,11 +32,18 @@ const AccordionEventCard = (props) => {
   }
 
   const renderTooltip = (values) => {
-    return (
-      <Tooltip id="button-tooltip" {...values}>
-        Join this event!
-      </Tooltip>
-    )
+    if (Array.isArray(value) && value.length)
+      return (
+        <Tooltip id="button-tooltip" {...values}>
+          Leave this event!
+        </Tooltip>
+      )
+    else
+      return (
+        <Tooltip id="button-tooltip" {...values}>
+          Join this event!
+        </Tooltip>
+      )
   }
 
   return (
