@@ -212,8 +212,12 @@ app.get('/tags', async (req: HollerRequest, res: Response) => {
 
 // Gets all current events
 app.get('/events', async (req: HollerRequest, res: Response) => {
-  const events = await eventService.getEvents(req.query.searchText, req.query.tags, req.query.startDate, req.query.endDate);
-  res.send(events);
+  try {
+    const events = await eventService.getEvents(req.query.searchText, req.query.tags, req.query.startDate, req.query.endDate);
+    res.send(events);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Gets the details about the specified event
