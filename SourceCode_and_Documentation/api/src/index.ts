@@ -23,6 +23,7 @@ const NO_AUTH_ROUTES: string[] = [
   "/register",
   "/verify_email",
   "/events",
+  "/tags",
   "/badges"
 ];
 const NO_SIGNUP_ROUTES: string[] = [
@@ -271,18 +272,20 @@ app.get('/chat/:conversationId/last_message', async (req: HollerRequest, res: Re
 
 // Gets a list of all possible badges
 app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Response) => {
-  
-  if (!req.body.message) {
-    res.status(400).send("No message provided");
-  }
-
   try {
-    await chatService.sendMessage(req.body.message);
-    res.send();
+    if (!req.body.conversationId) res.status(400).send("No conversationId attribute provided");
+    else if (!req.body.text) res.status(400).send("No text attribute provided");
+    else {
+      await chatService.sendMessage({
+        senderId: req.uid,
+        conversationId: req.body.conversationId,
+        text: req.body.text
+      });
+      res.sendStatus(200);
+    }
   } catch (e) {
-    res.status(400).send("Error sending message");
+    res.status(400).send(e);
   }
-  
 });
 
 // Run the API
