@@ -8,10 +8,15 @@ const TagsModal = () => {
     const [value, setValue] = useState([])
     const handleChange = (val) => {setValue(val); console.log(value)}
   
+    const hideModal = () => {
+        setTagModalShow(false)
+    }
+
+
     return (
         <div>
             <Modal scrollable={true} show={tagModalShow}
-                onHide={() => setTagModalShow(false)}
+                onHide={hideModal}
                 aria-labelledby="tag-modal-title">
                 <Modal.Header>
                     <Modal.Title id="tag-modal-title">Filter By Tags</Modal.Title>

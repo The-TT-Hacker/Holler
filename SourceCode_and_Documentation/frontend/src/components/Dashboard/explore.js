@@ -32,74 +32,40 @@ const Explore = (props) => {
   console.log(error)
 
   const [data, setData] = useState([])
-  // const params = {
-  //   searchText: "",
-  //   tags: "",
-  //   startDate: "",
-  //   endDate: ""
-  // }
-  // const fetchEvents = async () => {
 
-  //   await axios({
-  //     url: BACKEND + "/events",
-  //     method: "GET",
-  //     parameters: {
-  //       searchText: params.searchText,
-  //       tags: params.tags,
-  //       start_date: params.startDate,
-  //       end_date: params.endDate
-  //     }
-  //   })
-  //     .then(res => {
-  //       setData(res.data)
-  //       console.log(res.data)
+  const params = {
+    searchText: "",
+    tags: "",
+    startDate: "",
+    endDate: ""
+  }
+  const fetchEvents = async () => {
+    await axios({
+      url: BACKEND + "/events",
+      method: "GET",
+      parameters: {
+        searchText: params.searchText,
+        tags: params.tags,
+        start_date: params.startDate,
+        end_date: params.endDate
+      }
+    })
+      .then(res => {
+        setData(res.data)
+        console.log(res.data)
 
-  //     })
-  //     .catch(err => {
+      })
+      .catch(err => {
 
-  //       if (axios.isCancel(err)) {
-  //         setError(err)
-  //       } else {
-  //         setError(err)
-  //       }
+        if (axios.isCancel(err)) {
+          setError(err)
+        } else {
+          setError(err)
+        }
 
-  //     })
-  // }
+      })
+  }
 
-  // const fetchOneEvent = async () => {
-  //   // Flag to use for cleanup
-  //   const source = axios.CancelToken.source()  
-
-  //   // auth token - in useEffect to supress depdendency warnings
-  //   const token = localStorage.getItem('token')
-  //   await axios({
-  //     url: BACKEND + "/event/" + data[0].id,
-  //     method: "GET",
-  //     parameters: {
-  //       searchText: params.searchText,
-  //       tags: params.tags,
-  //       start_date: params.startDate,
-  //       end_date: params.endDate
-  //     },
-  //     cancelToken: source.token,
-  //     headers: {
-  //       'Authorization': `${token}`
-  //     },
-  //   })
-  //     .then(res => {
-  //       console.log(res.data)
-
-  //     })
-  //     .catch(err => {
-
-  //       if (axios.isCancel(err)) {
-  //         setError(err)
-  //       } else {
-  //         setError(err)
-  //       }
-
-  //     })
-  // }
 
   // const getEvents = data.map((d) =>
   //   <AccordionEventCard
@@ -121,12 +87,6 @@ const Explore = (props) => {
       await axios({
         url: BACKEND + "/events",
         method: "GET",
-        parameters: {
-          searchText: "",
-          tags: "",
-          start_date: "",
-          end_date: ""
-        }
       })
         .then(res => {
           setData(res.data)
@@ -189,7 +149,7 @@ const Explore = (props) => {
         <div className="row spacer-down">
           <div className="col-12 d-flex">
             <TagsModal />
-            <DateModal />
+            <DateModal fetchEvents={fetchEvents} params={params}/>
           </div>
         </div>
 

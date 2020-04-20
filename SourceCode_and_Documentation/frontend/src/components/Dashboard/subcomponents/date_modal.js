@@ -6,27 +6,21 @@ import 'react-date-range/dist/theme/default.css' // theme css file
 
 const DateModal = (props) => {
 
-    const [dateModalShow, setDateModalShow] = useState(false);
-    const [startDate, setStartDate] = useState(Date);
-
-    const selectionRange = {
+    const [state, setState] = useState([{
         startDate: new Date(),
         endDate: new Date(),
         key: 'selection',
-    }
-
+    }])
+    const [dateModalShow, setDateModalShow] = useState(false);
 
     const handleShowEvents = () => {
-
-        console.log(startDate)
+        props.params.startDate = state[0].startDate
+        props.params.endDate = state[0].endDate
+        props.fetchEvents()
         setDateModalShow(false)
     }
 
-    const handleDate = (ranges) => {
-        selectionRange.startDate = ranges.selection.startDate
-        selectionRange.endDate = ranges.selection.endDate
-        setStartDate(selectionRange.startDate)
-    }
+
 
     return (
         <div>
@@ -40,8 +34,8 @@ const DateModal = (props) => {
                 <Modal.Body>
                     <div className="col d-flex flex-column align-items-center" style={{ padding: 0 }}>
                         <DateRangePicker
-                            ranges={[selectionRange]}
-                            onChange={handleDate}
+                            ranges={state}
+                            onChange={item => setState([item.selection])}
                             minDate={new Date()}
                             rangeColors={['#FEA31F', '#FEA31F', '#FEA31F', '#FEA31F']}
                         />
