@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import CSESocImage from '../../icons/event-image.svg'
-import CSESocImage2 from '../../icons/event-image-2.svg'
-
 import { Button, Collapse, Form, Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard, TagsModal, DateModal } from './subcomponents'
 import { BACKEND } from '../../constants/roles'
@@ -18,6 +15,7 @@ const Explore = (props) => {
 
   /* Search bar toggling */
   const [active, setActive] = useState(false)
+
   const changeSearchIcon = () => {
     if (active)
       document.getElementsByClassName("btn-explore-search")[0].classList.remove("active");
@@ -38,6 +36,44 @@ const Explore = (props) => {
     startDate: "",
     endDate: ""
   }
+
+  const convertDates = (futureDate) => {
+
+    var now = new Date()
+    var delta = Math.abs(futureDate - now) / 1000
+    var days = Math.floor(delta / 86400)
+    delta -= days * 86400
+    var hours = Math.floor(delta / 3600) % 24
+    delta -= hours * 3600
+    var minutes = Math.floor(delta / 60) % 60
+    delta -= minutes * 60
+    var seconds = delta % 60
+
+
+    if (days) {
+      if (days == 1)
+        return days + " day!"
+      else
+        return days + " days!"
+    } else if (hours) {
+      if (hours == 1) 
+        return hours + " hour!"
+      else
+        return hours + " hours!"
+    } else if (minutes) {
+      if (minutes == 1)
+        return minutes + " minute!"
+      else
+        return minutes + " minutes!"
+    } else {
+      if (seconds == 1)
+        return seconds + " second!"
+      else
+        return seconds + " seconds!"
+    }
+
+  }
+
   const fetchEvents = async () => {
     await axios({
       url: BACKEND + "/events",
@@ -50,9 +86,7 @@ const Explore = (props) => {
       }
     })
       .then(res => {
-        setData(res.data)
-        console.log(res.data)
-
+        setData(res.data.reverse())
       })
       .catch(err => {
 
@@ -65,18 +99,6 @@ const Explore = (props) => {
       })
   }
 
-
-  // const getEvents = data.map((d) =>
-  //   <AccordionEventCard
-  //   id={d.id}
-  //   image={CSESocImage}
-  //   title={d.title}
-  //   subtitle={}
-  //   description="Description"
-  //   rsvp="72"
-  //   location="Unknown" />
-  // ) 
-
   // get information from backend
   useEffect(() => {
     // Flag to use for cleanup
@@ -88,18 +110,17 @@ const Explore = (props) => {
         method: "GET",
       })
         .then(res => {
-          setData(res.data)
-          console.log(res.data)
-  
+          setData(res.data.reverse())
+          console.log(res.data.reverse())
         })
         .catch(err => {
-  
+
           if (axios.isCancel(err)) {
             setError(err)
           } else {
             setError(err)
           }
-  
+
         })
     }
 
@@ -109,7 +130,7 @@ const Explore = (props) => {
       source.cancel()
     }
 
-  }, [])
+  }, []) 
 
   return (
     <div className="container-fluid d-flex flex-column align-items-center">
@@ -137,7 +158,7 @@ const Explore = (props) => {
             <Collapse in={showSearchInput}>
               <div>
                 <Form >
-                  <Form.Control type="text" placeholder="Enter query text"/>
+                  <Form.Control type="text" placeholder="Enter query text" onChange={e => { params.searchText = e.currentTarget.value; fetchEvents() }} />
                 </Form>
               </div>
             </Collapse>
@@ -148,52 +169,41 @@ const Explore = (props) => {
         <div className="row spacer-down">
           <div className="col-12 d-flex">
             <TagsModal />
-            <DateModal fetchEvents={fetchEvents} params={params}/>
+            <DateModal fetchEvents={fetchEvents} params={params} />
           </div>
         </div>
 
         <div className="row">
           <div className="col">
             <Accordion className="accordion-going">
-              {/* {getEvents} */}
 
-              <AccordionEventCard
-                id="1"
-                image={CSESocImage}
-                title="CSESoc Weekly BBQ"
-                subtitle="Tomorrow, 12-2pm, John Lion's Garden (J17)"
-                description="Description"
-                rsvp="72"
-                location="Unknown" />
 
-              <AccordionEventCard
-                id="2"
-                image={CSESocImage2}
-                title="This"
-                subtitle="Tomorrow, 12-2pm, John Lion's Garden (J17)"
-                description="Description"
-                rsvp="72"
-                location="Unknown" />
+              {
 
-              <AccordionEventCard
-                id="3"
-                image="https://cdn.eventlink.me/society/cevsoc.jpg"
-                title="This"
-                subtitle="Tomorrow, 12-2pm, John Lion's Garden (J17)"
-                description="Description"
-                rsvp="72"
-                location="Unknown" />
+                data.map((d, index) =>
+
+                  <AccordionEventCard
+                  eventId={parseInt(d.id)}
+                  id={index}
+                  image={d.image_url}
+                  title={d.title}
+                  subtitle={new Date(d.time_start).toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'})}
+                  description={d.description}
+                  hosts={d.hosts}
+                  facebookLink={d.url}
+                  location={d.location}
+                  nextMatch={ convertDates(new Date(d.time_start)) } /> 
+                
+                )
+                
+              }
+
             </Accordion>
           </div>
-        </div>
+          </div>
 
-        {/* Tooltip for Swiping to Browse on Mobile */}
-        <div className="row">
-          <div className="col-12 swipe-to-browse"> &lt; Swipe to Browse &gt; </div>
         </div>
-
       </div>
-    </div>
 
   )
 }

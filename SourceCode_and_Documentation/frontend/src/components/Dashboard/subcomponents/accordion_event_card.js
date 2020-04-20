@@ -3,10 +3,10 @@ import React, { useState } from 'react'
 // Images
 import Marker from '../../../icons/marker.png'
 import ChatBubble from '../../../icons/chat.svg'
-import RSVPMan from '../../../icons/user-check.svg'
+import FacebookLogo from '../../../icons/facebook.png'
 
 // Components
-import { Accordion, Card, ToggleButtonGroup, ToggleButton, Image, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Accordion, Card, ToggleButtonGroup, ToggleButton, Image, Button, OverlayTrigger, Tooltip, Badge } from 'react-bootstrap'
 import GoogleMapReact from 'google-map-react'
 
 const AccordionEventCard = (props) => {
@@ -26,9 +26,9 @@ const AccordionEventCard = (props) => {
   /* Expansion toggling */
   const showMore = (activate) => {
     if (!activate)
-      document.getElementsByClassName("btn-show-more")[props.id - 1].classList.remove("active");
+      document.getElementsByClassName("btn-show-more")[props.id].classList.remove("active");
     else
-      document.getElementsByClassName("btn-show-more")[props.id - 1].classList.add("active");
+      document.getElementsByClassName("btn-show-more")[props.id].classList.add("active");
   }
 
   const renderTooltip = (values) => {
@@ -62,12 +62,19 @@ const AccordionEventCard = (props) => {
       <Accordion.Collapse eventKey={props.id} onExit={() => showMore(false)}>
         <Card.Body>
 
+          {
+            props.hosts.map((host) => 
+              <Badge className="gradient txt-poppins" pill style={{ fontWeight: "normal", padding: "10px", margin: "5px" }}> {host} </Badge>
+            )
+          }
+
+          <br /><br />
+
+          <div> <img src={FacebookLogo} style={{width: "32px", height: "32px"}}/> <a href={props.facebookLink}> View on Facebook </a> <br /><br /> </div>
           <div className="card-title"> Description </div>
-          {props.descripton} <br /><br />
-          <div className="card-title">RSVP &nbsp;<Image src={RSVPMan} /></div>
-          {props.rsvp} <br /><br />
+          {props.description} <br /><br />
           <div className="card-title">Location</div>
-          {props.location} <br />
+          {props.location} <br /><br />
 
           <div className="map-container">
             <GoogleMapReact
@@ -94,7 +101,7 @@ const AccordionEventCard = (props) => {
               <img alt="" src={ChatBubble} className="spacer-right" />
               <div className="d-flex flex-column">
                 <div className="chat-title"> Next Match </div>
-                <div className="chat-time"> 21 Hours </div>
+                <div className="chat-time"> { props.nextMatch } </div>
               </div>
             </div>
             <div>

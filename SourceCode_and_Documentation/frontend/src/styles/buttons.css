@@ -170,3 +170,8 @@
   margin-top: 10px !important;
   width: 170px;
 }
+
+.gradient {
+  background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);
+  color: white;
+}
