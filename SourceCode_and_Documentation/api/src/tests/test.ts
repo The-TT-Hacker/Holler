@@ -1,9 +1,11 @@
+/*
 import * as dataService from "../services/dataService";
 import { Event } from "../models/event";
 
 import * as sendgridService from "../services/sendgridService";
+*/
 
-sendgridService.sendEmailVerfification("8vhRFp1uo1Q7E6B0fFQ4a6ceyUa2", "timthacker97@gmail.com");
+//sendgridService.sendEmailVerfification("8vhRFp1uo1Q7E6B0fFQ4a6ceyUa2", "timthacker97@gmail.com");
 
 /*
 db.registerUser({
@@ -40,3 +42,8 @@ db.loginUser({
 //db.getEvent("1026547577732258").then((event: Event) => console.log(event));
 
 //dataService.getFaculties("unsw").then(res => console.log(res));
+
+
+import { admin } from "../services/firebaseService";
+
+admin.getUser("qTOEZPNGRDPgtdNA0DuvDxc8Y5I3").then((user: any) => console.log(user));
