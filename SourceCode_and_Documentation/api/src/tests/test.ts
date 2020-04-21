@@ -47,3 +47,7 @@ db.loginUser({
 //import { admin } from "../services/firebaseService";
 
 //admin.getUser("qTOEZPNGRDPgtdNA0DuvDxc8Y5I3").then((user: any) => console.log(user));
+
+import * as googleMapsService from "../services/googleMapsService";
+
+googleMapsService.getCoordinates("128A Greenwich Road, Greenwich, NSW 2065").then(res => console.log(res));

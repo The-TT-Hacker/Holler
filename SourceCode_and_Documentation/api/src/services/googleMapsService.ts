@@ -1,9 +1,11 @@
+import fetch from 'node-fetch';
+
 // Import models
 import { Coordinate } from "../models/coordinate";
 import { GMapsResponse } from "../models/googleMaps";
 
 // Import API key
-const gmaps_api_key = require("./secrets/gmaps_api_key.json");
+const gmaps_api_key = require("../../secrets/gmaps_api_key.json");
 
 /**
  * 
