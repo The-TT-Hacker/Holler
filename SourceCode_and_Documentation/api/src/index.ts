@@ -142,9 +142,12 @@ app.delete('/user', async (req: HollerRequest, res: Response) => {
 
 // Gets the list of events the current user is interested in
 app.get('/user/events', async (req: HollerRequest, res: Response) => {
-  const user: User = await userService.getUser(req.uid);
-  if (user) res.send(user);
-  else res.sendStatus(400);
+  try {
+    const eventIds: string[] = await userService.getEventInterests(req.uid);
+    res.send(eventIds);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Gets all notifications
