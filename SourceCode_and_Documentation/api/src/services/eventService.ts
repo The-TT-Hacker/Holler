@@ -47,11 +47,11 @@ export async function getEvents(searchText: string, tags: string, startDate: str
     
     // Get events
     const snapshot = await query.get()
-    var events = <Event[]> snapshot.docs.map(doc => {
-      const docData = doc.data();
+    var events = <Event[]> snapshot.docs.map(docRef => {
+      const docData = docRef.data();
 
       const eventResponse: GetEventResponse = {
-        id: doc.id,
+        id: docRef.id,
         url: docData.url,
         title: docData.title,
         time_start: docData.time_start.toDate(),
@@ -62,6 +62,9 @@ export async function getEvents(searchText: string, tags: string, startDate: str
         categories: docData.categories,
         image_url: docData.image_url
       }
+
+      if (docData.latitude) eventResponse.latitude = docData.latitude;
+      if (docData.longitude) eventResponse.longitude = docData.longitude;
 
       return eventResponse;
     });
@@ -120,18 +123,24 @@ export async function getEvent(id: string): Promise<Event> {
 
     const docRef = await db.collection("events").doc(id).get();
     const docData: FirebaseFirestore.DocumentData = docRef.data();
-    
-    return {
+
+    const eventResponse: GetEventResponse = {
+      id: docRef.id,
       url: docData.url,
-      image_url: docData.image_url,
       title: docData.title,
       time_start: docData.time_start.toDate(),
       time_finish: docData.time_finish.toDate(),
       description: docData.description,
       location: docData.location,
       hosts: docData.hosts,
-      categories: docData.categories
+      categories: docData.categories,
+      image_url: docData.image_url
     }
+
+    if (docData.latitude) eventResponse.latitude = docData.latitude;
+    if (docData.longitude) eventResponse.longitude = docData.longitude;
+    
+    return eventResponse;
 
   } catch (e) {
     throw e;
