@@ -10,8 +10,14 @@ import '../../styles/events.css'
 
 const convertDates = (futureDate) => {
 
+  var dayBefore = futureDate - 86400000
+
   var now = new Date()
-  var delta = Math.abs(futureDate - now) / 1000
+  if (futureDate - now < 86400000) {
+    return "Matches released"
+  }
+  
+  var delta = Math.abs(dayBefore - now) / 1000
   var days = Math.floor(delta / 86400)
   delta -= days * 86400
   var hours = Math.floor(delta / 3600) % 24
@@ -49,24 +55,62 @@ const Explore = (props) => {
 
   const [active, setActive] = useState(false)
   const [showSearchInput, setShowSearchInput] = useState(false)
-  
-  // Filtering and mapping data
-  const [data, setData] = useState([])
-  const [displayData, setDisplayData] = useState([])
 
+  const [events, setEvents] = useState([])
+  const [eventsFiltered, setEventsFiltered] = useState([])
+  const [activeTags, setActiveTags] = useState([])
+  const [startDate, setStartDate] = useState(undefined)
+  const [endDate, setEndDate] = useState(undefined)
+
+  /* Filter available events by title
+   */
   const updateQuery = (query) => {
 
     if (query.length > 0) {
       var newResults = []
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].title.toLowerCase().includes(query.toLowerCase()))
-          newResults.push(data[i])
+      for (var i = 0; i < events.length; i++) {
+        if (events[i].title.toLowerCase().includes(query.toLowerCase()))
+          newResults.push(events[i])
       }
-      setDisplayData(newResults)
+      setEventsFiltered(newResults)
     } else {
-      setDisplayData(data)
+      setEventsFiltered(events)
     }
   
+  }
+
+  /* Filter available events by tags
+   */
+  const filterByTags = () => {
+    
+    if (activeTags.length > 0) {
+      var newResults = []
+      for (var i = 0; i < events.length; i++) {
+        if (events[i].categories.some(v => activeTags.indexOf(v) !== -1))
+          newResults.push(events[i])
+      }
+      setEventsFiltered(newResults)
+    } else {
+      setEventsFiltered(events)
+    }
+
+  }
+
+  /* Filter available events by date
+   */
+  const filterByDate = () => {
+
+    if (startDate !== "" && endDate !== "") {
+      var newResults = []
+      for (var i = 0; i < events.length; i++) {
+        if (new Date(events[i].time_start) > new Date(startDate) && new Date(events[i].time_start) < new Date(new Date(endDate).getTime() + 86400000))
+          newResults.push(events[i])
+      }
+      setEventsFiltered(newResults)
+    } else {
+      setEventsFiltered(events)
+    }
+
   }
 
   const changeSearchIcon = () => {
@@ -78,7 +122,6 @@ const Explore = (props) => {
     setActive(!active);
   }
   
-  
   useEffect(() => {
     
     const fetchEvents = async () => {
@@ -89,8 +132,8 @@ const Explore = (props) => {
       })
       .then(response => {
         var reversedData = response.data.reverse()
-        setData(reversedData)
-        setDisplayData(reversedData)
+        setEvents(reversedData)
+        setEventsFiltered(reversedData)
       })
       .catch(error => {
         console.log(error)
@@ -101,7 +144,6 @@ const Explore = (props) => {
     fetchEvents()
 
   }, [])
-
 
   return (
     <div className="container-fluid d-flex flex-column align-items-center">
@@ -122,7 +164,7 @@ const Explore = (props) => {
             </div>
           </div>
         </div>
-
+        
         {/* Search Input Collapse */}
         <div className="row spacer-down">
           <div className="col-12">
@@ -137,8 +179,8 @@ const Explore = (props) => {
         {/* Event Filters */}
         <div className="row spacer-down">
           <div className="col-12 d-flex">
-            <TagsModal />
-            <DateModal />
+            <TagsModal activeTags={activeTags} setActiveTags={setActiveTags} triggerFilter={filterByTags} />
+            <DateModal setStartDate={setStartDate} setEndDate={setEndDate} triggerFilter={filterByDate} />
           </div>
         </div>
 
@@ -148,19 +190,19 @@ const Explore = (props) => {
 
               {
 
-                displayData.map((d, index) =>
+                eventsFiltered.map((d, index) =>
 
                   <AccordionEventCard
-                  eventId={parseInt(d.id)}
-                  id={index}
-                  image={d.image_url}
-                  title={d.title}
-                  subtitle={new Date(d.time_start).toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'})}
-                  description={d.description}
-                  hosts={d.hosts}
-                  facebookLink={d.url}
-                  location={d.location}
-                  nextMatch={ convertDates(new Date(d.time_start)) } /> 
+                    key={d.id}
+                    id={index}
+                    image={d.image_url}
+                    title={d.title}
+                    subtitle={new Date(d.time_start).toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'})}
+                    description={d.description}
+                    hosts={d.hosts}
+                    facebookLink={d.url}
+                    location={d.location}
+                    nextMatch={ convertDates(new Date(d.time_start)) } /> 
                 
                 )
                 

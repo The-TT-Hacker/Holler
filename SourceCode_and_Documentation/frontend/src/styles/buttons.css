@@ -171,6 +171,18 @@
   width: 170px;
 }
 
+.btn-modal-reset {
+  font-family: 'Poppins';
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 3px;
+  border: none !important;
+  line-height: 1.5em;
+  margin: 22px !important;
+  margin-top: 10px !important;
+  width: 170px;
+}
+
 .gradient {
   background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);
   color: white;
