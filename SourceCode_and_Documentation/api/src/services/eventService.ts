@@ -1,8 +1,9 @@
 // Import services
 import { db } from "./firebaseService";
+import * as googleMapsService from "./googleMapsService";
 
 // Import models
-import { Event, EventInterest } from "../models/event";
+import { Event, EventInterest, AddEventRequest } from "../models/event";
 
 declare global {
   interface Date {
@@ -49,7 +50,6 @@ export async function getEvents(searchText: string, tags: string, startDate: str
     var events = <Event[]> snapshot.docs.map(doc => {
       const docData = doc.data();
       return {
-        id: docData.id,
         url: docData.url,
         title: docData.title,
         time_start: docData.time_start.toDate(),
@@ -110,12 +110,15 @@ export async function getEvents(searchText: string, tags: string, startDate: str
  * @param id 
  */
 export async function getEvent(id: string): Promise<Event> {
+
   try {
+
     const docRef = await db.collection("events").doc(id).get();
     const docData: FirebaseFirestore.DocumentData = docRef.data();
+    
     return {
-      id: docData.id,
       url: docData.url,
+      image_url: docData.image_url,
       title: docData.title,
       time_start: docData.time_start.toDate(),
       time_finish: docData.time_finish.toDate(),
@@ -124,30 +127,88 @@ export async function getEvent(id: string): Promise<Event> {
       hosts: docData.hosts,
       categories: docData.categories
     }
+
   } catch (e) {
     console.log(e);
+    throw e;
   }
+
 }
 
 /**
  * 
  * @param events 
  */
-export async function setEvents(events: Event[]): Promise<boolean> {
+export async function setEvents(events: AddEventRequest[]): Promise<boolean> {
   try {
-    var promises: Promise<FirebaseFirestore.WriteResult>[] = [];
 
-    events.forEach((event: Event) => {
-      var promise = db.collection("events").doc(event.id).set(event);
+    var promises: Promise<void>[] = [];
+
+    events.forEach(event => {
+
+      var promise = setEvent(event.id, {
+        url: event.url,
+        image_url: event.image_url,
+        title: event.title,
+        time_start: event.time_start,
+        time_finish: event.time_finish,
+        description: event.description,
+        location: event.location,
+        hosts: event.hosts,
+        categories: event.categories
+      });
+
       promises.push(promise);
+
     });
 
     await Promise.all(promises);
 
     return true;
+
   } catch (e) {
     console.log(e);
     return false;
+  }
+}
+
+export async function setEvent(id: string, event: Event): Promise<void> {
+
+  // Check if event already exists
+
+  var newOrUpdatedLocation: boolean;
+
+  try {
+
+    const currentEvent = await getEvent(id);
+
+    // Check if location has been updated
+    if (event.location === currentEvent.location)
+      newOrUpdatedLocation = false;
+    else
+      newOrUpdatedLocation = true;
+0
+  } catch {
+
+    // New event
+    newOrUpdatedLocation = true;
+  
+  }
+
+  // Get coordinates if event is new or location is updated
+  if (newOrUpdatedLocation) {
+    googleMapsService.getCoordinates(event.location);
+  }
+
+  try {
+
+    // If 
+
+    await db.collection("events").doc(id).set(event);
+
+  } catch (e) {
+    console.log(e);
+    throw e;
   }
 }
 

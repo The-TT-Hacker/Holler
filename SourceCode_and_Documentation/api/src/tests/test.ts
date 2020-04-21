@@ -44,6 +44,6 @@ db.loginUser({
 //dataService.getFaculties("unsw").then(res => console.log(res));
 
 
-import { admin } from "../services/firebaseService";
+//import { admin } from "../services/firebaseService";
 
-admin.getUser("qTOEZPNGRDPgtdNA0DuvDxc8Y5I3").then((user: any) => console.log(user));
+//admin.getUser("qTOEZPNGRDPgtdNA0DuvDxc8Y5I3").then((user: any) => console.log(user));

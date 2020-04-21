@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import * as eventService from "../services/eventService";
-import { Event } from "../models/event";
+import { Event, AddEventRequest } from "../models/event";
 import { Society } from "../models/society";
 
 export async function getEvents(): Promise<any[]> {
@@ -14,6 +14,7 @@ export async function getSocieties(): Promise<Society[]> {
 }
 
 getEvents().then(async (events) => {
+
   var tags: string[] = [];
 
   events = events.map((event) => {
@@ -30,9 +31,10 @@ getEvents().then(async (events) => {
       }
     });
 
-    return {
+    const hollerEvent: AddEventRequest = {
       id: event.id,
       url: event.url,
+      image_url: event.image_url,
       title: event.title,
       time_start: new Date(event.time_start),
       time_finish: new Date(event.time_finish),
@@ -41,6 +43,8 @@ getEvents().then(async (events) => {
       hosts: event.hosts.map((host: any) => host.name),
       categories: event.categories[0]
     }
+
+    return hollerEvent;
   });
 
   var result = await eventService.setEvents(events);
@@ -56,4 +60,5 @@ getEvents().then(async (events) => {
     console.log("set tags failed");
     return;
   }
+
 });

@@ -93,7 +93,8 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
       
       // Create chat user
       const result = await chatService.createChatUser({
-        id: uid
+        id: uid,
+        name: ""
       });
 
       // Check if chat user was created successfully
@@ -237,5 +238,25 @@ export async function getNewNotifications(uid: string): Promise<Notification[]> 
   } catch (e) {
     if (e.errorInfo) throw e.errorInfo.message;
     else throw "Error";
+  }
+}
+
+/**
+ * Gets all event interests for a user
+ */
+export async function getEventInterests(uid: string) {
+  try {
+
+    const snapshot = await db.collection("event_interests").where('uid', '==', uid).get();
+    
+    const events: string[] =  snapshot.docs.map(doc => {
+      const eventInterest = <EventInterest> doc.data();
+      return eventInterest.eventId;
+    });
+
+    return events;
+  } catch (e) {
+    console.log(e);
+    throw "Error"
   }
 }
