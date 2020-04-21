@@ -22,17 +22,20 @@ const Step1 = (props) => {
   
   // information received from requests
   const [faculties, setFaculties] = useState([]) 
-  
+  const [classesList, setClassesList] = useState([])
+
   // values we will post
   const [name, setName] = useState("")
   const [dob, setDOB] = useState(new Date())
   const [majors, setMajors] = useState([])
+  const [classes, setClasses] = useState([])
   
   // get information from backend
   useEffect(() => {
     
     // Flag to use for cleanup
     const source = axios.CancelToken.source()  
+    const source_two = axios.CancelToken.source()
 
     // auth token - in useEffect to supress depdendency warnings
     const token = localStorage.getItem('token')
@@ -45,38 +48,57 @@ const Step1 = (props) => {
         url: BACKEND + "/timetable/faculties/unsw",
         method:"GET",
         cancelToken: source.token,
-        headers: {
-          'Authorization': `${token}`
-        },
+        headers: { 'Authorization': `${token}` },
       })
-      .then(res => {
-        
-        // Filter the data to only the name of the major
-        var majors = res.data.map(({ name }) => name)
-  
-        // Convert it into a set to remove duplicates
+      .then(response => {
+               
+        var majors = response.data.map(({ name }) => name)
         const uniqueSet = new Set(majors)
-  
-        // Convert it back to an array
         majors = [...uniqueSet]
-  
-        // Save it to the state
         setFaculties(majors)
-  
+        
       })
-      .catch(err => {
+      .catch(error => {
 
-        if (axios.isCancel(err)) {
-          setError(err)
+        if (axios.isCancel(error)) {
+          setError(error)
         } else {
-          setError(err)
+          setError(error)
         }
 
       })
     }
 
-    // Make the request
+    const fetchClassList = async () => {
+
+      await axios({
+        url: BACKEND + "/timetable/class_codes/unsw",
+        method: "GET",
+        cancelToken: source_two.token,
+        headers: { 'Authorization': `${token}` },
+      })
+      .then(response => {
+
+        const uniqueSet = new Set(response.data)
+        var classList = [...uniqueSet]
+        setClassesList(classList)
+
+
+      })
+      .catch(error => {
+  
+        if (axios.isCancel(error)) {
+          setError(error)
+        } else {
+          setError(error)
+        }
+  
+      })
+  
+    }
+
     fetchData()
+    fetchClassList()
 
     // Cancel other requests
     return () => {
@@ -84,6 +106,7 @@ const Step1 = (props) => {
     }
 
   }, [])
+
 
   // send user data to the backend
   const postData = async () => {
@@ -100,7 +123,8 @@ const Step1 = (props) => {
         firstName: name.split(" ")[0], // first element
         lastName: name.split(" ")[name.split(" ").length -1], // last element
         dob: dobAsObject,
-        faculties: majors
+        faculties: majors,
+        classes: classes
       }
     })
     .then(res => console.log(res))
@@ -133,7 +157,7 @@ const Step1 = (props) => {
               <Form.Text className="txt-form spacer-down"> * This will be visible to other people </Form.Text>
 
               {/* Date of Birth */}
-              <Form.Control size="lg" type="text" placeholder="Birthdate" className="spacer-down" onChange={(e) => setDOB(e.currentTarget.value)}
+              <Form.Control size="lg" type="text" placeholder="Birthdate" onChange={(e) => setDOB(e.currentTarget.value)}
                 onFocus={(event) => onDateFocus(event)} onBlur={(event) => onDateBlur(event)} />
               
   
@@ -150,7 +174,21 @@ const Step1 = (props) => {
               onChange={setMajors}
               options={faculties}
               selected={majors}
+              className="spacer-down"
               placeholder="Select your major(s)" />
+
+            {/* Enrolled Classes */}
+            <Typeahead
+              style={{ width: "80%" }}
+              size="lg"
+              clearButton
+              id="basic-typeahead-example"
+              labelKey="majors"
+              multiple={true}
+              onChange={setClasses}
+              options={classesList}
+              selected={classes}
+              placeholder="Select your classes this year" />
           
           </div>
         </div>

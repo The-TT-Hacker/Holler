@@ -11,6 +11,8 @@ import { BACKEND } from '../../constants/roles'
 import { Form, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Avatar } from './subcomponents'
 
+import * as ROUTES from '../../constants/routes'
+
 import '../../styles/explore.css'
 
 const Editable = ({
@@ -65,68 +67,88 @@ const Profile = (props) => {
 
   const [error, setError] = useState("")
 
-  const [name, setName] = useState("Niraj Sapkota")
-  const [dob, setDOB] = useState("2001-06-21")
-  const [majors, setMajors] = useState(["Arts", "Education"])
-  const [hobbies, setHobbies] = useState(["Karaoke", "Finance", "Sports", "Technology"])
+  const [name, setName] = useState("")
+  const [dob, setDOB] = useState("")
+  const [majors, setMajors] = useState([])
+  const [hobbies, setHobbies] = useState([])
   const [faculties, setFaculties] = useState([]) 
 
-// get information from backend
-useEffect(() => {
-    
-  // Flag to use for cleanup
-  const source = axios.CancelToken.source()  
-
-  // auth token - in useEffect to supress depdendency warnings
-  const token = localStorage.getItem('token')
-
-  // Request Function
-  const fetchData = async () => {
-    
-    // Make a request to get all the faculties, faculty codes, classes and class codes
-    await axios({
-      BACKEND: BACKEND + "/timetable/faculties/unsw",
-      method:"GET",
-      cancelToken: source.token,
-      headers: {
-        'Authorization': `${token}`
-      },
-    })
-    .then(res => {
+  // get information from backend
+  useEffect(() => {
       
-      // Filter the data to only the name of the major
-      var majors = res.data.map(({ name }) => name)
+    // Flag to use for cleanup
+    const source = axios.CancelToken.source()  
 
-      // Convert it into a set to remove duplicates
-      const uniqueSet = new Set(majors)
+    // auth token - in useEffect to supress depdendency warnings
+    const token = localStorage.getItem('token')
 
-      // Convert it back to an array
-      majors = [...uniqueSet]
+    // Request Function
+    const fetchData = async () => {
+      
+      await axios({
+        url: BACKEND + "/timetable/faculties/unsw",
+        method:"GET",
+        cancelToken: source.token,
+        headers: {
+          'Authorization': `${token}`
+        },
+      })
+      .then(res => {
+        var majors = res.data.map(({ name }) => name)
+        const uniqueSet = new Set(majors)
+        majors = [...uniqueSet]
+        setFaculties(majors)
+      })
+      .catch(err => {
+        if (axios.isCancel(err)) {
+          setError(err)
+        } else {
+          setError(err)
+        }
+      })
 
-      // Save it to the state
-      setFaculties(majors)
+      await axios({
+        url: BACKEND + "/user",
+        method: "GET",
+        headers: { 'Authorization' : `${token}` }
+      })
+      .then(response => {
+        localStorage.setItem('avatar', response.data.image)
+        setName(response.data.firstName + " " + response.data.lastName)
+        setDOB(new Date(response.data.dob).toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}))
+        setMajors(response.data.faculties)
+        setHobbies(response.data.interests)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
 
+    // Make the request
+    fetchData()
+
+    // Cancel other requests
+    return () => {
+      source.cancel()
+    }
+
+  }, [])
+
+  const deleteAccount = async () => {
+    const token = localStorage.getItem('token')
+
+    await axios({
+      url: BACKEND + "/user",
+      method: "DELETE",
+      headers: { 'Authorization': `${token}` }
     })
-    .catch(err => {
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
 
-      if (axios.isCancel(err)) {
-        setError(err)
-      } else {
-        setError(err)
-      }
-
-    })
+    localStorage.removeItem('avatar')
+    localStorage.removeItem('token')
+    props.history.push(ROUTES.LANDING)
   }
-
-  // Make the request
-  fetchData()
-
-  // Cancel other requests
-  return () => {
-    source.cancel()
-  }
-
-}, [])
 
 
   return (
@@ -210,7 +232,7 @@ useEffect(() => {
 
         <div className="row">
           <div className="col">
-            <Button variant="danger spacer-down"> Delete Your Account </Button>
+            <Button variant="danger spacer-down" onClick={deleteAccount}> Delete Your Account </Button>
             <div className="txt-form spacer-down" style={{ fontSize: '14px' }}> * Warning: This proccess is not reversible, please ensure you have saved all important information. </div>
           </div>
         </div>

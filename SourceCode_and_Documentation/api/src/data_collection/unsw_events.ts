@@ -19,7 +19,7 @@ getEvents().then(async (events) => {
 
   events = events.map((event) => {
 
-    event.categories[0].forEach((category: string) => {
+    event.categories.forEach((category: string) => {
       if (!tags.includes(category)) {
         tags.push(category);
       }
@@ -31,8 +31,8 @@ getEvents().then(async (events) => {
       }
     });
 
-    const hollerEvent: AddEventRequest = {
-      id: event.id,
+
+    const hollerEvent: Event = {
       url: event.url,
       image_url: event.image_url,
       title: event.title,
@@ -41,7 +41,7 @@ getEvents().then(async (events) => {
       description: event.description,
       location: event.location,
       hosts: event.hosts.map((host: any) => host.name),
-      categories: event.categories[0]
+      categories: event.categories
     }
 
     return hollerEvent;

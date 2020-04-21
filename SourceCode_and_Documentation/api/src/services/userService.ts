@@ -94,7 +94,7 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
       // Create chat user
       const result = await chatService.createChatUser({
         id: uid,
-        name: ""
+        name: currentUserData.firstName + " " + currentUserData.lastName
       });
 
       // Check if chat user was created successfully
