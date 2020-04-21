@@ -121,7 +121,7 @@ const Step1 = (props) => {
       },
       data: {
         firstName: name.split(" ")[0], // first element
-        lastName: name.split(" ")[name.split(" ").length -1], // last element
+        lastName: name.split(" ")[name.split(" ").length - 1], // last element
         dob: dobAsObject,
         faculties: majors,
         classes: classes

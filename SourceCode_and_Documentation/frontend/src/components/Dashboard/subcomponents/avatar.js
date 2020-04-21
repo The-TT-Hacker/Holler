@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Avatar = (props) => {
-  const avatar = localStorage.getItem('avatar')
+  const avatar = sessionStorage.getItem('avatar')
   
   if (props.size === "large") {
     return (
