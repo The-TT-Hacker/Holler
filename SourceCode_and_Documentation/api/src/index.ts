@@ -143,6 +143,15 @@ app.delete('/user', async (req: HollerRequest, res: Response) => {
 // Gets the list of events the current user is interested in
 app.get('/user/events', async (req: HollerRequest, res: Response) => {
   try {
+    const eventIds: string[] = await userService.getEventInterestIds(req.uid);
+    res.send(eventIds);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+app.get('/user/event_ids', async (req: HollerRequest, res: Response) => {
+  try {
     const eventIds: string[] = await userService.getEventInterests(req.uid);
     res.send(eventIds);
   } catch (e) {

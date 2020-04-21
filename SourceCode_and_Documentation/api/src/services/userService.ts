@@ -242,10 +242,36 @@ export async function getNewNotifications(uid: string): Promise<Notification[]> 
 }
 
 /**
- * Gets all event interests for a user
+ * Gets all event ids for event interests for a user
+ */
+export async function getEventInterestIds(uid: string) {
+  try {
+
+    const snapshot = await db.collection("event_interests").where('uid', '==', uid).get();
+    
+    const events: string[] =  snapshot.docs.map(doc => {
+      const eventInterest = <EventInterest> doc.data();
+      return eventInterest.eventId;
+    });
+
+    return events;
+  } catch (e) {
+    console.log(e);
+    throw "Error"
+  }
+}
+
+/**
+ * Gets all events for event interests for a user
  */
 export async function getEventInterests(uid: string) {
   try {
+
+    const eventIds = await getEventInterestIds(uid);
+
+    eventIds.map(eventId => {
+      
+    })
 
     const snapshot = await db.collection("event_interests").where('uid', '==', uid).get();
     
