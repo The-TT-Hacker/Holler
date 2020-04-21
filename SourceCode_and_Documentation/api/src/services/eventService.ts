@@ -57,7 +57,8 @@ export async function getEvents(searchText: string, tags: string, startDate: str
         description: docData.description,
         location: docData.location,
         hosts: docData.hosts,
-        categories: docData.categories
+        categories: docData.categories,
+        image_url: docData.image_url
       }
     });
 
