@@ -117,11 +117,11 @@ export async function getEvents(searchText: string, tags: string, startDate: str
  * 
  * @param id 
  */
-export async function getEvent(id: string): Promise<Event> {
+export async function getEvent(eventId: string): Promise<Event> {
 
   try {
 
-    const docRef = await db.collection("events").doc(id).get();
+    const docRef = await db.collection("events").doc(eventId).get();
     const docData: FirebaseFirestore.DocumentData = docRef.data();
 
     const eventResponse: GetEventResponse = {

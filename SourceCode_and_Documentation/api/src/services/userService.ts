@@ -2,9 +2,10 @@
 import { db, admin } from "./firebaseService";
 import * as chatService from "./chatService";
 import * as sendgridService from "./sendgridService";
+import * as eventService from "./eventService";
 
 // Import models
-import { EventInterest } from "../models/event";
+import { Event, EventInterest } from "../models/event";
 import { User, UpdateUserRequest, UpdateUser } from "../models/user";
 import { Notification } from "../models/notification";
 
@@ -244,7 +245,7 @@ export async function getNewNotifications(uid: string): Promise<Notification[]> 
 /**
  * Gets all event ids for event interests for a user
  */
-export async function getEventInterestIds(uid: string) {
+export async function getEventInterestIds(uid: string): Promise<string[]> {
   try {
 
     const snapshot = await db.collection("event_interests").where('uid', '==', uid).get();
@@ -264,21 +265,20 @@ export async function getEventInterestIds(uid: string) {
 /**
  * Gets all events for event interests for a user
  */
-export async function getEventInterests(uid: string) {
+export async function getEventInterests(uid: string): Promise<Event[]> {
   try {
 
     const eventIds = await getEventInterestIds(uid);
 
-    eventIds.map(eventId => {
-      
+    var promises: Promise<Event>[] = [];
+
+    eventIds.forEach(eventId => {
+      const promise: Promise<Event> = eventService.getEvent(eventId);
+
+      promises.push(promise);
     })
 
-    const snapshot = await db.collection("event_interests").where('uid', '==', uid).get();
-    
-    const events: string[] =  snapshot.docs.map(doc => {
-      const eventInterest = <EventInterest> doc.data();
-      return eventInterest.eventId;
-    });
+    const events = await Promise.all(promises);
 
     return events;
   } catch (e) {
