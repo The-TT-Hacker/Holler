@@ -21,7 +21,10 @@
   },
   "include": [
     "src/**/*",
-    "secrets/**/*.json",
-    "data/**/*.json"
+    "secrets/*.json",
+    "data/*.json"
+  ],
+  "files": [
+    "settings.json"
   ]
 }
