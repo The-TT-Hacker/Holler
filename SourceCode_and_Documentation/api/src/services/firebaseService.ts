@@ -19,6 +19,8 @@ firebase_client.initializeApp({
   measurementId: "G-439E2HGLD1"
 });
 
-export var db = firebase_admin.firestore();
-export var admin = firebase_admin.auth();
-export var client = firebase_client.auth();
+export const db = firebase_admin.firestore();
+export const dbTypes = firebase_admin.firestore;
+
+export const admin = firebase_admin.auth();
+export const client = firebase_client.auth();

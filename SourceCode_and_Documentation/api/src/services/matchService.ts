@@ -66,6 +66,7 @@ export async function getMatches(uid: string): Promise<MatchResponse[]> {
       console.log(lastMessage);
 
       const matchResponse: MatchResponse = {
+        matchId: doc.id,
         chatId: match.chatId,
         users: matchUserInfo,
         events: matchEventInfo,

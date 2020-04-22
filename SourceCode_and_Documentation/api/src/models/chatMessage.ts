@@ -17,6 +17,13 @@ export interface Message {
   createdAt: UnixMilliseconds;
 }
 
+export interface TalkJsMessage {
+  id: MessageId;
+  senderId: ChatUserId;
+  text: string;
+  createdAt: UnixMilliseconds;
+}
+
 export interface LastMessage {
   firstName: string;
   text: string;

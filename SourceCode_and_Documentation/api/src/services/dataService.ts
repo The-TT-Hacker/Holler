@@ -4,6 +4,11 @@ import { db } from "./firebaseService";
 // Import models
 import { Faculty } from "../models/faculty";
 import { Class } from "../models/class";
+import { Badge } from "../models/badge";
+
+//Import badges
+import badges from "../../data/badges.json";
+//const badges: Badge[] = require("../../data/badges.json");
 
 // Faculties
 
@@ -94,17 +99,21 @@ export async function getInterests(): Promise<string[]> {
 /**
  * 
  */
-export async function getBadges() {
-  try {
-    const snapshot = await db.collection("badges").get();
-    const badges = snapshot.docs.map(doc => doc.id);
-    return badges;
-  } catch (e) {
-    console.log(e);
-    throw "Error"
-  }
+export function getBadges(): Badge[] {
+  return <Badge[]> badges;
 }
 
+export function getBadge(badgeId: string): Badge {
+  try {
+    const badge = (<Badge[]>badges).find(badge => badge.id = badgeId);
+    
+    if (!badge) throw "Invalid badgeId"
+    
+    return badge;
+  } catch (e) {
+    throw e;
+  }
+}
 // Tags
 
 /**

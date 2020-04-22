@@ -1,8 +1,9 @@
 // Import services
-import { db, admin } from "./firebaseService";
+import { db, dbTypes, admin } from "./firebaseService";
 import * as chatService from "./chatService";
 import * as sendgridService from "./sendgridService";
 import * as eventService from "./eventService";
+import * as dataService from "./dataService";
 
 // Import models
 import { Event, EventInterest } from "../models/event";
@@ -189,6 +190,12 @@ export async function getUserEventInterests(uid: string): Promise<EventInterest[
   } catch (e) {
     return null;
   }
+}
+
+export async function addBadge(uid: string, badgeId: string): Promise<void> {
+  await db.collection("users").doc(uid).update({
+    badges: dbTypes.FieldValue.arrayUnion('greater_virginia')
+  });
 }
 
 /**
