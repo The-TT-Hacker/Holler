@@ -109,6 +109,7 @@ export const removeUserFromConversation = (conversationId: string, uidToRemove: 
  */
 export const getAllMessages = async (conversationId: string, afterMessageId?: string) => {
   try {
+    console.log(afterMessageId)
     const talkJsMessages = await client
       .get(`conversations/${conversationId}/messages`, {
         params: {

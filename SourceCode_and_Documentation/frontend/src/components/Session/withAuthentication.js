@@ -16,17 +16,15 @@ const withAuthentication = Component => {
         isLoading: false
       }
     }
-
+    
     componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged(
         authUser => {
           
           if (authUser) {
-
             this.setState({ authUser })
             authUser.getIdToken().then((token) => localStorage.setItem('token', token))
-            localStorage.setItem('firebase_id', authUser.uid)
-            
+            localStorage.setItem('firebase_id', authUser.uid)           
           } else {
             this.setState({ authUser: null })
           }
