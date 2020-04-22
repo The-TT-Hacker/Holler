@@ -25,9 +25,9 @@ const Landing = () => {
             Go to events and meet more people at your university!
           </h1>
           <p className="mb-32 max-w-lg">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut.
+            Holler helps you find your mates while exploring interesting events happening at your
+            uni! Mark an event as going and you will be matched with other people going to the event
+            based on your profile.
           </p>
           <form action={FRONTEND + '/signup'}>
             <button className="btn-primary rounded-full" type="submit">
@@ -66,9 +66,9 @@ const Landing = () => {
           img={growTogetherIllustration}
           imgAlt="Grow together illustration."
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut.
+          Find events available in your uni. Filter events by type and date and quickly join in an
+          event! Upcoming events that you have currently signed up for. You would have new friends
+          to go with for each event!
         </CurvedSection>
       </div>
 
@@ -78,9 +78,9 @@ const Landing = () => {
           img={flowingConversationsIllustration}
           imgAlt="Flowing Conversations illustration."
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut.
+          Match with friends that are going to similar events here! Now you don’t have to worry
+          about going to events alone! Your collected badges for each task/ action you complete.
+          Compete with friends and members to clinch the most badges.
         </Section>
       </div>
 
@@ -92,9 +92,8 @@ const Landing = () => {
           img={yourUsersIllustration}
           imgAlt="Your Users illustration."
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut.
+          Your profile and your information. Holler will use this to provide you with events that
+          best matches your interests.
         </CurvedSection>
       </div>
 

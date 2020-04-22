@@ -7,7 +7,8 @@ import * as chatService from "./chatService";
 // Import models
 import { Match, MatchResponse, MatchUserInfo, MatchEventInfo } from "../models/match";
 
-// Matches
+// Import ids
+import * as ids from "../UUIDs";
 
 /**
  * 
@@ -22,6 +23,8 @@ export async function setMatch(match: Match) {
     };
 
     db.collection("matches").add(newMatch);
+
+    await Promise.all(newMatch.uids.map(async uid => await userService.addBadge(uid, ids.badges.firstMatch)));
 
     return null;
   } catch (e) {
