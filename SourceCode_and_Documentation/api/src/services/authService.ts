@@ -83,7 +83,7 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
       faculties: [],
       classes: [],
       interests: [],
-      badges: []
+      badges: {}
     }
 
     const writeResult = await db.collection("users").doc(userRecord.uid).set(userData);
