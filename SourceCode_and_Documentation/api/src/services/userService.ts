@@ -91,13 +91,13 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
     if (updateUserValues.signupCompleted) {
       
       // Create chat user
-      const result = await chatService.createChatUser({
+      await chatService.createChatUser({
         id: uid,
         name: currentUserData.firstName + " " + currentUserData.lastName
       });
 
-      // Check if chat user was created successfully
-      if (result) updateUserValues.chatUserCreated = true;
+      // Chat user was created successfully
+      updateUserValues.chatUserCreated = true;
 
       await addBadge(uid, ids.badges.completedProfile);
       
@@ -274,7 +274,13 @@ export async function getNewNotifications(uid: string): Promise<Notification[]> 
       .orderBy('time', 'desc')
       .get();
 
-    const notifcations: Notification[] = <Notification[]> snapshot.docs.map(doc => doc.data());
+    const notifcations: Notification[] = await Promise.all(snapshot.docs.map(async doc => {
+      // Set notification to seen
+      await db.collection("notifcations").doc(doc.id).update({
+        seen: true
+      });
+      return <Notification> doc.data();
+    }));
 
     return notifcations;
   

@@ -112,7 +112,6 @@ export async function getEvents(searchText: string, tags: string, startDate: str
     return events;
 
   } catch (e) {
-    console.log(e);
     throw e;
   }
 }
@@ -122,7 +121,6 @@ export async function getEvents(searchText: string, tags: string, startDate: str
  * @param id 
  */
 export async function getEvent(eventId: string): Promise<EventResponse> {
-
   try {
 
     const docRef = await db.collection("events").doc(eventId).get();
@@ -149,14 +147,13 @@ export async function getEvent(eventId: string): Promise<EventResponse> {
   } catch (e) {
     throw e;
   }
-
 }
 
 /**
  * 
  * @param events 
  */
-export async function setEvents(events: AddEventRequest[]): Promise<boolean> {
+export async function setEvents(events: AddEventRequest[]): Promise<void> {
   try {
 
     var promises: Promise<void>[] = [];
@@ -181,22 +178,17 @@ export async function setEvents(events: AddEventRequest[]): Promise<boolean> {
 
     await Promise.all(promises);
 
-    return true;
-
   } catch (e) {
-    console.log(e);
-    return false;
+    throw e;
   }
 }
 
 export async function setEvent(id: string, event: Event): Promise<void> {
 
   // Check if event already exists
-
   var newOrUpdatedLocation: boolean;
 
   try {
-
     const currentEvent = await getEvent(id);
 
     // Event location has not been updated
@@ -207,17 +199,12 @@ export async function setEvent(id: string, event: Event): Promise<void> {
 
   // New event
   } catch {
-
     newOrUpdatedLocation = true;
-  
   }
 
   // Get coordinates if event is new or location is updated
   if (newOrUpdatedLocation) {
-
     try {
-      
-      //const coordinates = { latitude: 0, longitude: 0 };
       const coordinates = await googleMapsService.getCoordinates(event.location);
       console.log(coordinates);
       
@@ -229,17 +216,11 @@ export async function setEvent(id: string, event: Event): Promise<void> {
       // Remove current values if new event location doesn't have coordinates
       if (event.latitude) delete event.latitude;
       if (event.longitude) delete event.longitude;
-
     }
-    
   }
 
   try {
-
-    console.log(id);
-
     await db.collection("events").doc(id).set(event);
-
   } catch (e) {
     console.log(e);
     throw e;
@@ -250,11 +231,9 @@ export async function setEvent(id: string, event: Event): Promise<void> {
  * 
  * @param tags 
  */
-export async function setTags(tags: string[]): Promise<boolean> {
+export async function setTags(tags: string[]): Promise<void> {
   try {
     var promises: Promise<FirebaseFirestore.WriteResult>[] = [];
-
-    console.log(tags);
 
     tags.forEach((tag: string) => {
       var promise = db.collection("tags").doc(tag).set({});
@@ -263,10 +242,8 @@ export async function setTags(tags: string[]): Promise<boolean> {
 
     await Promise.all(promises);
 
-    return true;
   } catch (e) {
-    console.log(e);
-    return false;
+    throw e;
   }
 }
 
@@ -275,7 +252,7 @@ export async function setTags(tags: string[]): Promise<boolean> {
  * @param uid 
  * @param eventId 
  */
-export async function addEventInterest(uid: string, eventId: string) {
+export async function addEventInterest(uid: string, eventId: string): Promise<void> {
   try {
     const docRef = await db.collection("events").doc(eventId).get();
     const event: Event = <Event> docRef.data();
@@ -292,43 +269,38 @@ export async function addEventInterest(uid: string, eventId: string) {
 
     await userService.addBadge(uid, ids.badges.firstTimeInterested);
 
-    return null;
   } catch (e) {
-    console.log(e);
-    return false;
+    throw e;
   }
 }
 
 /**
  * 
  */
-export async function removeEventInterest(uid: string, eventId: string) {
+export async function removeEventInterest(uid: string, eventId: string): Promise<void> {
   try {
     const snapshot = await db.collection('event_interests')
       .where("uid", "==", uid)
       .where("eventId", "==", eventId)
       .get();
       
-    snapshot.forEach((doc) => doc.ref.delete());
-
-    return null;
+    snapshot.forEach(async (doc) => await doc.ref.delete());
   } catch (e) {
-    console.log(e);
-    return false;
+    throw e;
   }
 }
 
 /**
  * Gets all event interests for events occuring in the next 2 days
  */
-export async function getAllEventInterests(days: number) {
+export async function getAllEventInterests(days: number): Promise<EventInterest[]> {
   try {
     const snapshot = await db.collection("event_interests").where('expiry', '>', new Date()).get();
     const eventInterests: EventInterest[] = <EventInterest[]> snapshot.docs.map(doc => doc.data());
-
+    
+    // Filter manualy as firestore doesnt suppost multiple comparator where conditions
     return eventInterests.filter(eventInterest => eventInterest.expiry < (new Date).addDays(days));
   } catch (e) {
-    console.log(e);
-    throw "Error"
+    throw e;
   }
 }

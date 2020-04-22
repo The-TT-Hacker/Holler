@@ -47,18 +47,16 @@ getEvents().then(async (events) => {
     return hollerEvent;
   });
 
-  var result = await eventService.setEvents(addEventRequests);
-
-  if (!result) {
-    console.log("set events failed");
-    return;
+  try {
+    await eventService.setEvents(addEventRequests);
+  } catch (e) {
+    console.log(e);
   }
 
-  result = await eventService.setTags(tags);
-
-  if (!result) {
-    console.log("set tags failed");
-    return;
+  try {
+    await eventService.setTags(tags);
+  } catch (e) {
+    console.log(e);
   }
-
+  
 });

@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from "cors";
 
 // Import match generator
-import * as matchGenerator from "./match_generator/match_generator";
+import * as matchGenerator from "./match_generator/matchGenerator";
 
 // Import settings
 import settings from "../settings.json";
@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 });
 app.use(async (req: HollerRequest, res: Response, next) => {
 
-  console.log(req.path);
+  console.log(req.method + " " + req.path);
 
   // Skip if it is a non auth route
   if (NO_AUTH_ROUTES.includes(req.path)) next();
@@ -91,27 +91,26 @@ app.get('/', (req: HollerRequest, res: Response) => res.send({
 }));
 
 /**
- * New user end points
+ * Authentication endpoints
  */
 
 // Register a new user
 app.post('/register', async (req: HollerRequest, res: Response) => {
-  const error = await authService.registerUser(req.body);
-  if (error) res.status(400).send(error);
-  else res.sendStatus(200);
+  try {
+    await authService.registerUser(req.body);
+    res.sendStatus(203);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Confirm email address
 app.get('/verify_email', async (req: HollerRequest, res: Response) => {
   if (!req.query.uid) throw "No uid given";
   if (!req.query.oobCode) throw "No oobCode given";
-
   try {
-
     await authService.verifyEmail(req.query.uid, req.query.oobCode);
-
     res.redirect("http://localhost:3000/ps");
-
   } catch (e) {
     res.status(400).send(e);
   }
@@ -123,9 +122,12 @@ app.get('/verify_email', async (req: HollerRequest, res: Response) => {
 
 // Gets all the current user's information
 app.get('/user', async (req: HollerRequest, res: Response) => {
-  const user = await userService.getUser(req.uid);
-  if (user) res.send(user);
-  else res.sendStatus(400);
+  try {
+    await userService.getUser(req.uid);
+    res.sendStatus(200);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Updates the current users infomation
@@ -181,7 +183,7 @@ app.get('/user/matches', async (req: HollerRequest, res: Response) => {
 app.get('/user/notifications', async (req: HollerRequest, res: Response) => {
   try {
     var notifications: Notification[];
-
+    
     // Pagination given
     if (req.query.start && req.query.end) notifications = await userService.getAllNotifications(req.uid, req.query.start, req.query.end);
     
@@ -210,33 +212,63 @@ app.get('/user/new_notifications', async (req: HollerRequest, res: Response) => 
 
 // Gets all of the faculties and classes for a given university
 app.get('/timetable/faculties/:university', async (req: HollerRequest, res: Response) => {
-  if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
-  const faculties = await dataService.getFaculties(req.params.university);
-  res.send(faculties);
+  try {
+    if (!UNIVERSITIES.includes(req.params.university)) throw "No university provided";
+    const faculties = await dataService.getFaculties(req.params.university);
+    res.send(faculties);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 app.get('/timetable/classes/:university', async (req: HollerRequest, res: Response) => {
-  if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
-  const classes = await dataService.getClasses(req.params.university);
-  res.send(classes);
+  try {
+    if (!UNIVERSITIES.includes(req.params.university)) throw "No university provided";
+    const classes = await dataService.getClasses(req.params.university);
+    res.send(classes);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 app.get('/timetable/class_codes/:university', async (req: HollerRequest, res: Response) => {
-  if (!UNIVERSITIES.includes(req.params.university)) res.status(400).send("No university provided");
-  const classes = await dataService.getClassCodes(req.params.university);
-  res.send(classes);
+  try {
+    if (!UNIVERSITIES.includes(req.params.university)) throw "No university provided";
+    const classes = await dataService.getClassCodes(req.params.university);
+    res.send(classes);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+// Gets a list of all possible badges
+app.get('/badges', (req: HollerRequest, res: Response) => {
+  try {
+    const badges = dataService.getBadges();
+    res.send(badges);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Gets all of the faculties and classes for a given university
 app.get('/interests', async (req: HollerRequest, res: Response) => {
-  const interests = await dataService.getInterests();
-  res.send(interests);
+  try {
+    const interests = dataService.getInterests();
+    res.send(interests);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Gets all of the faculties and classes for a given university
 app.get('/tags', async (req: HollerRequest, res: Response) => {
-  const tags = await dataService.getTags();
-  res.send(tags);
+  try {
+    const tags = await dataService.getTags();
+    res.send(tags);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 /**
@@ -255,35 +287,35 @@ app.get('/events', async (req: HollerRequest, res: Response) => {
 
 // Gets the details about the specified event
 app.get('/event/:id', async (req: HollerRequest, res: Response) => {
-  if (!req.params.id) res.status(400).send("No event id provided");
-  const events = await eventService.getEvent(req.params.id);
-  res.send(events);
+  try {
+    if (!req.params.id) throw "No event id provided";
+    const events = await eventService.getEvent(req.params.id);
+    res.send(events);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Sets the current user as interested in the specified event
 app.post('/event/:id/add_interest', async (req: HollerRequest, res: Response) => {
-  if (!req.params.id) res.status(400).send("No event id provided");
-  const error = await eventService.addEventInterest(req.uid, req.params.id);
-  if (error) res.status(400).send(error);
-  else res.send();
+  try {
+    if (!req.params.id) throw "No event id provided";
+    await eventService.addEventInterest(req.uid, req.params.id);
+    res.sendStatus(203);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Removes the current users interest in a specified event
 app.delete('/event/:id/remove_interest', async (req: HollerRequest, res: Response) => {
-  if (!req.params.id) res.status(400).send("No event id provided");
-  const error = await eventService.removeEventInterest(req.uid, req.params.id);
-  if (error) res.status(400).send(error);
-  else res.send();
-});
-
-/**
- * Badges
- */
-
-// Gets a list of all possible badges
-app.get('/badges', (req: HollerRequest, res: Response) => {
-  const badges = dataService.getBadges();
-  res.send(badges);
+  try {
+    if (!req.params.id) throw "No event id provided";
+    await eventService.removeEventInterest(req.uid, req.params.id);
+    res.sendStatus(200);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 /*
@@ -292,18 +324,24 @@ app.get('/badges', (req: HollerRequest, res: Response) => {
 
 // Gets all messages for a conversation
 app.get('/chat/:conversationId/messages', async (req: HollerRequest, res: Response) => {
-
-  const messages = req.query.afterMessageId ? 
-    await chatService.getAllMessages(req.params.conversationId, req.query.afterMessageId) :
-    await chatService.getAllMessages(req.params.conversationId)
-  
-  res.send(messages);
+  try {
+    const messages = req.query.afterMessageId ? 
+      await chatService.getAllMessages(req.params.conversationId, req.query.afterMessageId) :
+      await chatService.getAllMessages(req.params.conversationId)
+    res.send(messages);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Gets the last message for a conversation
 app.get('/chat/:conversationId/last_message', async (req: HollerRequest, res: Response) => {
-  const message = await chatService.getLastMessage(req.params.conversationId);
-  res.send(message);
+  try {
+    const message = await chatService.getLastMessage(req.params.conversationId);
+    res.send(message);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Post a new message to a conversation
@@ -320,7 +358,6 @@ app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Respon
       res.sendStatus(200);
     }
   } catch (e) {
-    console.log(e.response.data);
     res.status(400).send(e);
   }
 });
