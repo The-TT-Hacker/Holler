@@ -20,9 +20,11 @@
         ]
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        
     ],
     "files": [
-        "src/types/request.d.ts"
+        "secrets/gmaps_api_key.json",
+        "secrets/holler-270902-4230fc220e88.json"
     ]
 }

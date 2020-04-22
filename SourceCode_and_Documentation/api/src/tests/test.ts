@@ -1,3 +1,33 @@
+import * as matchService from "../services/matchService";
+import * as chatService from "../services/chatService";
+import { Match } from "../models/match";
+
+const chatId = "43234234";
+
+const uids: string[] = [
+  "aH069sOkv1QKt3uuWgKYZfMx30q2",
+  "uGAX57PKjSMZc5liS9BbK5JRy363",
+  "y8gjL79sLcguYhS7sYiMDBejBol1"
+];
+
+const eventIds: string[] = [
+  "249845289743423"
+];
+
+chatService.createConverstaion({
+  id: chatId,
+  subject: "Test Match",
+  participants: uids
+}).then(res => console.log("chat", res));
+
+const match: Match = {
+  chatId: chatId,
+  uids: uids,
+  eventIds: eventIds
+}
+
+matchService.setMatch(match).then(res => console.log("match", res));
+
 /*
 import * as dataService from "../services/dataService";
 import { Event } from "../models/event";
@@ -48,6 +78,6 @@ db.loginUser({
 
 //admin.getUser("qTOEZPNGRDPgtdNA0DuvDxc8Y5I3").then((user: any) => console.log(user));
 
-import * as googleMapsService from "../services/googleMapsService";
-
+/*import * as googleMapsService from "../services/googleMapsService";
 googleMapsService.getCoordinates("128A Greenwich Road, Greenwich, NSW 2065").then(res => console.log(res));
+*/
