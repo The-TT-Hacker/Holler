@@ -274,15 +274,15 @@ export async function getNewNotifications(uid: string): Promise<Notification[]> 
       .orderBy('time', 'desc')
       .get();
 
-    const notifcations: Notification[] = await Promise.all(snapshot.docs.map(async doc => {
+    const notifications: Notification[] = await Promise.all(snapshot.docs.map(async doc => {
       // Set notification to seen
-      await db.collection("notifcations").doc(doc.id).update({
+      await db.collection("notifications").doc(doc.id).update({
         seen: true
       });
       return <Notification> doc.data();
     }));
 
-    return notifcations;
+    return notifications;
   
   } catch (e) {
     if (e.errorInfo) throw e.errorInfo.message;
