@@ -108,24 +108,28 @@ export const removeUserFromConversation = (conversationId: string, uidToRemove: 
  * if afterMessageId is specified, returns the 100 most recent messages after that message.
  */
 export const getAllMessages = async (conversationId: string, afterMessageId?: string) => {
-  const talkJsMessages = await client
-    .get(`conversations/${conversationId}/messages`, {
-      params: {
-        limit: 100,
-        startingAfter: afterMessageId
-      },
-    }).then((response) => response.data.data as TalkJsMessage[]);
-  
-  const messages: Message[] = talkJsMessages.map(talkJsMessage => {
-    return {
-      id: talkJsMessage.id,
-      senderId: talkJsMessage.senderId,
-      text: talkJsMessage.text,
-      createdAt: talkJsMessage.createdAt
-    }
-  })
-  
-  return messages;
+  try {
+    const talkJsMessages = await client
+      .get(`conversations/${conversationId}/messages`, {
+        params: {
+          limit: 100,
+          startingAfter: afterMessageId
+        },
+      }).then((response) => response.data.data as TalkJsMessage[]);
+    
+    const messages: Message[] = talkJsMessages.map(talkJsMessage => {
+      return {
+        id: talkJsMessage.id,
+        senderId: talkJsMessage.senderId,
+        text: talkJsMessage.text,
+        createdAt: talkJsMessage.createdAt
+      }
+    })
+    
+    return messages;
+  } catch (e) {
+    console.log(e.response.data);
+  }
 };
 
 /**

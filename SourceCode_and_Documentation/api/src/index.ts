@@ -304,8 +304,6 @@ app.get('/chat/:conversationId/last_message', async (req: HollerRequest, res: Re
 // Post a new message to a conversation
 app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Response) => {
   try {
-    console.log("chatId", req.params.conversationId);
-    console.log("text", req.body.text);
     if (!req.params.conversationId) res.status(400).send("No conversationId attribute provided");
     else if (!req.body.text) res.status(400).send("No message provided in body");
     else {
@@ -313,11 +311,11 @@ app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Respon
         senderId: req.uid,
         conversationId: req.params.conversationId,
         text: req.body.text
-      });
+      })
       res.sendStatus(200);
     }
   } catch (e) {
-    console.log(e);
+    console.log(e.response.data);
     res.status(400).send(e);
   }
 });
