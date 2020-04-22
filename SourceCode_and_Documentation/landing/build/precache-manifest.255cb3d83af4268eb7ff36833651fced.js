@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/static/media/connect.9ab636d2.png"
   },
   {
-    "revision": "ad8c6fefc40ae4bc59a0",
+    "revision": "4351df72d9c4472fe860",
     "url": "/static/css/main.71b36a96.chunk.css"
   },
   {
@@ -48,16 +48,24 @@ self.__precacheManifest = [
     "url": "/static/media/events.bd5ccbad.png"
   },
   {
-    "revision": "ad8c6fefc40ae4bc59a0",
-    "url": "/static/js/main.2d04cb14.chunk.js"
+    "revision": "4351df72d9c4472fe860",
+    "url": "/static/js/main.ca9ab28a.chunk.js"
   },
   {
     "revision": "ea42a51cf573d5765ef921fa9e884978",
     "url": "/static/media/match.ea42a51c.png"
   },
   {
-    "revision": "cb3b0a253814a42efd3db75649f9e643",
-    "url": "/static/media/bg-footer-top-mobile.cb3b0a25.svg"
+    "revision": "51e8693163d77c0c632519ead146e256",
+    "url": "/static/media/bg-section-bottom-mobile-2.51e86931.svg"
+  },
+  {
+    "revision": "a924b57b320cb03702299012267159b2",
+    "url": "/static/media/bg-section-top-desktop-1.a924b57b.svg"
+  },
+  {
+    "revision": "51400ad84ceba806a61dcc8a52b5a098",
+    "url": "/static/media/bg-section-top-desktop-2.51400ad8.svg"
   },
   {
     "revision": "d93749b91bbae4bdf341dc984e8a3729",
@@ -68,8 +76,12 @@ self.__precacheManifest = [
     "url": "/static/media/bg-section-top-mobile-1.72ac132a.svg"
   },
   {
-    "revision": "127e17f97aecba9f0e283e00a1cbe445",
-    "url": "/static/media/bg-section-bottom-desktop-2.127e17f9.svg"
+    "revision": "2cc82286acad54f5e8815c38c858d006",
+    "url": "/static/media/bg-section-top-mobile-2.2cc82286.svg"
+  },
+  {
+    "revision": "cb3b0a253814a42efd3db75649f9e643",
+    "url": "/static/media/bg-footer-top-mobile.cb3b0a25.svg"
   },
   {
     "revision": "80db126d2c3eb22f286447e93b75ed8a",
@@ -80,23 +92,11 @@ self.__precacheManifest = [
     "url": "/static/media/bg-section-bottom-desktop-1.17585d0d.svg"
   },
   {
-    "revision": "51e8693163d77c0c632519ead146e256",
-    "url": "/static/media/bg-section-bottom-mobile-2.51e86931.svg"
+    "revision": "127e17f97aecba9f0e283e00a1cbe445",
+    "url": "/static/media/bg-section-bottom-desktop-2.127e17f9.svg"
   },
   {
-    "revision": "51400ad84ceba806a61dcc8a52b5a098",
-    "url": "/static/media/bg-section-top-desktop-2.51400ad8.svg"
-  },
-  {
-    "revision": "a924b57b320cb03702299012267159b2",
-    "url": "/static/media/bg-section-top-desktop-1.a924b57b.svg"
-  },
-  {
-    "revision": "2cc82286acad54f5e8815c38c858d006",
-    "url": "/static/media/bg-section-top-mobile-2.2cc82286.svg"
-  },
-  {
-    "revision": "9331eb7df3a35ac81b26bde2fbb0e304",
+    "revision": "c2d0d5cb40862f91f67fb3724c7c1e0a",
     "url": "/index.html"
   }
 ];
