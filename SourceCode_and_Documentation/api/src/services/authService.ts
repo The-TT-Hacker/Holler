@@ -18,7 +18,7 @@ import {
  * @param req 
  * @param token 
  */
-export async function verifyUser(req: any, token: string): Promise<void> {
+export async function verifyUser(req: HollerRequest, token: string): Promise<void> {
   try {
     const uid = await getUID(token);
 
@@ -26,7 +26,7 @@ export async function verifyUser(req: any, token: string): Promise<void> {
 
     if (!authUser.emailVerified) throw "Email has not been verified";
 
-    const user = await userService.getUser(uid);
+    const user = await userService.getUserObject(uid);
 
     req.uid = uid;
     req.user = user;

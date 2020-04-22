@@ -2,7 +2,6 @@
   "name": "landing",
   "version": "1.0.0",
   "scripts": {
-    "prestart": "SET PORT=3001",
     "start": "concurrently -k -p \"[{name}]\" -n \"CSS,React\" -c \"green.bold,cyan.bold\" \"npm:watch:css\" \"react-scripts start\"",
     "build": "npm run build:css && react-scripts build",
     "build:css": "postcss src/styling/index.src.css -o src/styling/index.css --env production",

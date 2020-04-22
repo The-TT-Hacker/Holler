@@ -163,6 +163,20 @@ export async function getUser(uid: string): Promise<UserResponse> {
 }
 
 /**
+ * Gets the whole user object from firestore
+ * @param uid 
+ */
+export async function getUserObject(uid: string): Promise<User> {
+  try {
+    const docRef = await db.collection("users").doc(uid).get();
+    const user = <User> docRef.data();
+    return user;
+  } catch (e) {
+    throw e;
+  }
+}
+
+/**
  * 
  * @param uid 
  */
