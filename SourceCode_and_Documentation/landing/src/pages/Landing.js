@@ -12,33 +12,39 @@ import iconMessages from '../assets/icon-messages.svg';
 import growTogetherIllustration from '../assets/events.png';
 import flowingConversationsIllustration from '../assets/connect.png';
 import yourUsersIllustration from '../assets/match.png';
-import { FRONTEND } from '../constants/roles'
+import { FRONTEND } from '../constants/roles';
 
 const Landing = () => {
   return (
     <>
       <Header />
 
-      <section className="mt-80 lg:mt-128 px-8 text-center">
-        <h1 className="mb-24 lg:text-48">Go to events and meet more people at your university!</h1>
-        <p className="mb-32 max-w-lg lg:mx-auto">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut.
-        </p>
-        <form action={FRONTEND + '/signup'}>        
-          <button className="btn-primary rounded-full" type="submit"> Join Now </button>
-        </form>
-      </section>
+      <div className="lg:flex lg:justify-center lg:items-center lg:mt-32 lg:mx-128 lg:mb-128">
+        <section className="mt-80 lg:mt-128 px-8 text-center lg:text-left lg:w-50%">
+          <h1 className="mb-24 lg:text-48">
+            Go to events and meet more people at your university!
+          </h1>
+          <p className="mb-32 max-w-lg">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut.
+          </p>
+          <form action={FRONTEND + '/signup'}>
+            <button className="btn-primary rounded-full" type="submit">
+              {' '}
+              Join Now{' '}
+            </button>
+          </form>
+        </section>
 
-      <div className="text-center">
-        <img
-          src={screenMockups}
-          className="w-50% max-w-xl mt-80 lg:mt-80 px-12"
-          alt="Screen mockups of Huddle."
-        />
+        <div className="text-center lg:text-right">
+          <img
+            src={screenMockups}
+            className="w-70% lg:w-50% max-w-xl mt-80 lg:mt-0 px-12 lg:w-70%"
+            alt="Screen mockups of Huddle."
+          />
+        </div>
       </div>
-
       <section className="lg:flex lg:justify-around mt-80 lg:px-96 text-center">
         <div className="mb-64">
           <Stat icon={iconCommunities} iconAlt="Communities icon." text="Groups Formed">
@@ -94,8 +100,11 @@ const Landing = () => {
 
       <div className="mt-80 px-16 text-center">
         <h2 className="mb-32 lg:mb-32 lg:text-36">Ready to meet your new friends?</h2>
-        <form action={FRONTEND + '/signup'}>        
-          <button className="btn-primary rounded-full" type="submit"> Join Now </button>
+        <form action={FRONTEND + '/signup'}>
+          <button className="btn-primary rounded-full" type="submit">
+            {' '}
+            Join Now{' '}
+          </button>
         </form>
       </div>
 
