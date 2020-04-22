@@ -35,12 +35,17 @@ const GroupChat = (props) => {
     })
   }
 
+  const handlePost = () => {
+    var newMessages = messages
+    newMessages.push({senderId: myID, text: message})
+    setMessages(newMessages)
+    postMessage()
+  }
+
   const postMessage = async () => {
 
     if (message === "")
       return
-
-    console.log(message)
 
     await axios({
       url: BACKEND + '/chat/' + props.location.state.id + '/message',
@@ -50,11 +55,13 @@ const GroupChat = (props) => {
         text: message
       } 
     }).then(response => {
+      setMessage("")
       fetchMessages()
       console.log(response)
     }).then(error => {
       console.log(error)
     })
+
   }
 
   useEffect(() => {
@@ -214,8 +221,8 @@ const GroupChat = (props) => {
 
         {/* Chatbox Controls */}
         <div className="row">
-          <div className="col-10"> <Form.Control type="text" placeholder="Enter a message" onChange={(e) => setMessage(e.currentTarget.value)} /> </div>
-          <div className="col-2 d-flex justify-content-end"> <img className="image-as-button" alt="send" src={SendMessage} onClick={() => postMessage()} /></div>
+          <div className="col-10"> <Form.Control type="text" placeholder="Enter a message" value={message} onChange={(e) => setMessage(e.currentTarget.value)} /> </div>
+          <div className="col-2 d-flex justify-content-end"> <img className="image-as-button" alt="send" src={SendMessage} onClick={() => handlePost()} /></div>
         </div>
 
       </div>
