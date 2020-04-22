@@ -1,7 +1,7 @@
 import firebase_admin from "firebase-admin";
 import firebase_client from "firebase";
 
-let serviceAccount = require('../../secrets/holler-270902-4230fc220e88.json');
+const serviceAccount = require('../../secrets/holler-270902-4230fc220e88.json');
 
 firebase_admin.initializeApp({
   credential: firebase_admin.credential.cert(serviceAccount),

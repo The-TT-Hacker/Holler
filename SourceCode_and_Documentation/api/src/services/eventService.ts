@@ -3,7 +3,7 @@ import { db } from "./firebaseService";
 import * as googleMapsService from "./googleMapsService";
 
 // Import models
-import { Event, EventInterest, AddEventRequest, GetEventResponse } from "../models/event";
+import { Event, EventInterest, AddEventRequest, EventResponse } from "../models/event";
 
 declare global {
   interface Date {
@@ -50,7 +50,7 @@ export async function getEvents(searchText: string, tags: string, startDate: str
     var events = <Event[]> snapshot.docs.map(docRef => {
       const docData = docRef.data();
 
-      const eventResponse: GetEventResponse = {
+      const eventResponse: EventResponse = {
         id: docRef.id,
         url: docData.url,
         title: docData.title,
@@ -117,14 +117,14 @@ export async function getEvents(searchText: string, tags: string, startDate: str
  * 
  * @param id 
  */
-export async function getEvent(eventId: string): Promise<Event> {
+export async function getEvent(eventId: string): Promise<EventResponse> {
 
   try {
 
     const docRef = await db.collection("events").doc(eventId).get();
     const docData: FirebaseFirestore.DocumentData = docRef.data();
 
-    const eventResponse: GetEventResponse = {
+    const eventResponse: EventResponse = {
       id: docRef.id,
       url: docData.url,
       title: docData.title,
@@ -315,12 +315,12 @@ export async function removeEventInterest(uid: string, eventId: string) {
 /**
  * Gets all event interests for events occuring in the next 2 days
  */
-export async function getAllEventInterests() {
+export async function getAllEventInterests(days: number) {
   try {
     const snapshot = await db.collection("event_interests").where('expiry', '>', new Date()).get();
     const eventInterests: EventInterest[] = <EventInterest[]> snapshot.docs.map(doc => doc.data());
 
-    return eventInterests.filter(eventInterest => eventInterest.expiry < (new Date).addDays(2));
+    return eventInterests.filter(eventInterest => eventInterest.expiry < (new Date).addDays(days));
   } catch (e) {
     console.log(e);
     throw "Error"
