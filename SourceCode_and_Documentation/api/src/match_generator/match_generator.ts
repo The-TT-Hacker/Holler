@@ -35,8 +35,8 @@ const HOURS_BETWEEN_MATCHES = 1
 /**
  * Run match generator on a given schedule defined by HOURS_BETWEEN_MATCHES
  */
-export async function runMatchGeneratorOnInterval(hoursBetweenMatches?: number) {
-  setInterval(async () => {
+export async function runMatchGeneratorOnInterval(hoursBetweenMatches?: number): Promise<NodeJS.Timeout> {
+  return setInterval(async () => {
 
     await generateMatches(settings.DAYS_BEFORE_EVENT_TO_START_MATCHING);
 
@@ -237,14 +237,14 @@ function makeMatches(eventId: string, event: Event, matchCombinations: MatchComb
       matchService.setMatch(match).catch(e => console.log(e));
 
       // Create chat
-      /*chatService.createConverstaion({
+      chatService.createConverstaion({
         id: match.chatId,
         subject: event.title,
         participants: match.uids,
-      }).catch(e => console.log(e));*/
+      }).catch(e => console.log(e));
 
       // Send notifications
-      match.uids.forEach(uid => userService.setNotification(uid, `You have been matched for ${event.title}`, `/conversation/${match.chatId}`).catch(e => console.log(e)));
+      match.uids.forEach(uid => userService.setNotification(uid, `You have been matched for ${event.title}`, `/matches`).catch(e => console.log(e)));
       
     });
     
