@@ -315,6 +315,7 @@ app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Respon
       res.sendStatus(200);
     }
   } catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 });
