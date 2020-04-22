@@ -65,7 +65,9 @@ const GroupChat = (props) => {
   }
 
   useEffect(() => {
-    fetchMessages()
+    const interval = setInterval(() => {
+      fetchMessages()
+    }, 5000)
   }, [])
 
   return (
