@@ -115,6 +115,12 @@ const Going = (props) => {
             </Accordion>
           </div>
         </div>
+        <div className="row align-items-center spacer-up">
+          <div className="col card-subtitle">
+            You've reached the end! Find more events you like!
+          </div>
+          
+        </div>  
       </div>
     </div>
   )
