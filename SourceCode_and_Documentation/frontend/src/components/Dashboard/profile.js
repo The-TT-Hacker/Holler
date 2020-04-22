@@ -172,7 +172,8 @@ const updateUserInterests = async (newInterests) => {
 
 const deleteUserAccount = async (props) => {
   const token = localStorage.getItem('token')
-
+  console.log(props)
+  
   await axios({
     url: BACKEND + "/user",
     method: "DELETE",
