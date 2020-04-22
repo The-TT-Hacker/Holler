@@ -147,7 +147,9 @@ export const getLastMessage = async (conversationId: string) => {
       })
       .then((response) => response.data.data as Message[]);
 
-    if (!lastMessageArray.length) return null;
+    if (lastMessageArray.length < 1) return null;
+
+    console.log("lastMessageArray", lastMessageArray);
 
     const user = await userService.getUser(lastMessageArray[0].senderId);
 

@@ -44,15 +44,15 @@ export async function getMatches(uid: string): Promise<MatchResponse[]> {
     const promises: Promise<MatchResponse>[] = snapshot.docs.map(async doc => {
       const match = <Match> doc.data();
 
-      const users = await Promise.all(match.uids.map(async uid => await userService.getUser(uid)))
-      const events = await Promise.all(match.eventIds.map(async eventId => await eventService.getEvent(eventId)))
+      const users = await Promise.all(match.uids.map(async uid => await userService.getUser(uid)));
+      const events = await Promise.all(match.eventIds.map(async eventId => await eventService.getEvent(eventId)));
 
       const matchUserInfo: MatchUserInfo[] = users.map(user => {
         return {
           uid: user.uid,
           firstName: user.firstName,
           lastName: user.lastName
-        }        
+        }
       })
 
       const matchEventInfo: MatchEventInfo[] = events.map(event => {
@@ -65,8 +65,6 @@ export async function getMatches(uid: string): Promise<MatchResponse[]> {
       })
 
       const lastMessage = await chatService.getLastMessage(match.chatId);
-
-      console.log(lastMessage);
 
       const matchResponse: MatchResponse = {
         matchId: doc.id,
