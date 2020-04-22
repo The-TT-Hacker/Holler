@@ -33,7 +33,7 @@ const SeparateIfList = (props) => {
     )
 
   } else {
-    return (<div className="col"> <span key={props.text}> {props.text} </span> </div>)
+    return (<span key={props.text}> {props.text} </span>)
   }
 
 }
@@ -112,7 +112,7 @@ const updateUserName = async (newName) => {
 
 const updateUserFaculties = async (newFaculties) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('faculties', newFaculties)
+  sessionStorage.setItem('faculties', JSON.stringify(newFaculties))
 
   await axios({
     url: BACKEND + '/user',
@@ -132,7 +132,7 @@ const updateUserFaculties = async (newFaculties) => {
 
 const updateUserClasses = async (newClasses) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('classes', newClasses)
+  sessionStorage.setItem('classes', JSON.stringify(newClasses))
 
   await axios({
     url: BACKEND + '/user',
@@ -152,7 +152,7 @@ const updateUserClasses = async (newClasses) => {
 
 const updateUserInterests = async (newInterests) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('interests', newInterests)
+  sessionStorage.setItem('interests', JSON.stringify(newInterests))
 
   await axios({
     url: BACKEND + '/user',
@@ -335,7 +335,7 @@ const Profile = (props) => {
         <div className="row">
           <div className="col">
             
-            <Editable text={name} placeholder="Enter your name" updateFunction={updateUserName} editText="Update your name" sizeText="48px" textWeight="bold" sizeEditIcon="32px">
+            <Editable className="profile-name" text={name} placeholder="Enter your name" updateFunction={updateUserName} editText="Update your name" sizeText="48px" textWeight="bold" sizeEditIcon="32px">
               <Form.Group className="reponsive-form spacer-right" style={{ marginBottom: '0' }}>
                 <Form.Control type="text" placeholder="Enter your name" value={name} onChange={e => setName(e.currentTarget.value)} />
               </Form.Group>
@@ -359,8 +359,9 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Birthday} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> DOB </span>
-            <Editable text={dob} updateFunction={updateUserDOB} placeholder="Enter your name" editText="Update your date of birth" textWeight="normal"  sizeEditIcon="24px">
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '2.25rem' }}> DOB </span>
+            <Editable text={dob} updateFunction={updateUserDOB} placeholder="Enter your name" editText="Update your date of birth" textWeight="normal"  sizeEditIcon="24px"
+             style={{ marginLeft: '0.9rem' }}>
               <Form.Group className="reponsive-form spacer-right" style={{ marginBottom: '0' }}>
                 <Form.Control type="date" placeholder="Enter your name" value={dob} onChange={e => setDOB(e.currentTarget.value)} />
               </Form.Group>
@@ -372,7 +373,7 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Mortarboard} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Majors </span>
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '1.1rem' }}> Majors </span>
             <Editable text={faculties} updateFunction={updateUserFaculties} placeholder="Enter your name" editText="Update your majors" textWeight="normal" sizeEditIcon="24px">
 
               <Typeahead
