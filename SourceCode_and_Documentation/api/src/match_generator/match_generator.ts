@@ -1,6 +1,9 @@
 // Import dependencies
 import { v4 as uuidv4 } from 'uuid';
 
+// Import settings
+import settings from "../settings.json";
+
 // Import services
 import * as eventService from "../services/eventService";
 import * as userService from "../services/userService";
@@ -9,7 +12,7 @@ import * as matchService from "../services/matchService";
 
 // Import models
 import { Event, EventInterest } from "../models/event";
-import { User } from "../models/user";
+import { User, UserResponse } from "../models/user";
 import { Match } from "../models/match";
 
 // Define types
@@ -24,7 +27,7 @@ type MatchCombinations = {
 
 interface InterestedUser {
   uid: string;
-  user: User;
+  user: UserResponse;
 }
 
 const HOURS_BETWEEN_MATCHES = 1
@@ -33,7 +36,7 @@ const HOURS_BETWEEN_MATCHES = 1
 setInterval(async () => {
 
   // Get list of all event interests
-  const eventInterests = await eventService.getAllEventInterests();
+  const eventInterests = await eventService.getAllEventInterests(settings.DAYS_BEFORE_EVENT_TO_START_MATCHING);
 
   // Sort event interests by their events
   // and fetch user data from the uid in the event interests
@@ -72,7 +75,7 @@ async function compileAndSortEventInterests(eventInterests: EventInterest[]): Pr
 
     // Only add interested user if successful in getting user data
     const promise: Promise<void> = userService.getUser(eventInterest.uid)
-      .then((user: User) => {
+      .then((user) => {
         
         // Build object with both the uid and user object
         const interestedUser: InterestedUser = {
@@ -111,44 +114,27 @@ function getWeightedCombinations(eventId: string, event: Event, interestedUsers:
   // Loop over all combinations of groups of 3
   for (var i = 0; i < interestedUsers.length; i++) {
 
-    const firstUser: User = interestedUsers[i].user;
+    const firstUser = interestedUsers[i].user;
 
     for (var j = i + 1; j < interestedUsers.length; j++) {
 
-      const secondUser: User = interestedUsers[i].user;
+      const secondUser = interestedUsers[i].user;
 
       for (var k = j + 1; j < interestedUsers.length; j++) {
 
-        const thirdUser: User = interestedUsers[i].user;
+        const thirdUser = interestedUsers[i].user;
 
         const matchPoints = computeMatchPoints(firstUser, secondUser, thirdUser);
 
         // Build potential match
         const potentialMatch: Match = {
-          users: [
-            { 
-              uid: interestedUsers[i].uid,
-              firstName: firstUser.firstName,
-              lastName: firstUser.lastName
-            },
-            { 
-              uid: interestedUsers[j].uid,
-              firstName: secondUser.firstName,
-              lastName: secondUser.lastName
-            },
-            { 
-              uid: interestedUsers[k].uid,
-              firstName: thirdUser.firstName,
-              lastName: thirdUser.lastName
-            }
+          uids: [
+            interestedUsers[i].uid,
+            interestedUsers[i].uid,
+            interestedUsers[i].uid
           ],
-          events: [
-            {
-              eventId: eventId,
-              title: event.title,
-              time_start: event.time_start,
-              location: event.location
-            }
+          eventIds: [
+            eventId
           ],
           chatId: null
         }
@@ -169,7 +155,7 @@ function getWeightedCombinations(eventId: string, event: Event, interestedUsers:
  * @param firstUser 
  * @param secondUser 
  */
-function computeMatchPoints(firstUser: User, secondUser: User, thirdUser: User): number {
+function computeMatchPoints(firstUser: UserResponse, secondUser: UserResponse, thirdUser: UserResponse): number {
 
   var matchPoints = 0;
 
@@ -220,14 +206,14 @@ function makeMatches(eventId: string, event: Event, matchCombinations: MatchComb
       var userAlreadyMatched: boolean;
       
       // Check if any users have been matched before
-      match.users.forEach(user => {
-        if (matchedUsers.includes(user.uid)) userAlreadyMatched = true;
+      match.uids.forEach(uid => {
+        if (matchedUsers.includes(uid)) userAlreadyMatched = true;
       });
 
       // If any of the users have been matched before then skip this potential match
       // Otherwise make the match
       if (userAlreadyMatched) return;
-      else matchedUsers.concat(match.users.map(user => user.uid));
+      else matchedUsers = matchedUsers.concat(match.uids);
 
       matches.push(match); // Add matches for debugging
 
@@ -241,11 +227,11 @@ function makeMatches(eventId: string, event: Event, matchCombinations: MatchComb
       chatService.createConverstaion({
         id: match.chatId,
         subject: event.title,
-        participants: match.users.map(user => user.uid),
+        participants: match.uids,
       }).catch(e => console.log(e));
 
       // Send notifications
-      match.users.forEach(user => userService.setNotification(user.uid, `You have been matched for ${event.title}`, `/conversation/${match.chatId}`).catch(e => console.log(e)));
+      match.uids.forEach(uid => userService.setNotification(uid, `You have been matched for ${event.title}`, `/conversation/${match.chatId}`).catch(e => console.log(e)));
       
     });
     

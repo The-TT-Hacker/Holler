@@ -5,7 +5,7 @@ import { Coordinate } from "../models/coordinate";
 import { GMapsResponse } from "../models/googleMaps";
 
 // Import API key
-const gmaps_api_key = require("../../secrets/gmaps_api_key.json");
+import gmaps_api_key from "../../secrets/gmaps_api_key.json";
 
 const UNSW_COORDINATE: Coordinate = {
   latitude: -33.9165223,

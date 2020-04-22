@@ -37,7 +37,7 @@ export interface AddEventRequest {
 /**
  * Object that is returned when an event is requested
  */
-export interface GetEventResponse {
+export interface EventResponse {
   id: string;
   url: string;
   image_url: string;

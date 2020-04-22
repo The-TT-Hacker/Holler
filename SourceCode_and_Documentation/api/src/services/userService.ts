@@ -6,7 +6,7 @@ import * as eventService from "./eventService";
 
 // Import models
 import { Event, EventInterest } from "../models/event";
-import { User, UpdateUserRequest, UpdateUser } from "../models/user";
+import { User, UpdateUserRequest, UpdateUser, UserResponse } from "../models/user";
 import { Notification } from "../models/notification";
 
 // Import UUIDs
@@ -125,14 +125,13 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
  * 
  * @param uid 
  */
-export async function deleteUser(uid: string): Promise<boolean> {
+export async function deleteUser(uid: string): Promise<void> {
   try {
     const prom1 = admin.deleteUser(uid);
     const prom2 = db.collection("users").doc(uid).delete();
     await Promise.all([prom1, prom2]);
-    return true;
   } catch (e) {
-    return false;
+    throw e;
   }
 }
 
@@ -140,12 +139,26 @@ export async function deleteUser(uid: string): Promise<boolean> {
  * 
  * @param uid 
  */
-export async function getUser(uid: string): Promise<User> {
+export async function getUser(uid: string): Promise<UserResponse> {
   try {
-    const user = await db.collection("users").doc(uid).get();
-    return <User> user.data();
+    const docRef = await db.collection("users").doc(uid).get();
+    const user = <User> docRef.data();
+
+    const userResponse: UserResponse = {
+      uid: docRef.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      dob: user.dob,
+      image: user.image,
+      faculties: user.faculties,
+      classes: user.classes,
+      interests: user.interests,
+      badges: user.badges
+    }
+
+    return userResponse;
   } catch (e) {
-    return null;
+    throw e;
   }
 }
 

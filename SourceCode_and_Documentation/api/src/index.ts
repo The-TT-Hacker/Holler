@@ -43,7 +43,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 app.use(cors());
 app.use(bodyParser.json());
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.header("Content-Type",'application/json');
   next();
 });
@@ -118,7 +118,7 @@ app.get('/verify_email', async (req: HollerRequest, res: Response) => {
 
 // Gets all the current user's information
 app.get('/user', async (req: HollerRequest, res: Response) => {
-  const user: User = await userService.getUser(req.uid);
+  const user = await userService.getUser(req.uid);
   if (user) res.send(user);
   else res.sendStatus(400);
 });
@@ -135,9 +135,12 @@ app.put('/user', async (req: HollerRequest, res: Response) => {
 
 // Deletes the current user
 app.delete('/user', async (req: HollerRequest, res: Response) => {
-  const result: boolean = await userService.deleteUser(req.uid);
-  if (result) res.sendStatus(200);
-  else res.sendStatus(400);
+  try {
+    await userService.deleteUser(req.uid);
+    res.sendStatus(200);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Gets the list of events the current user is interested in
@@ -154,6 +157,16 @@ app.get('/user/events', async (req: HollerRequest, res: Response) => {
   try {
     const events = await userService.getEventInterests(req.uid);
     res.send(events);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+// Gets all matches
+app.get('/user/matches', async (req: HollerRequest, res: Response) => {
+  try {
+    const matches = await matchService.getMatches(req.uid);
+    res.send(matches);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -272,19 +285,19 @@ app.get('/badges', async (req: HollerRequest, res: Response) => {
   Chat
 */
 
-// Gets a list of all possible badges
+// Gets all messages for a conversation
 app.get('/chat/:conversationId/messages', async (req: HollerRequest, res: Response) => {
   const messages = await chatService.getAllMessages(req.params.conversationId);
   res.send(messages);
 });
 
-// Gets a list of all possible badges
+// Gets the last message for a conversation
 app.get('/chat/:conversationId/last_message', async (req: HollerRequest, res: Response) => {
   const message = await chatService.getLastMessage(req.params.conversationId);
   res.send(message);
 });
 
-// Gets a list of all possible badges
+// Post a new message to a conversation
 app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Response) => {
   try {
     if (!req.body.conversationId) res.status(400).send("No conversationId attribute provided");
