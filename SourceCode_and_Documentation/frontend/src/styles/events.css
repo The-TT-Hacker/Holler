@@ -244,7 +244,7 @@
 @media screen and (max-width: 600px) {
   .map-container {
     height: 150px !important;
-    width: 100%;
+    width: 400%;
     padding: 0;
     margin: 0;
   }

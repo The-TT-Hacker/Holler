@@ -1,9 +1,13 @@
 // Import services
 import { db } from "./firebaseService";
 import * as googleMapsService from "./googleMapsService";
+import * as userService from "./userService";
 
 // Import models
 import { Event, EventInterest, AddEventRequest, EventResponse } from "../models/event";
+
+// Import ids
+import * as ids from "../UUIDs";
 
 declare global {
   interface Date {
@@ -284,7 +288,9 @@ export async function addEventInterest(uid: string, eventId: string) {
       expiry: event.time_start
     };
 
-    db.collection("event_interests").add(eventInterest);
+    await db.collection("event_interests").add(eventInterest);
+
+    await userService.addBadge(uid, ids.badges.firstTimeInterested);
 
     return null;
   } catch (e) {

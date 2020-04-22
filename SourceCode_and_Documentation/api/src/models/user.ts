@@ -14,11 +14,11 @@ export interface User {
   faculties: string[];
   classes: string[];
   interests: string[];
-  badges: string[];
+  badges: { [badgeId: string]: string };
 }
 
 /**
- * The main user object 
+ * User object returned by API
  */
 export interface UserResponse {
   uid: string;
@@ -29,7 +29,7 @@ export interface UserResponse {
   faculties: string[];
   classes: string[];
   interests: string[];
-  badges: string[];
+  badges: { [badgeId: string]: string };
 }
 
 // Update objects
@@ -48,7 +48,6 @@ export interface UpdateUser {
   faculties?: string[];
   classes?: string[];
   interests?: string[];
-  badges?: string[];
 }
 
 // API request objects

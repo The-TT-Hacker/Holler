@@ -86,9 +86,6 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
 
       updateUserValues.signupCompleted = true;
 
-      // Add signup badge
-      updateUserValues.badges = currentUserData.badges.concat([ ids.badges.completedProfile ]);
-
     }
 
     if (updateUserValues.signupCompleted) {
@@ -101,6 +98,8 @@ export async function updateUser(uid: string, updateUserRequest: UpdateUserReque
 
       // Check if chat user was created successfully
       if (result) updateUserValues.chatUserCreated = true;
+
+      await addBadge(uid, ids.badges.completedProfile);
       
     }
 
@@ -192,10 +191,19 @@ export async function getUserEventInterests(uid: string): Promise<EventInterest[
   }
 }
 
+/**
+ * Adds a badge to a user and checks if it already exists
+ * @param uid 
+ * @param badgeId 
+ */
 export async function addBadge(uid: string, badgeId: string): Promise<void> {
-  await db.collection("users").doc(uid).update({
-    badges: dbTypes.FieldValue.arrayUnion('greater_virginia')
-  });
+  try {
+    await db.collection("users").doc(uid).update({
+      [`badges.${badgeId}`]: true
+    });
+  } catch (e) {
+    throw e;
+  }
 }
 
 /**

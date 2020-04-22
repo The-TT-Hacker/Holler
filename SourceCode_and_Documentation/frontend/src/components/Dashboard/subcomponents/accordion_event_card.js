@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import axios from 'axios'
 
 import Marker from '../../../icons/marker.png'
@@ -124,7 +124,7 @@ const AccordionEventCard = (props) => {
   }
 
   return (
-    <Card className="card-going" key={props.id}>
+    <Card className="card-going" key={props.id} >
 
       <Accordion.Toggle as={Card.Header} eventKey={props.id} onClick={() => showMore(true)}>
         <div className="accordion-image-container">

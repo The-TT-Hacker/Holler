@@ -150,7 +150,15 @@
   }
 }
 
+.text-setup{
+  display:block;
+}
 
+@media (max-width: 900px){
+  .text-setup{
+    display:none;
+  }
+}
 
 /* AVATAR */
 .App {
@@ -333,4 +341,19 @@
 @keyframes sk-circleFadeDelay {
   0%, 39%, 100% { opacity: 0; }
   40% { opacity: 1; } 
+}
+
+.rbt-input-multi{
+  overflow:scroll !important;
+}
+
+.profile-name{
+
+}
+
+@media (max-width:700px){
+  .profile-name{
+    font-size: 20px !important;
+  }
+  
 }

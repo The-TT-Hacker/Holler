@@ -26,15 +26,26 @@ const SeparateIfList = (props) => {
       props.text.map((elem, index) => {
 
         if (index === props.text.length - 1)
+<<<<<<< HEAD
           return (<span> {elem} </span>)
         else
           return (<span> {elem + ", "} </span>)
 
+=======
+          return ( <div className="col" key={elem}><span > {elem} </span> </div>)
+        else
+          return ( <div className="col" key={elem}><span > {elem + ", "} </span> </div>)
+  
+>>>>>>> 9519c59d99ed45958706ed4bbbb8e019138382f3
       })
     )
 
   } else {
+<<<<<<< HEAD
     return (<span> {props.text} </span>)
+=======
+    return (<span key={props.text}> {props.text} </span>)
+>>>>>>> 9519c59d99ed45958706ed4bbbb8e019138382f3
   }
 
 }
