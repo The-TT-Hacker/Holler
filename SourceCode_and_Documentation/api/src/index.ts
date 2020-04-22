@@ -15,7 +15,6 @@ import * as matchService from "./services/matchService";
 import * as chatService from "./services/chatService";
 
 // Import models
-import { User } from "./models/user";
 import { Notification } from "./models/notification";
 
 const PORT = 5001;

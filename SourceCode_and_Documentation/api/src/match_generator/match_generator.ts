@@ -32,11 +32,24 @@ interface InterestedUser {
 
 const HOURS_BETWEEN_MATCHES = 1
 
-// Run match generator on a given schedule defined by HOURS_BETWEEN_MATCHES
-setInterval(async () => {
+/**
+ * Run match generator on a given schedule defined by HOURS_BETWEEN_MATCHES
+ */
+export async function runMatchGeneratorOnInterval(hoursBetweenMatches?: number) {
+  setInterval(async () => {
+
+    await generateMatches(settings.DAYS_BEFORE_EVENT_TO_START_MATCHING);
+
+  }, hoursBetweenMatches ? hoursBetweenMatches : HOURS_BETWEEN_MATCHES * 60 * 60 * 1000);
+}
+
+/**
+ * Generate matches for all events within the given time window
+ */
+export async function generateMatches(daysBeforeEventToStartMatching: number) {
 
   // Get list of all event interests
-  const eventInterests = await eventService.getAllEventInterests(settings.DAYS_BEFORE_EVENT_TO_START_MATCHING);
+  const eventInterests = await eventService.getAllEventInterests(daysBeforeEventToStartMatching);
 
   // Sort event interests by their events
   // and fetch user data from the uid in the event interests
@@ -58,7 +71,7 @@ setInterval(async () => {
 
   });
 
-}, HOURS_BETWEEN_MATCHES * 60 * 60 * 1000);
+}
 
 /**
  * Compiles a list of event interests into an object containing lists of users + user data for each event
@@ -118,11 +131,11 @@ function getWeightedCombinations(eventId: string, event: Event, interestedUsers:
 
     for (var j = i + 1; j < interestedUsers.length; j++) {
 
-      const secondUser = interestedUsers[i].user;
+      const secondUser = interestedUsers[j].user;
 
-      for (var k = j + 1; j < interestedUsers.length; j++) {
+      for (var k = j + 1; k < interestedUsers.length; k++) {
 
-        const thirdUser = interestedUsers[i].user;
+        const thirdUser = interestedUsers[k].user;
 
         const matchPoints = computeMatchPoints(firstUser, secondUser, thirdUser);
 
@@ -130,8 +143,8 @@ function getWeightedCombinations(eventId: string, event: Event, interestedUsers:
         const potentialMatch: Match = {
           uids: [
             interestedUsers[i].uid,
-            interestedUsers[i].uid,
-            interestedUsers[i].uid
+            interestedUsers[j].uid,
+            interestedUsers[k].uid
           ],
           eventIds: [
             eventId
@@ -224,11 +237,11 @@ function makeMatches(eventId: string, event: Event, matchCombinations: MatchComb
       matchService.setMatch(match).catch(e => console.log(e));
 
       // Create chat
-      chatService.createConverstaion({
+      /*chatService.createConverstaion({
         id: match.chatId,
         subject: event.title,
         participants: match.uids,
-      }).catch(e => console.log(e));
+      }).catch(e => console.log(e));*/
 
       // Send notifications
       match.uids.forEach(uid => userService.setNotification(uid, `You have been matched for ${event.title}`, `/conversation/${match.chatId}`).catch(e => console.log(e)));
