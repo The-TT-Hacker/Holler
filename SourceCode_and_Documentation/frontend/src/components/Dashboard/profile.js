@@ -274,8 +274,9 @@ const Profile = (props) => {
           <div className="row spacer-down">
             <div className="col d-flex flex-row align-items-center">
               <img className="spacer-right" src={Birthday} style={{ width: "48px", height: "48px" }} alt="birthday" />
-              <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Born on the </span>
-              <Editable text={dob} updateFunction={updateUserDOB} placeholder="Enter your name" editText="Update your date of birth" textWeight="normal" textSize="small" sizeEditIcon="24px">
+              <span className="profile-start-text" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '2.25rem' }}> DOB </span>
+              <Editable text={dob} updateFunction={updateUserDOB} placeholder="Enter your name" editText="Update your date of birth" textWeight="normal" sizeEditIcon="24px"
+              style={{ marginLeft: '0.85rem'}}>
                 <Form.Group className="reponsive-form spacer-right" style={{ marginBottom: '0' }}>
                   <Form.Control type="date" placeholder="Enter your name" value={dob} onChange={e => setDOB(e.currentTarget.value)} />
                 </Form.Group>
@@ -288,8 +289,8 @@ const Profile = (props) => {
           <div className="row spacer-down">
             <div className="col d-flex flex-row align-items-center">
               <img className="spacer-right" src={Mortarboard} style={{ width: "48px", height: "48px" }} alt="birthday" />
-              <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Majoring in </span>
-              <Editable text={faculties} updateFunction={updateUserFaculties} placeholder="Enter your name" editText="Update your majors" textWeight="normal" textSize="small" sizeEditIcon="24px">
+              <span className="profile-start-text" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '1.1rem' }}> Majors </span>
+              <Editable text={faculties} updateFunction={updateUserFaculties} placeholder="Enter your name" editText="Update your majors" textWeight="normal" sizeEditIcon="24px">
 
                 <Typeahead
                   style={{ width: "80%" }}
@@ -312,8 +313,8 @@ const Profile = (props) => {
           <div className="row spacer-down">
             <div className="col d-flex flex-row align-items-center">
               <img className="spacer-right" src={Classroom} style={{ width: "48px", height: "48px" }} alt="classes" />
-              <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Currently studying </span>
-              <Editable text={classes} updateFunction={updateUserClasses} placeholder="Enter your name" editText="Update your majors" textWeight="normal" textSize="small" sizeEditIcon="24px">
+              <span className="profile-start-text" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Subjects </span>
+              <Editable text={classes} updateFunction={updateUserClasses} placeholder="Enter your name" editText="Update your majors" textWeight="normal" sizeEditIcon="24px">
 
                 <Typeahead
                   style={{ width: "80%" }}
@@ -337,8 +338,8 @@ const Profile = (props) => {
             <div className="col d-flex flex-row align-items-center">
 
               <img className="spacer-right" src={Paragliding} style={{ width: "48px", height: "48px" }} alt="birthday" />
-              <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Interested in </span>
-              <Editable text={interests} updateFunction={updateUserInterests} placeholder="Enter your name" editText="Update your majors" textWeight="normal" textSize="small" sizeEditIcon="24px">
+              <span className="profile-start-text" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Interests </span>
+              <Editable text={interests} updateFunction={updateUserInterests} placeholder="Enter your name" editText="Update your majors" textWeight="normal" sizeEditIcon="24px">
 
                 <Typeahead
                   style={{ width: "80%" }}
@@ -378,19 +379,19 @@ const Profile = (props) => {
     return (
       <div className="row" style={{ height: '80vh' }}>
         <div className="col d-flex justify-content-center align-items-center">
-          <div class="sk-fading-circle">
-            <div class="sk-circle1 sk-circle"></div>
-            <div class="sk-circle2 sk-circle"></div>
-            <div class="sk-circle3 sk-circle"></div>
-            <div class="sk-circle4 sk-circle"></div>
-            <div class="sk-circle5 sk-circle"></div>
-            <div class="sk-circle6 sk-circle"></div>
-            <div class="sk-circle7 sk-circle"></div>
-            <div class="sk-circle8 sk-circle"></div>
-            <div class="sk-circle9 sk-circle"></div>
-            <div class="sk-circle10 sk-circle"></div>
-            <div class="sk-circle11 sk-circle"></div>
-            <div class="sk-circle12 sk-circle"></div>
+          <div className="sk-fading-circle">
+            <div className="sk-circle1 sk-circle"></div>
+            <div className="sk-circle2 sk-circle"></div>
+            <div className="sk-circle3 sk-circle"></div>
+            <div className="sk-circle4 sk-circle"></div>
+            <div className="sk-circle5 sk-circle"></div>
+            <div className="sk-circle6 sk-circle"></div>
+            <div className="sk-circle7 sk-circle"></div>
+            <div className="sk-circle8 sk-circle"></div>
+            <div className="sk-circle9 sk-circle"></div>
+            <div className="sk-circle10 sk-circle"></div>
+            <div className="sk-circle11 sk-circle"></div>
+            <div className="sk-circle12 sk-circle"></div>
           </div>
         </div>
       </div>
