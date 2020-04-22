@@ -5,7 +5,7 @@
   height: 100vh;
 }
 .coloured-strip {
-  width: 100%; 
+  width: 400%; 
   height: 7px;
   background-image: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%);
 }
@@ -150,7 +150,15 @@
   }
 }
 
+.text-setup{
+  display:block;
+}
 
+@media (max-width: 900px){
+  .text-setup{
+    display:none;
+  }
+}
 
 /* AVATAR */
 .App {

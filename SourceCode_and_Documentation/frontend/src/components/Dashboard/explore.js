@@ -192,8 +192,7 @@ const Explore = (props) => {
 
                 eventsFiltered.map((d, index) =>
 
-                  <AccordionEventCard
-                    key={d.id}
+                  <AccordionEventCard key={d.id}
                     id={index}
                     image={d.image_url}
                     title={d.title}

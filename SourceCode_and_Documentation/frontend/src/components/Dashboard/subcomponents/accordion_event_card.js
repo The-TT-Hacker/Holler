@@ -47,7 +47,7 @@ const AccordionEventCard = (props) => {
   }
 
   return (
-    <Card className="card-going" key={props.id}>
+    <Card className="card-going" key={props.id} >
 
       <Accordion.Toggle as={Card.Header} eventKey={props.id} onClick={() => showMore(true)}>
         <div className="accordion-image-container">
@@ -64,7 +64,7 @@ const AccordionEventCard = (props) => {
 
           {
             props.hosts.map((host) => 
-              <Badge className="gradient txt-poppins" pill style={{ fontWeight: "normal", padding: "10px", margin: "5px" }}> {host} </Badge>
+              <Badge key={host} className="gradient txt-poppins" pill style={{ fontWeight: "normal", padding: "10px", margin: "5px" }}> {host} </Badge>
             )
           }
 

@@ -23,17 +23,17 @@ const SeparateIfList = (props) => {
 
     return (
       props.text.map((elem, index) => {
-  
+
         if (index === props.text.length - 1)
-          return ( <span> {elem} </span> )
+          return (<div className="col"> <span key={elem}> {elem} </span> </div>)
         else
-          return ( <span> {elem + ", "} </span>)
+          return (<div className="col"> <span key={elem}> {elem + ", "} </span>  </div>)
   
       })
     )
 
   } else {
-    return ( <span> {props.text} </span> )
+    return (<div className="col"> <span key={props.text}> {props.text} </span>  </div>)
   }
 
 }
@@ -358,8 +358,8 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Birthday} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Born on the </span>
-            <Editable text={dob} updateFunction={updateUserDOB} placeholder="Enter your name" editText="Update your date of birth" textWeight="normal" textSize="small" sizeEditIcon="24px">
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Born on the </span>
+            <Editable text={dob} updateFunction={updateUserDOB} placeholder="Enter your name" editText="Update your date of birth" textWeight="normal"  sizeEditIcon="24px">
               <Form.Group className="reponsive-form spacer-right" style={{ marginBottom: '0' }}>
                 <Form.Control type="date" placeholder="Enter your name" value={dob} onChange={e => setDOB(e.currentTarget.value)} />
               </Form.Group>
@@ -372,8 +372,8 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Mortarboard} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Majoring in </span>
-            <Editable text={faculties} updateFunction={updateUserFaculties} placeholder="Enter your name" editText="Update your majors" textWeight="normal" textSize="small"  sizeEditIcon="24px">
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Majoring in </span>
+            <Editable text={faculties} updateFunction={updateUserFaculties} placeholder="Enter your name" editText="Update your majors" textWeight="normal" sizeEditIcon="24px">
 
               <Typeahead
                 style={{ width: "80%" }}
@@ -396,8 +396,8 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Classroom} style={{ width: "48px", height: "48px" }} alt="classes" />
-            <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Currently studying </span>
-            <Editable text={classes} updateFunction={updateUserClasses} placeholder="Enter your name" editText="Update your majors" textWeight="normal" textSize="small"  sizeEditIcon="24px">
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Currently studying </span>
+            <Editable text={classes} updateFunction={updateUserClasses} placeholder="Enter your name" editText="Update your majors" textWeight="normal"  sizeEditIcon="24px">
 
               <Typeahead
                 style={{ width: "80%" }}
@@ -411,7 +411,7 @@ const Profile = (props) => {
                 selected={classes}
                 className="spacer-down"
                 placeholder="Select your classes(s)" />
-
+                
             </Editable>
           </div>
         </div>
@@ -421,8 +421,8 @@ const Profile = (props) => {
           <div className="col d-flex flex-row align-items-center">
 
             <img className="spacer-right" src={Paragliding} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Interested in </span>
-            <Editable text={interests} updateFunction={updateUserInterests} placeholder="Enter your name" editText="Update your majors" textWeight="normal" textSize="small"  sizeEditIcon="24px">
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Interested in </span>
+            <Editable text={interests} updateFunction={updateUserInterests} placeholder="Enter your name" editText="Update your majors" textWeight="normal"  sizeEditIcon="24px">
 
               <Typeahead
                 style={{ width: "80%" }}
