@@ -12,7 +12,6 @@ import { BACKEND } from '../../constants/roles'
 import { Form, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Avatar } from './subcomponents'
 import { Typeahead } from 'react-bootstrap-typeahead'
-import { Spinner } from '@zendeskgarden/react-loaders'
 
 import * as ROUTES from '../../constants/routes'
 

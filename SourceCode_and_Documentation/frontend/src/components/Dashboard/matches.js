@@ -3,7 +3,6 @@ import axios from 'axios'
 
 import { PageTitle, Match } from './subcomponents'
 import { BACKEND } from '../../constants/roles'
-import { Spinner } from '@zendeskgarden/react-loaders'
 import ChatPlaceholder from '../../icons/chat-placeholder.svg'
 
 const Matches = () => {
