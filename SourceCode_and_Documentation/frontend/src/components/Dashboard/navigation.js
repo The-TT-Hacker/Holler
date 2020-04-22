@@ -5,21 +5,13 @@ import SignOutButton from './signout'
 import { Navbar, Nav, Toast } from 'react-bootstrap'
 import { withFirebase } from '../Firebase'
 import { BACKEND } from '../../constants/roles'
-import { AlertList, Alert, AlertContainer } from "react-bs-notifier";
+import { ToastContainer, toast } from 'react-toastify'
 
 import '../../styles/responsive.css'
 import '../../styles/text.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navigation = ({ firebase }) => {
-  const alerts = [{
-    id: 1,
-    type: "info",
-    message: "Hello, world"
-}, {
-    id: 2,
-    type: "success",
-    message: "Oh, hai"
-}]
 
   const getNewNotifications = async () => {
 
@@ -30,29 +22,29 @@ const Navigation = ({ firebase }) => {
       headers: { 'Authorization': `${token}` },
     }).then(response => {
       console.log(response)
+      if (response.data.length > 0){
+        response.data.map((d)=>toast(d.message))
+
+      }
     }).then(error => {
       console.log(error)
     })
 
   }
-  useEffect(() => {
-    getNewNotifications()
-    const source = axios.CancelToken.source()
-    return () => {
-      source.cancel()
-    }
-  })
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     getNewNotifications()
-  //   }, 5000)
 
-  //   return () => clearInterval(interval)
-  // }, [])
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getNewNotifications()
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+
 
   return (
     <div style={{ overflowX: 'show' }}>
-<AlertList alerts={alerts} />
+
       {/* Coloured Bar */}
       <div className="row">
         <div className="col">
@@ -95,6 +87,17 @@ const Navigation = ({ firebase }) => {
       </div>
 
       <hr style={{ width: '80vw', color: 'black' }} />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
     </div>
   )
 }

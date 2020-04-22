@@ -363,3 +363,6 @@
 }
 
 
+.Toastify__progress-bar--default {
+  background: linear-gradient(105.3deg, #FEA31F 0%, #E3496B 100%) !important;
+}
