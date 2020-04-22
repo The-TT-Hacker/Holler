@@ -45,6 +45,7 @@ const withAuthentication = Component => {
 
             this.setState({ authUser })
             authUser.getIdToken().then((token) => localStorage.setItem('token', token))
+            localStorage.setItem('firebase_id', authUser.uid)
             this.getProfile()
             
           } else {
