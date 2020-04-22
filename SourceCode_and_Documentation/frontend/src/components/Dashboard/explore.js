@@ -57,10 +57,22 @@ const Explore = (props) => {
   const [showSearchInput, setShowSearchInput] = useState(false)
 
   const [events, setEvents] = useState([])
+  const [eventsGoing, setEventsGoing] = useState([])
   const [eventsFiltered, setEventsFiltered] = useState([])
   const [activeTags, setActiveTags] = useState([])
   const [startDate, setStartDate] = useState(undefined)
   const [endDate, setEndDate] = useState(undefined)
+
+  /* Animate search icon
+   */
+  const changeSearchIcon = () => {
+    if (active)
+      document.getElementsByClassName("btn-explore-search")[0].classList.remove("active");
+    else
+      document.getElementsByClassName("btn-explore-search")[0].classList.add("active");
+ 
+    setActive(!active);
+  }
 
   /* Filter available events by title
    */
@@ -97,38 +109,37 @@ const Explore = (props) => {
   }
 
   /* Filter available events by date
-   */
+  */
   const filterByDate = () => {
-
+    
     if (startDate !== "" && endDate !== "") {
       var newResults = []
       for (var i = 0; i < events.length; i++) {
         if (new Date(events[i].time_start) > new Date(startDate) && new Date(events[i].time_start) < new Date(new Date(endDate).getTime() + 86400000))
-          newResults.push(events[i])
+        newResults.push(events[i])
+        }
+        setEventsFiltered(newResults)
+      } else {
+        setEventsFiltered(events)
       }
-      setEventsFiltered(newResults)
-    } else {
-      setEventsFiltered(events)
-    }
-
+      
   }
-
-  const changeSearchIcon = () => {
-    if (active)
-      document.getElementsByClassName("btn-explore-search")[0].classList.remove("active");
-    else
-      document.getElementsByClassName("btn-explore-search")[0].classList.add("active");
-
-    setActive(!active);
-  }
-  
+    
+  /* Fetch list of events and events
+   * user has marked as going
+   */
   useEffect(() => {
+
+    const source = axios.CancelToken.source()
+    const token = localStorage.getItem('token')
     
     const fetchEvents = async () => {
   
+
       await axios({
         url: BACKEND + "/events",
-        method: "GET"
+        method: "GET",
+        cancelToken: source.token
       })
       .then(response => {
         var reversedData = response.data.reverse()
@@ -136,18 +147,49 @@ const Explore = (props) => {
         setEventsFiltered(reversedData)
       })
       .catch(error => {
-        console.log(error)
+        if (axios.isCancel(error)) {
+        } else {
+          console.log("Error: ", error)
+        }
       })
   
     }
-    
+
+    const fetchUserEvents = async () => {
+
+      await axios({
+        url: BACKEND + "/user/event_ids",
+        method: "GET",
+        headers: { 'Authorization': `${token}` },
+        cancelToken: source.token
+      })
+      .then(response => {
+        setEventsGoing(response.data)
+      })
+      .catch(error => {
+        if (axios.isCancel(error)) {
+        } else {
+          console.log("Error: ", error)
+        }
+      })
+
+    }
+
     fetchEvents()
+    fetchUserEvents()
+
+    return () => {
+      source.cancel()
+    }
 
   }, [])
 
   return (
+
+    
     <div className="container-fluid d-flex flex-column align-items-center">
       <div className="main-content">
+      {console.log(events)}
 
         {/* Page Title & Search Button*/}
         <div className="row">
@@ -193,8 +235,9 @@ const Explore = (props) => {
                 eventsFiltered.map((d, index) =>
 
                   <AccordionEventCard
-                    key={d.id}
+                    key={index}
                     id={index}
+                    eventID={d.id}
                     image={d.image_url}
                     title={d.title}
                     subtitle={new Date(d.time_start).toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'})}
@@ -202,7 +245,12 @@ const Explore = (props) => {
                     hosts={d.hosts}
                     facebookLink={d.url}
                     location={d.location}
-                    nextMatch={ convertDates(new Date(d.time_start)) } /> 
+                    nextMatch={ convertDates(new Date(d.time_start)) }
+                    going={eventsGoing}
+                    setGoing={setEventsGoing}
+                    latitude={d.latitude}
+                    longitude={d.longitude}
+                    mapsValues={d.longitude} /> 
                 
                 )
                 
