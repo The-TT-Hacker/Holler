@@ -9,7 +9,8 @@ const Match = (props) => {
   const minutes = date.getMinutes()
   const meridian = date.getHours() > 12 ? "pm" : "am"
   
-  const conversationLink = "/dashboard/groupchat"
+  const conversationLink = "/dashboard/groupchat/" + props.id
+  console.log(props)
   return (
     <Link to={{ pathname: conversationLink, state: {id: props.id, title: props.title, users: props.users } }} style={{ textDecoration: "none" }}>
       <li key={props.id} className="group row">
