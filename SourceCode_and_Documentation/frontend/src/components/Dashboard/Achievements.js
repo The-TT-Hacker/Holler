@@ -1,17 +1,16 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import LockGradient from '../../icons/lock-gradient.svg'
 import Badge1 from '../../icons/Badges/Badge-1.svg'
 import Badge2 from '../../icons/Badges/Badge-2.svg'
-import Badge3 from '../../icons/Badges/Badge-3.svg'
-import Badge4 from '../../icons/Badges/Badge-4.svg'
-import Badge5 from '../../icons/Badges/Badge-5.svg'
-import Badge6 from '../../icons/Badges/Badge-6.svg'
+
 
 import { Card, Image } from 'react-bootstrap'
 import { PageTitle, Chart } from './subcomponents'
+import { BACKEND } from '../../constants/roles'
 
-const Badge = (props) => {
+const Achievement = (props) => {
   if (!props.locked) {
     return (
       <div className="row">
@@ -47,38 +46,88 @@ const Badge = (props) => {
 
 const Achievements = () => {
 
-  // const [badgesList, setBadgeList] = useState([])
+  const [badgesList, setBadgesList] = useState([{}])
+  const [userBadges, setUserBadges] = useState([{}])
+  const [userBadgeID, setUserBadgeID] = useState({}) // Raw ID of badges, need to use it to separate badges
 
-  // useEffect(() => {
-  //   const source = axios.CancelToken.source()  
-  //   const token = localStorage.getItem('token')
-  //   const getFaculties = async () => {
-      
-  //     await axios({
-  //       url: BACKEND + "/badges",
-  //       method:"GET",
-  //       cancelToken: source.token,
-  //       headers: {
-  //         'Authorization': `${token}`
-  //       },
-  //     })
-  //     .then(function (response) {
-  //       setBadgesList(response.data)
-  //     })
-  //     .catch(function (error) {
-  //       if (axios.isCancel(error)) {
+  // Sorts from the list of badges and the list of user badges ids
+  // To get the badges a user has achieved
+  const sortBadges = () => {
 
-  //       } else {
-  //         console.log(error)
-  //       }
-  //     })
-  //   }
-  //   getFaculties()
-    
-  //   return () => {
-  //     source.cancel()
-  //   }
-  // }, [])
+
+    for(var badgeID in userBadgeID){
+
+      for (var i in badgesList){
+
+        if (badgesList[i].id === badgeID) {
+          setUserBadges(badgesList[i])
+          setBadgesList(badgesList[i])
+        }
+      }
+
+    }
+    console.log(badgesList)
+    console.log(userBadges)
+  }
+
+  useEffect(() => {
+    const source = axios.CancelToken.source()
+    const token = localStorage.getItem('token')
+    const getFaculties = async () => {
+
+      await axios({
+        url: BACKEND + "/badges",
+        method: "GET",
+        cancelToken: source.token,
+        headers: {
+          'Authorization': `${token}`
+        },
+      })
+        .then(function (response) {
+          setBadgesList(response.data)
+        })
+        .catch(function (error) {
+          if (axios.isCancel(error)) {
+
+          } else {
+            console.log(error)
+          }
+        })
+    }
+
+    const getUserBadgesId = async () => {
+
+      await axios({
+        url: BACKEND + "/user",
+        method: "GET",
+        cancelToken: source.token,
+        headers: {
+          'Authorization': `${token}`
+        },
+      })
+        .then(function (response) {
+          setUserBadgeID(response.data.badges)
+        })
+        .catch(function (error) {
+          if (axios.isCancel(error)) {
+
+          } else {
+            console.log(error)
+          }
+        })
+    }
+
+    getFaculties()
+    getUserBadgesId()
+
+
+    return () => {
+
+      source.cancel()
+    }
+  }, [])
+
+  sortBadges()
 
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%' }}>
@@ -93,16 +142,19 @@ const Achievements = () => {
 
         <PageTitle title="Unlocked badges" size="medium" />
         <div className="d-flex justify-content-center flex-column align-items-center">
-          <Badge image={Badge1} title="Welcome!" subtitle="Welcome to Holler!" locked={false}/>
-          <Badge image={Badge2} title="First Spark" subtitle="You matched with your first group!" locked={false}/>
+          <Achievement image={Badge1} title="Welcome!" subtitle="Welcome to Holler!" locked={false} />
         </div>
 
         <PageTitle title="Locked badges" size="medium" />
         <div className="d-flex justify-content-center flex-column align-items-center">
-          <Badge image={Badge3} title="Top Ten" subtitle="You were in the top 10% of Holler users!" locked={true}/>
-          <Badge image={Badge4} title="Eventful Day" subtitle="You went to your first event!" locked={true}/>
-          <Badge image={Badge5} title="Social Buzz" subtitle="You made your first conversation!" locked={true}/>
-          <Badge image={Badge6} title="Looking Good" subtitle="You added your first avatar!" locked={true}/>
+
+          {/* {
+
+            badgesList.map((badge, index) =>
+              <Achievement key={badge.id} image={badge.icon} title={badge.name} subtitle={badge.message} locked={true} />
+            )
+          } */}
+
         </div>
 
 

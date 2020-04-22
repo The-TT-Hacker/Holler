@@ -25,9 +25,9 @@ const SeparateIfList = (props) => {
       props.text.map((elem, index) => {
 
         if (index === props.text.length - 1)
-          return ( <div className="col"><span key={elem}> {elem} </span> </div>)
+          return ( <div className="col" key={elem}><span > {elem} </span> </div>)
         else
-          return ( <div className="col"><span key={elem}> {elem + ", "} </span> </div>)
+          return ( <div className="col" key={elem}><span > {elem + ", "} </span> </div>)
   
       })
     )
