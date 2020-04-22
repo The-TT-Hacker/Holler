@@ -2,6 +2,12 @@ import express from "express";
 import bodyParser from 'body-parser';
 import cors from "cors";
 
+// Import match generator
+import * as matchGenerator from "./match_generator/match_generator";
+
+// Import settings
+import settings from "../settings.json";
+
 // Import types
 import { Response } from "express";
 import { HollerRequest } from "./types/request";
@@ -323,3 +329,14 @@ app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Respon
 app.listen(PORT, () => {
   console.log(`server started at http://localhost:${PORT}`);
 });
+
+// Run match generator
+if (settings.AUTO_RUN_MATCH_GENERATOR) {
+  console.log(`Automatically munning match generator every ${settings.EVENT_SCRAPING_INTERVAL_HOURS} hours`);
+  matchGenerator.runMatchGeneratorOnInterval(
+    settings.EVENT_SCRAPING_INTERVAL_HOURS,
+    settings.DAYS_BEFORE_EVENT_TO_START_MATCHING
+  );
+} else {
+  console.log("Not automatically running match generator");
+}
