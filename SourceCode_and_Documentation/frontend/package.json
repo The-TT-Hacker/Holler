@@ -25,7 +25,6 @@
     "talkjs": "^0.14.1"
   },
   "scripts": {
-    "prestart": "SET BROWSER=none",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
