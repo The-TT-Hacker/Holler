@@ -17,7 +17,8 @@ const Achievement = (props) => {
         <Card className="responsive-card">
           <Card.Body>
             <div className="clearfix">
-              <Image src={props.image} className="txt-bold float-left" style={{ marginRight: 25 }} />
+              { console.log(props.image) }
+              <img src={props.image} className="txt-bold float-left" style={{ marginRight: 25, width: "64px", height: "64px" }} />
               <Card.Title className=" txt-bold" style={{ margin: 20, fontWeight: 'bold' }}> {props.title} </Card.Title>
               <Card.Subtitle className="mb-2 text-muted"> {props.subtitle} </Card.Subtitle>
             </div>
@@ -31,7 +32,7 @@ const Achievement = (props) => {
         <Card className="responsive-card">
           <Card.Body>
             <div className="clearfix">
-              <Image src={props.image} className="txt-bold float-left" style={{ marginRight: 25 }} />
+              <img src={props.image} className="txt-bold float-left" style={{ marginRight: 25, width: "64px", height: "64px"  }} />
               <Card.Title className=" txt-bold" style={{ margin: 20, fontWeight: 'bold' }}> {props.title} </Card.Title>
               <Card.Subtitle className="mb-2 text-muted">{props.subtitle}</Card.Subtitle>
             </div>
@@ -45,91 +46,72 @@ const Achievement = (props) => {
 }
 
 const Achievements = () => {
+  
+  const [allBadgesList, setAllBadgesList] = useState([])
+  const [usersBadges, setUsersBadges] = useState([])
+  var unlockedBadges = []
+  var lockedBadges = []
 
-  const [badgesList, setBadgesList] = useState([{}])
-  const [userBadges, setUserBadges] = useState([{}])
-  const [userBadgeID, setUserBadgeID] = useState({}) // Raw ID of badges, need to use it to separate badges
-
-  // Sorts from the list of badges and the list of user badges ids
-  // To get the badges a user has achieved
-  const sortBadges = () => {
-
-
-    for(var badgeID in userBadgeID){
-
-      for (var i in badgesList){
-
-        if (badgesList[i].id === badgeID) {
-          setUserBadges(badgesList[i])
-          setBadgesList(badgesList[i])
-        }
-      }
-
-    }
-    console.log(badgesList)
-    console.log(userBadges)
+  for (var i = 0; i < allBadgesList.length; i++) {
+    if (usersBadges[allBadgesList[i].id]) 
+      unlockedBadges.push(allBadgesList[i])
+    else
+      lockedBadges.push(allBadgesList[i])
   }
 
   useEffect(() => {
+
     const source = axios.CancelToken.source()
     const token = localStorage.getItem('token')
-    const getFaculties = async () => {
 
+    const getAllBadgesList = async () => {
       await axios({
         url: BACKEND + "/badges",
         method: "GET",
         cancelToken: source.token,
-        headers: {
-          'Authorization': `${token}`
-        },
+        headers: { 'Authorization': `${token}` }
       })
-        .then(function (response) {
-          setBadgesList(response.data)
-        })
-        .catch(function (error) {
-          if (axios.isCancel(error)) {
-
-          } else {
-            console.log(error)
-          }
-        })
+      .then(response => {
+        setAllBadgesList(response.data)
+      })
+      .catch(error => {
+        if (axios.isCancel(error))
+          console.log("Cancelled")
+        else
+          console.log("Error: ", error)
+      })
     }
 
-    const getUserBadgesId = async () => {
+    const getUsersBadges = async () => {
 
       await axios({
         url: BACKEND + "/user",
         method: "GET",
         cancelToken: source.token,
-        headers: {
-          'Authorization': `${token}`
-        },
+        headers: { 'Authorization': `${token}` }
       })
-        .then(function (response) {
-          setUserBadgeID(response.data.badges)
-        })
-        .catch(function (error) {
-          if (axios.isCancel(error)) {
-
-          } else {
-            console.log(error)
-          }
-        })
+      .then(response => {
+        setUsersBadges(response.data.badges)
+      })
+      .catch(error => {
+        if (axios.isCancel(error))
+        console.log("Cancelled")
+      else
+        console.log("Error: ", error)
+      })
     }
 
-    getFaculties()
-    getUserBadgesId()
-
+    getAllBadgesList()
+    getUsersBadges()
 
     return () => {
-
       source.cancel()
     }
+
   }, [])
 
-  sortBadges()
-
   return (
+
     <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%' }}>
       <div className="main-content" style={{ overflowX: 'hidden' }}>
 
@@ -142,18 +124,23 @@ const Achievements = () => {
 
         <PageTitle title="Unlocked badges" size="medium" />
         <div className="d-flex justify-content-center flex-column align-items-center">
-          <Achievement image={Badge1} title="Welcome!" subtitle="Welcome to Holler!" locked={false} />
+
+          {
+            unlockedBadges.map((badge) =>
+              <Achievement key={badge.id} image={"data:image/svg+xml;base64," + badge.icon} title={badge.name} subtitle={badge.message} locked={false} />
+            )
+          }
+
         </div>
 
         <PageTitle title="Locked badges" size="medium" />
         <div className="d-flex justify-content-center flex-column align-items-center">
 
-          {/* {
-
-            badgesList.map((badge, index) =>
-              <Achievement key={badge.id} image={badge.icon} title={badge.name} subtitle={badge.message} locked={true} />
+          {
+            lockedBadges.map((badge) =>
+              <Achievement key={badge.id} image={"data:image/svg+xml;base64," + badge.icon} title={badge.name} subtitle={badge.message} locked={true} />
             )
-          } */}
+          }
 
         </div>
 

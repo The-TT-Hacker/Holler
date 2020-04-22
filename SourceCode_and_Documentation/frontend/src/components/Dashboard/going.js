@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Accordion } from 'react-bootstrap'
 import { BACKEND } from '../../constants/roles'
 import { PageTitle, AccordionEventCard } from './subcomponents'
-import { Spinner } from '@zendeskgarden/react-loaders'
+
 const convertDates = (futureDate) => {
 
   var now = new Date()
