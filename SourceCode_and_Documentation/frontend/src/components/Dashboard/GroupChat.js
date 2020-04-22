@@ -68,6 +68,8 @@ const GroupChat = (props) => {
     const interval = setInterval(() => {
       fetchMessages()
     }, 5000)
+
+    return () => clearInterval(interval)
   }, [])
 
   return (
