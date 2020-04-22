@@ -4,7 +4,8 @@ import axios, { AxiosResponse } from 'axios';
 // Import models
 import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from '../models/chatUser';
 import { CreateConversationRequest, Conversation } from '../models/chatConversation';
-import { SendMessageRequest, Message } from '../models/chatMessage';
+import { SendMessageRequest, Message, MessageId } from '../models/chatMessage';
+import { UnixMilliseconds } from '../models/chatCommon';
 
 // - All methods throw AxiosError and return JSON data directly if successful.
 // - We set the ID for all entities, TalkJS does not auto generate IDs.
@@ -101,12 +102,14 @@ export const removeUserFromConversation = (conversationId: string, uidToRemove: 
 /**
  * Returns the most recent 100 messages in the given conversation.
  * Empty array if no messages are sent in the conversation yet.
+ * if afterMessageId is specified, returns the 100 most recent messages after that message.
  */
-export const getAllMessages = (conversationId: string) => {
+export const getAllMessages = (conversationId: string, afterMessageId?: string) => {
   return client
     .get(`conversations/${conversationId}/messages`, {
       params: {
         limit: 100,
+        startingAfter: afterMessageId
       },
     })
     .then((response) => response.data.data as Message[]);
