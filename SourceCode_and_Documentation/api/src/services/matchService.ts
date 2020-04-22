@@ -61,11 +61,15 @@ export async function getMatches(uid: string): Promise<MatchResponse[]> {
         }        
       })
 
+      const lastMessage = await chatService.getLastMessage(match.chatId);
+
+      console.log(lastMessage);
+
       const matchResponse: MatchResponse = {
         chatId: match.chatId,
         users: matchUserInfo,
         events: matchEventInfo,
-        lastMessage: await chatService.getLastMessage(match.chatId)
+        lastMessage: lastMessage
       }
 
       return matchResponse;

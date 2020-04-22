@@ -16,3 +16,9 @@ export interface Message {
   text: string;
   createdAt: UnixMilliseconds;
 }
+
+export interface LastMessage {
+  firstName: string;
+  text: string;
+  createdAt: UnixMilliseconds;
+}

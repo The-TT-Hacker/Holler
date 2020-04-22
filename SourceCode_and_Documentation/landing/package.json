@@ -2,8 +2,9 @@
   "name": "landing",
   "version": "1.0.0",
   "scripts": {
-    "start": "PORT=3001 concurrently -k -p \"[{name}]\" -n \"CSS,React\" -c \"green.bold,cyan.bold\" \"npm:watch:css\" \"react-scripts start\"",
+    "start": "concurrently -k -p \"[{name}]\" -n \"CSS,React\" -c \"green.bold,cyan.bold\" \"npm:watch:css\" \"react-scripts start\"",
     "build": "npm run build:css && react-scripts build",
+    "serve": "PATH=$(npm bin):$PATH serve -s build -l 3001",
     "build:css": "postcss src/styling/index.src.css -o src/styling/index.css --env production",
     "watch:css": "postcss src/styling/index.src.css -o src/styling/index.css -w",
     "test": "react-scripts test",
@@ -14,6 +15,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
+    "serve": "^11.3.0",
     "tailwindcss-grid": "^1.2.1"
   },
   "devDependencies": {

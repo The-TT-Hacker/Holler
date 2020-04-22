@@ -1,4 +1,4 @@
-import { Message } from "./chatMessage";
+import { LastMessage } from "./chatMessage";
 
 /**
  * Match object stored in firestore
@@ -16,7 +16,7 @@ export interface MatchResponse {
   chatId: string;
   users: MatchUserInfo[];
   events: MatchEventInfo[];
-  lastMessage: Message;
+  lastMessage: LastMessage;
 }
 
 export interface MatchUserInfo {
