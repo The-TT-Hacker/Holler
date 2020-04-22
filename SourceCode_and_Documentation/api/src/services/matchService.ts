@@ -1,8 +1,11 @@
 // Import services
 import { db } from "./firebaseService";
+import * as userService from "./userService";
+import * as eventService from "./eventService";
+import * as chatService from "./chatService";
 
 // Import models
-import { Match } from "../models/match";
+import { Match, MatchResponse, MatchUserInfo, MatchEventInfo } from "../models/match";
 
 // Matches
 
@@ -12,13 +15,13 @@ import { Match } from "../models/match";
  */
 export async function setMatch(match: Match) {
   try {
-    const matchToAdd: Match = {
+    const newMatch: Match = {
       chatId: match.chatId,
-      users: match.users,
-      events: match.events
+      uids: match.uids,
+      eventIds: match.eventIds
     };
 
-    db.collection("matches").add(matchToAdd);
+    db.collection("matches").add(newMatch);
 
     return null;
   } catch (e) {
@@ -31,10 +34,45 @@ export async function setMatch(match: Match) {
  * 
  * @param uid 
  */
-export async function getMatches(uid: string) {
+export async function getMatches(uid: string): Promise<MatchResponse[]> {
   try {
     const snapshot = await db.collection("matches").where('uids', 'array-contains', uid).get();
-    const matches: Match[] = <Match[]> snapshot.docs.map(doc => doc.data());
+    
+    const promises: Promise<MatchResponse>[] = snapshot.docs.map(async doc => {
+      const match = <Match> doc.data();
+
+      const users = await Promise.all(match.uids.map(async uid => await userService.getUser(uid)))
+      const events = await Promise.all(match.eventIds.map(async eventId => await eventService.getEvent(eventId)))
+
+      const matchUserInfo: MatchUserInfo[] = users.map(user => {
+        return {
+          uid: user.uid,
+          firstName: user.firstName,
+          lastName: user.lastName
+        }        
+      })
+
+      const matchEventInfo: MatchEventInfo[] = events.map(event => {
+        return {
+          id: event.id,
+          title: event.title,
+          time_start: event.time_start,
+          location: event.location
+        }        
+      })
+
+      const matchResponse: MatchResponse = {
+        chatId: match.chatId,
+        users: matchUserInfo,
+        events: matchEventInfo,
+        lastMessage: await chatService.getLastMessage(match.chatId)
+      }
+
+      return matchResponse;
+    });
+
+    const matches = await Promise.all(promises);
+
     return matches;
   } catch (e) {
     console.log(e);

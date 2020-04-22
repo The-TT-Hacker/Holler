@@ -17,6 +17,21 @@ export interface User {
   badges: string[];
 }
 
+/**
+ * The main user object 
+ */
+export interface UserResponse {
+  uid: string;
+  firstName: string;
+  lastName: string;
+  dob: Date;
+  image: string;
+  faculties: string[];
+  classes: string[];
+  interests: string[];
+  badges: string[];
+}
+
 // Update objects
 
 /**

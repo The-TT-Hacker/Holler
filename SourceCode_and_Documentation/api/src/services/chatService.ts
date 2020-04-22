@@ -117,14 +117,21 @@ export const getAllMessages = (conversationId: string) => {
  * Returns the most recent message in the conversation (*in an array).
  * Empty array if no messages are sent in the conversation yet.
  */
-export const getLastMessage = (conversationId: string) => {
-  return client
-    .get(`conversations/${conversationId}/messages`, {
-      params: {
-        limit: 1,
-      },
-    })
-    .then((response) => response.data.data as Message[]);
+export const getLastMessage = async (conversationId: string) => {
+  try {
+    const lastMessageArray = await client
+      .get(`conversations/${conversationId}/messages`, {
+        params: {
+          limit: 1,
+        },
+      })
+      .then((response) => response.data.data as Message[]);
+    
+    return lastMessageArray.length ? lastMessageArray[0] : null;
+  } catch (e) {
+    throw e;
+  }
+  
 };
 
 /**

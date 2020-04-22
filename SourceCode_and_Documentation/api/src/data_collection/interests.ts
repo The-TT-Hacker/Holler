@@ -1,7 +1,7 @@
 import * as dataService from "../services/dataService";
 
-const interests: string[] = require("../../data/interests.json");
+import interests from "../../data/interests.json";
 
-interests.forEach(interest => {
+interests.forEach((interest: string) => {
   dataService.setInterest(interest);
 })

@@ -47,7 +47,7 @@ const App = () => {
 
       <Route exact path={ROUTES.LANDING} component={Redirect} />
       <Route path={ROUTES.DASHBOARD} component={Dashboard} />
-      <Route path={ROUTES.PROFILE} component={() => <Profile />} />
+      <Route path={ROUTES.PROFILE} render={({history}) => <Profile history={history} />} />
       <Route path={ROUTES.ACHIEVEMENTS} component={Achievements} />
       <Route path={ROUTES.EXPLORE} component={() => <Explore />} />
       <Route path={ROUTES.GOING} component={() => <Going />} />
