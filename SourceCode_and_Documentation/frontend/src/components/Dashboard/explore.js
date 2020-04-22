@@ -4,7 +4,6 @@ import axios from 'axios'
 import { Button, Collapse, Form, Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard, TagsModal, DateModal } from './subcomponents'
 import { BACKEND } from '../../constants/roles'
-import { Spinner } from '@zendeskgarden/react-loaders'
 
 import '../../styles/explore.css'
 import '../../styles/events.css'
