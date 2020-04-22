@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Button, Collapse, Form, Accordion } from 'react-bootstrap'
 import { PageTitle, AccordionEventCard, TagsModal, DateModal } from './subcomponents'
 import { BACKEND } from '../../constants/roles'
+import { Spinner } from '@zendeskgarden/react-loaders'
 
 import '../../styles/explore.css'
 import '../../styles/events.css'
@@ -16,7 +17,7 @@ const convertDates = (futureDate) => {
   if (futureDate - now < 86400000) {
     return "Matches released"
   }
-  
+
   var delta = Math.abs(dayBefore - now) / 1000
   var days = Math.floor(delta / 86400)
   delta -= days * 86400
@@ -33,7 +34,7 @@ const convertDates = (futureDate) => {
     else
       return days + " days!"
   } else if (hours) {
-    if (hours === 1) 
+    if (hours === 1)
       return hours + " hour!"
     else
       return hours + " hours!"
@@ -53,6 +54,8 @@ const convertDates = (futureDate) => {
 
 const Explore = (props) => {
 
+  const [isLoading, setIsLoading] = useState(true)
+  
   const [active, setActive] = useState(false)
   const [showSearchInput, setShowSearchInput] = useState(false)
 
@@ -70,7 +73,7 @@ const Explore = (props) => {
       document.getElementsByClassName("btn-explore-search")[0].classList.remove("active");
     else
       document.getElementsByClassName("btn-explore-search")[0].classList.add("active");
- 
+
     setActive(!active);
   }
 
@@ -88,13 +91,13 @@ const Explore = (props) => {
     } else {
       setEventsFiltered(events)
     }
-  
+
   }
 
   /* Filter available events by tags
    */
   const filterByTags = () => {
-    
+
     if (activeTags.length > 0) {
       var newResults = []
       for (var i = 0; i < events.length; i++) {
@@ -111,86 +114,26 @@ const Explore = (props) => {
   /* Filter available events by date
   */
   const filterByDate = () => {
-    
+
     if (startDate !== "" && endDate !== "") {
       var newResults = []
       for (var i = 0; i < events.length; i++) {
         if (new Date(events[i].time_start) > new Date(startDate) && new Date(events[i].time_start) < new Date(new Date(endDate).getTime() + 86400000))
-        newResults.push(events[i])
-        }
-        setEventsFiltered(newResults)
-      } else {
-        setEventsFiltered(events)
+          newResults.push(events[i])
       }
-      
+      setEventsFiltered(newResults)
+    } else {
+      setEventsFiltered(events)
+    }
+
   }
-    
-  /* Fetch list of events and events
-   * user has marked as going
+
+  /* Render the filtered events
+   * if there are elements to display
    */
-  useEffect(() => {
-
-    const source = axios.CancelToken.source()
-    const token = localStorage.getItem('token')
-    
-    const fetchEvents = async () => {
-  
-
-      await axios({
-        url: BACKEND + "/events",
-        method: "GET",
-        cancelToken: source.token
-      })
-      .then(response => {
-        var reversedData = response.data.reverse()
-        setEvents(reversedData)
-        setEventsFiltered(reversedData)
-      })
-      .catch(error => {
-        if (axios.isCancel(error)) {
-        } else {
-          console.log("Error: ", error)
-        }
-      })
-  
-    }
-
-    const fetchUserEvents = async () => {
-
-      await axios({
-        url: BACKEND + "/user/event_ids",
-        method: "GET",
-        headers: { 'Authorization': `${token}` },
-        cancelToken: source.token
-      })
-      .then(response => {
-        setEventsGoing(response.data)
-      })
-      .catch(error => {
-        if (axios.isCancel(error)) {
-        } else {
-          console.log("Error: ", error)
-        }
-      })
-
-    }
-
-    fetchEvents()
-    fetchUserEvents()
-
-    return () => {
-      source.cancel()
-    }
-
-  }, [])
-
-  return (
-
-    
-    <div className="container-fluid d-flex flex-column align-items-center">
-      <div className="main-content">
-      {console.log(events)}
-
+  const RenderFilteredEvents = () => {
+    return (
+      <div>
         {/* Page Title & Search Button*/}
         <div className="row">
           <div className="col-12 d-flex justify-content-between">
@@ -206,7 +149,7 @@ const Explore = (props) => {
             </div>
           </div>
         </div>
-        
+
         {/* Search Input Collapse */}
         <div className="row spacer-down">
           <div className="col-12">
@@ -240,29 +183,121 @@ const Explore = (props) => {
                     eventID={d.id}
                     image={d.image_url}
                     title={d.title}
-                    subtitle={new Date(d.time_start).toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'})}
+                    subtitle={new Date(d.time_start).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric' })}
                     description={d.description}
                     hosts={d.hosts}
                     facebookLink={d.url}
                     location={d.location}
-                    nextMatch={ convertDates(new Date(d.time_start)) }
+                    nextMatch={convertDates(new Date(d.time_start))}
                     going={eventsGoing}
                     setGoing={setEventsGoing}
                     latitude={d.latitude}
                     longitude={d.longitude}
-                    mapsValues={d.longitude} /> 
-                
+                    mapsValues={d.longitude} />
+
                 )
-                
+
               }
 
             </Accordion>
           </div>
-          </div>
-
         </div>
       </div>
+    )
+  }
 
+  /* Loading screen
+   */
+  const LoadingScreen = () => {
+    return (
+      <div className="row" style={{ height: '80vh' }}>
+        <div className="col d-flex justify-content-center align-items-center">
+          <div class="sk-fading-circle">
+            <div class="sk-circle1 sk-circle"></div>
+            <div class="sk-circle2 sk-circle"></div>
+            <div class="sk-circle3 sk-circle"></div>
+            <div class="sk-circle4 sk-circle"></div>
+            <div class="sk-circle5 sk-circle"></div>
+            <div class="sk-circle6 sk-circle"></div>
+            <div class="sk-circle7 sk-circle"></div>
+            <div class="sk-circle8 sk-circle"></div>
+            <div class="sk-circle9 sk-circle"></div>
+            <div class="sk-circle10 sk-circle"></div>
+            <div class="sk-circle11 sk-circle"></div>
+            <div class="sk-circle12 sk-circle"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  /* Fetch list of events and events
+   * user has marked as going
+   */
+  useEffect(() => {
+
+    const source = axios.CancelToken.source()
+    const token = localStorage.getItem('token')
+
+    const fetchEvents = async () => {
+
+
+      await axios({
+        url: BACKEND + "/events",
+        method: "GET",
+        cancelToken: source.token
+      })
+        .then(response => {
+          var reversedData = response.data.reverse()
+          setEvents(reversedData)
+          setEventsFiltered(reversedData)
+        })
+        .catch(error => {
+          if (axios.isCancel(error)) {
+          } else {
+            console.log("Error: ", error)
+          }
+        })
+
+    }
+
+    const fetchUserEvents = async () => {
+
+      await axios({
+        url: BACKEND + "/user/event_ids",
+        method: "GET",
+        headers: { 'Authorization': `${token}` },
+        cancelToken: source.token
+      })
+      .then(response => {
+        setEventsGoing(response.data)
+        setIsLoading(false)
+      })
+      .catch(error => {
+        if (axios.isCancel(error)) {
+        } else {
+          console.log("Error: ", error)
+        }
+      })
+
+    }
+
+    fetchEvents()
+    fetchUserEvents()
+
+    return () => {
+      source.cancel()
+    }
+    
+  }, [])
+
+  return (
+    <div className="container-fluid d-flex flex-column align-items-center">
+      <div className="main-content">
+
+      { isLoading ? <LoadingScreen /> : <RenderFilteredEvents /> }
+
+      </div>
+    </div>
   )
 }
 
