@@ -9,7 +9,6 @@
     "start": "node .",
     "test": "node dist/src/tests/test.js",
     "get_token": "node dist/src/tests/get_token.js",
-    "interests": "node dist/data_collection/interests.js",
     "unsw_timetable": "node dist/data_collection/unsw_timetable",
     "unsw_events": "node dist/data_collection/unsw_events",
     "match": "node dist/match_generator/match_generator.js"
