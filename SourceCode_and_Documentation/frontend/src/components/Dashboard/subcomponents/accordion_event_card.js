@@ -65,8 +65,10 @@ const handleChange = async (setGoing, going, id) => {
     }
     setGoing(newArray)
   } else {
+    var newArray = [...going]
+    newArray.push(id)
     AddEvent(id)
-    setGoing(id)
+    setGoing(newArray)
   }
 
 }
@@ -108,21 +110,6 @@ const AccordionEventCard = (props) => {
       document.getElementsByClassName("btn-show-more")[props.id].classList.add("active");
   }
 
-  const renderTooltip = (props) => {
-    if (Array.isArray(props.going) && props.going.length)
-      return (
-        <Tooltip id="button-tooltip" {...props.going}>
-          Leave this event!
-        </Tooltip>
-      )
-    else
-      return (
-        <Tooltip id="button-tooltip" {...props.going}>
-          Join this event!
-        </Tooltip>
-      )
-  }
-
   return (
     <Card className="card-going" key={props.id} >
 
@@ -139,11 +126,9 @@ const AccordionEventCard = (props) => {
       <Accordion.Collapse eventKey={props.id} onExit={() => showMore(false)}>
         <Card.Body>
 
-          {
-            props.hosts.map((host) => 
-              <Badge key={host} className="gradient txt-poppins" pill style={{ fontWeight: "normal", padding: "10px", margin: "5px" }}> {host} </Badge>
-            )
-          }
+          {props.hosts.map((host) => 
+            <Badge key={host} className="gradient txt-poppins" pill style={{ fontWeight: "normal", padding: "10px", margin: "5px" }}> {host} </Badge>
+          ) }
 
           <br /><br />
 
@@ -184,11 +169,9 @@ const AccordionEventCard = (props) => {
               </div>
             </div>
             <div>
-              <OverlayTrigger
-                placement="left"
-                delay={{ show: 50, hide: 100 }}
-                overlay={renderTooltip}
-              >
+              <OverlayTrigger key="right" placement="right" overlay={
+                <Tooltip className="hide-on-mobile" id={`tooltip-${props.id}`}> {(Array.isArray(props.going) && props.going.length) ? "Leave this event" : "Join this event"} </Tooltip>
+              }>
                 <ToggleButtonGroup className="" type="checkbox" value={props.going} onChange={() => handleChange(props.setGoing, props.going, props.eventID)}>
                   <ToggleButton className="btn-gradient-circle" value={props.eventID}></ToggleButton>
                 </ToggleButtonGroup>

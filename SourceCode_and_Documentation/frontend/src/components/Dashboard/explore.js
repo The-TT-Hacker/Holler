@@ -58,6 +58,7 @@ const Explore = (props) => {
   const [active, setActive] = useState(false)
   const [showSearchInput, setShowSearchInput] = useState(false)
 
+  const [query, setQuery] = useState("")
   const [events, setEvents] = useState([])
   const [eventsGoing, setEventsGoing] = useState([])
   const [eventsFiltered, setEventsFiltered] = useState([])
@@ -133,71 +134,28 @@ const Explore = (props) => {
   const RenderFilteredEvents = () => {
     return (
       <div>
-        {/* Page Title & Search Button*/}
-        <div className="row">
-          <div className="col-12 d-flex justify-content-between">
-            <div className="d-flex flex-row">
-              <PageTitle title="Explore" />
-            </div>
-            <div >
-              <Button className="btn-explore-search" onClick={() => {
-                setShowSearchInput(!showSearchInput);
-                changeSearchIcon();
-              }}>
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Search Input Collapse */}
-        <div className="row spacer-down">
-          <div className="col-12">
-            <Collapse in={showSearchInput}>
-              <div>
-                <Form.Control type="text" placeholder="Enter query text" onChange={e => { updateQuery(e.currentTarget.value) }} />
-              </div>
-            </Collapse>
-          </div>
-        </div>
-
-        {/* Event Filters */}
-        <div className="row spacer-down">
-          <div className="col-12 d-flex">
-            <TagsModal activeTags={activeTags} setActiveTags={setActiveTags} triggerFilter={filterByTags} />
-            <DateModal setStartDate={setStartDate} setEndDate={setEndDate} triggerFilter={filterByDate} />
-          </div>
-        </div>
-
         <div className="row">
           <div className="col">
             <Accordion className="accordion-going">
-
-              {
-
-                eventsFiltered.map((d, index) =>
-
-                  <AccordionEventCard
-                    key={index}
-                    id={index}
-                    eventID={d.id}
-                    image={d.image_url}
-                    title={d.title}
-                    subtitle={new Date(d.time_start).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric' })}
-                    description={d.description}
-                    hosts={d.hosts}
-                    facebookLink={d.url}
-                    location={d.location}
-                    nextMatch={convertDates(new Date(d.time_start))}
-                    going={eventsGoing}
-                    setGoing={setEventsGoing}
-                    latitude={d.latitude}
-                    longitude={d.longitude}
-                    mapsValues={d.longitude} />
-
-                )
-
-              }
-
+              {eventsFiltered.map((d, index) =>
+                <AccordionEventCard
+                  key={index}
+                  id={index}
+                  eventID={d.id}
+                  image={d.image_url}
+                  title={d.title}
+                  subtitle={new Date(d.time_start).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric' })}
+                  description={d.description}
+                  hosts={d.hosts}
+                  facebookLink={d.url}
+                  location={d.location}
+                  nextMatch={convertDates(new Date(d.time_start))}
+                  going={eventsGoing}
+                  setGoing={setEventsGoing}
+                  latitude={d.latitude}
+                  longitude={d.longitude}
+                  mapsValues={d.longitude} />
+              )}
             </Accordion>
           </div>
         </div>
@@ -293,7 +251,50 @@ const Explore = (props) => {
     <div className="container-fluid d-flex flex-column align-items-center">
       <div className="main-content">
 
-      { isLoading ? <LoadingScreen /> : <RenderFilteredEvents /> }
+      { isLoading ? <LoadingScreen /> : ( 
+      
+        <div>
+        {/* Page Title & Search Button*/}
+        <div className="row">
+          <div className="col-12 d-flex justify-content-between">
+            <div className="d-flex flex-row">
+              <PageTitle title="Explore" />
+            </div>
+            <div >
+              <Button className="btn-explore-search" onClick={() => {
+                setShowSearchInput(!showSearchInput);
+                changeSearchIcon();
+              }}>
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Search Input Collapse */}
+        <div className="row spacer-down">
+          <div className="col-12">
+            <Collapse in={showSearchInput}>
+              <div>
+                <Form.Control type="text" placeholder="Enter query text" value={query} onChange={e => { setQuery(e.currentTarget.value); updateQuery(e.currentTarget.value) }} />
+              </div>
+            </Collapse>
+          </div>
+        </div>
+
+        {/* Event Filters */}
+        <div className="row spacer-down">
+          <div className="col-12 d-flex">
+            <TagsModal activeTags={activeTags} setActiveTags={setActiveTags} triggerFilter={filterByTags} />
+            <DateModal setStartDate={setStartDate} setEndDate={setEndDate} triggerFilter={filterByDate} />
+          </div>
+        </div>
+
+      
+      <RenderFilteredEvents />
+      </div>
+      
+      
+      ) }
 
       </div>
     </div>
