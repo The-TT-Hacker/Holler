@@ -8,45 +8,54 @@ import { Badge } from "../models/badge";
 
 //Import badges
 import badges from "../../data/badges.json";
-//const badges: Badge[] = require("../../data/badges.json");
-
-// Faculties
+import interests from "../../data/interests.json";
 
 /**
  * 
  * @param university 
  */
 export async function getFaculties(university: string): Promise<Faculty[]> {
-  const snapshot = await db.collection('faculties').where("university", "==", university).get();
-  const faculties: Faculty[] = <Faculty[]> snapshot.docs.map(doc => doc.data());
-  
-  return faculties;
+  try {
+    const snapshot = await db.collection('faculties').where("university", "==", university).get();
+    const faculties: Faculty[] = snapshot.docs.map(doc => <Faculty> doc.data());
+    return faculties;
+  } catch (e) {
+    throw e;
+  } 
 }
 
 export async function getClasses(university: string): Promise<Class[]> {
-  const snapshot = await db.collection('faculties').where("university", "==", university).get();
+  try {
+    const snapshot = await db.collection('faculties').where("university", "==", university).get();
   
-  var classes: Class[] = [];
+    var classes: Class[] = [];
 
-  snapshot.docs.forEach(doc => {
-    const faculty = <Faculty> doc.data();
-    classes = classes.concat(faculty.classes);
-  });
-  
-  return classes;
+    snapshot.docs.forEach(doc => {
+      const faculty = <Faculty> doc.data();
+      classes = classes.concat(faculty.classes);
+    });
+    
+    return classes;
+  } catch (e) {
+    throw e;
+  }
 }
 
 export async function getClassCodes(university: string): Promise<string[]> {
-  const snapshot = await db.collection('faculties').where("university", "==", university).get();
+  try {
+    const snapshot = await db.collection('faculties').where("university", "==", university).get();
   
-  var classes: string[] = [];
+    var classes: string[] = [];
 
-  snapshot.docs.forEach(doc => {
-    const faculty = <Faculty> doc.data();
-    classes = classes.concat(faculty.classes.map(classObj => classObj.code));
-  });
-  
-  return classes;
+    snapshot.docs.forEach(doc => {
+      const faculty = <Faculty> doc.data();
+      classes = classes.concat(faculty.classes.map(classObj => classObj.code));
+    });
+    
+    return classes;
+  } catch (e) {
+    throw e;
+  }
 }
 
 /**
@@ -54,8 +63,9 @@ export async function getClassCodes(university: string): Promise<string[]> {
  * @param university 
  * @param faculties 
  */
-export async function setFaculties(university: string, faculties: Faculty[]): Promise<boolean> {
+export async function setFaculties(university: string, faculties: Faculty[]): Promise<void> {
   try {
+    
     // Delete current faculties
     var querySnapshot = await db.collection('faculties').where('university', '==', university).get();
     querySnapshot.forEach((doc) => {
@@ -72,29 +82,17 @@ export async function setFaculties(university: string, faculties: Faculty[]): Pr
 
     await Promise.all(promises);
 
-    return true;
   } catch (e) {
-    console.log(e);
-    return false;
+    throw e
   }
 }
 
-// Interests
-
-export async function setInterest(interest: string): Promise<void> {
-  const snapshot = await db.collection('interests').doc(interest).set({});
-}
-
 /**
- * 
+ * Gets list of interests
  */
-export async function getInterests(): Promise<string[]> {
-  const snapshot = await db.collection('interests').get();
-  const interests = snapshot.docs.map(doc => doc.id);
-  return interests;
+export function getInterests(): string[] {
+  return <string[]> interests;
 }
-
-// Badges
 
 /**
  * 
@@ -114,7 +112,6 @@ export function getBadge(badgeId: string): Badge {
     throw e;
   }
 }
-// Tags
 
 /**
  * 
@@ -125,7 +122,6 @@ export async function getTags() {
     const tags = snapshot.docs.map(doc => doc.id);
     return tags;
   } catch (e) {
-    console.log(e);
-    throw "Error"
+    throw e;
   }
 }

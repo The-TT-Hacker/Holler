@@ -37,9 +37,8 @@ export async function verifyUser(req: HollerRequest, token: string): Promise<voi
 }
 
 /**
- * 
- * @param token 
- * @param req 
+ * Gets the uid of a user given their login token
+ * @param token Firebase token
  */
 export async function getUID(token: string): Promise<string> {
   try {
@@ -53,13 +52,16 @@ export async function getUID(token: string): Promise<string> {
 }
 
 /**
- * 
- * @param registration 
+ * Registers a user in firebase auth and firestore database
+ * @param registration Registration request
  */
-export async function registerUser(registration: UserRegistrationRequest): Promise<string> {
+export async function registerUser(registration: UserRegistrationRequest): Promise<void> {
+  
   try {
-    if (!registration.email) return "Email is required";
-    if (!registration.password) return "Password is required";
+
+    // Input checking
+    if (!registration.email) throw "Email is required";
+    if (!registration.password) throw "Password is required";
 
     const userAuthData = {
       email: registration.email,
@@ -86,19 +88,19 @@ export async function registerUser(registration: UserRegistrationRequest): Promi
       badges: {}
     }
 
-    const writeResult = await db.collection("users").doc(userRecord.uid).set(userData);
-  
-    return null;
+    await db.collection("users").doc(userRecord.uid).set(userData);
+
   } catch (e) {
-    console.log(e);
-    if (e.errorInfo) return e.errorInfo.message;
-    else return "Error";
+    if (e.errorInfo) throw e.errorInfo.message;
+    else throw e;
   }
+  
 }
 
 /**
- * 
- * @param oobCode 
+ * Email verification handler
+ * @param uid uid of the user
+ * @param oobCode one time code used to verfify the email
  */
 export async function verifyEmail(uid: string, oobCode: string): Promise<void> {
 

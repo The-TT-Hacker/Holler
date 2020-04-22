@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import LockGradient from '../../icons/lock-gradient.svg'
-import Badge1 from '../../icons/Badges/Badge-1.svg'
-import Badge2 from '../../icons/Badges/Badge-2.svg'
 
-
-import { Card, Image } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import { PageTitle, Chart } from './subcomponents'
 import { BACKEND } from '../../constants/roles'
 
@@ -17,8 +14,7 @@ const Achievement = (props) => {
         <Card className="responsive-card">
           <Card.Body>
             <div className="clearfix">
-              { console.log(props.image) }
-              <img src={props.image} className="txt-bold float-left" style={{ marginRight: 25, width: "64px", height: "64px" }} />
+              <img alt="achievement badge" src={props.image} className="txt-bold float-left" style={{ marginRight: 25, width: "64px", height: "64px" }} />
               <Card.Title className=" txt-bold" style={{ margin: 20, fontWeight: 'bold' }}> {props.title} </Card.Title>
               <Card.Subtitle className="mb-2 text-muted"> {props.subtitle} </Card.Subtitle>
             </div>
@@ -32,7 +28,7 @@ const Achievement = (props) => {
         <Card className="responsive-card">
           <Card.Body>
             <div className="clearfix">
-              <img src={props.image} className="txt-bold float-left" style={{ marginRight: 25, width: "64px", height: "64px"  }} />
+              <img alt="achievement badge" src={props.image} className="txt-bold float-left" style={{ marginRight: 25, width: "64px", height: "64px"  }} />
               <Card.Title className=" txt-bold" style={{ margin: 20, fontWeight: 'bold' }}> {props.title} </Card.Title>
               <Card.Subtitle className="mb-2 text-muted">{props.subtitle}</Card.Subtitle>
             </div>

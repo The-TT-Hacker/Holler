@@ -1,7 +1,7 @@
 import * as matchService from "../services/matchService";
 import * as chatService from "../services/chatService";
 import * as eventService from "../services/eventService";
-import * as matchGenerator from "../match_generator/match_generator";
+import * as matchGenerator from "../match_generator/matchGenerator";
 import * as constants from "./constants";
 import { Match } from "../models/match";
 
