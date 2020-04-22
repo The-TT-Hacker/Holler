@@ -4,9 +4,14 @@ import { Link } from 'react-router-dom'
 
 const Match = (props) => {
 
-  const conversationLink = "/dashboard/groupchat/" + props.id + "/" + props.title
+  const date = new Date(props.lastMessageTime)
+  const hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours()
+  const minutes = date.getMinutes()
+  const meridian = date.getHours() > 12 ? "pm" : "am"
+  
+  const conversationLink = "/dashboard/groupchat"
   return (
-    <Link to={conversationLink} style={{ textDecoration: "none" }}>
+    <Link to={{ pathname: conversationLink, state: {id: props.id, title: props.title, users: props.users } }} style={{ textDecoration: "none" }}>
       <li key={props.id} className="group row">
 
         {/* Group Image */}
@@ -28,7 +33,7 @@ const Match = (props) => {
           {/* Last Message & Last Message Time */}
           <div className="row">
             <div className="col-9"> <div className="group-last-message"> {props.lastMessage} </div> </div>
-            <div className="col-3"> <div className="group-last-message-time"> {props.lastMessageTime} </div> </div>
+            <div className="col-3"> <div className="group-last-message-time"> {hour}:{minutes} {meridian} </div> </div>
           </div>
 
         </div>

@@ -276,8 +276,8 @@ app.delete('/event/:id/remove_interest', async (req: HollerRequest, res: Respons
  */
 
 // Gets a list of all possible badges
-app.get('/badges', async (req: HollerRequest, res: Response) => {
-  const badges = await dataService.getBadges();
+app.get('/badges', (req: HollerRequest, res: Response) => {
+  const badges = dataService.getBadges();
   res.send(badges);
 });
 
@@ -304,17 +304,20 @@ app.get('/chat/:conversationId/last_message', async (req: HollerRequest, res: Re
 // Post a new message to a conversation
 app.post('/chat/:conversationId/message', async (req: HollerRequest, res: Response) => {
   try {
-    if (!req.body.conversationId) res.status(400).send("No conversationId attribute provided");
-    else if (!req.body.text) res.status(400).send("No text attribute provided");
+    console.log("chatId", req.params.conversationId);
+    console.log("text", req.body.text);
+    if (!req.params.conversationId) res.status(400).send("No conversationId attribute provided");
+    else if (!req.body.text) res.status(400).send("No message provided in body");
     else {
       await chatService.sendMessage({
         senderId: req.uid,
-        conversationId: req.body.conversationId,
+        conversationId: req.params.conversationId,
         text: req.body.text
       });
       res.sendStatus(200);
     }
   } catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 });

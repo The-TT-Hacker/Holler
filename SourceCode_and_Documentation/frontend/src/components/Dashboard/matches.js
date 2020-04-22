@@ -56,7 +56,14 @@ const Matches = () => {
             {matches.map(match => {
 
               return (
-                <Match key ={match.chatId} id={match.chatId} title={match.events[0].title} lastMessage={match.lastMessage ? `${match.lastMessage.firstName}: ${match.lastMessage.text}` : 'No messages in this chat yet.'} lastMessageTime={match.lastMessage ? match.lastMessage.createdAt : ''} image={ChatPlaceholder} />
+                <Match
+                  key={match.chatId}
+                  id={match.chatId}
+                  title={match.events[0].title}
+                  lastMessage={match.lastMessage ? `${match.lastMessage.firstName}: ${match.lastMessage.text}` : 'No messages in this chat yet.'}
+                  lastMessageTime={match.lastMessage ? match.lastMessage.createdAt : ''}
+                  image={ChatPlaceholder} 
+                  users={match.users} />
               )
 
             }

@@ -13,6 +13,7 @@ export interface Match {
  * 
  */
 export interface MatchResponse {
+  matchId: string;
   chatId: string;
   users: MatchUserInfo[];
   events: MatchEventInfo[];

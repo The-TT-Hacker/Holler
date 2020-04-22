@@ -7,7 +7,7 @@ import * as userService from "./userService";
 // Import models
 import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from '../models/chatUser';
 import { CreateConversationRequest, Conversation } from '../models/chatConversation';
-import { SendMessageRequest, Message, LastMessage, MessageId } from '../models/chatMessage';
+import { SendMessageRequest, Message, LastMessage, MessageId, TalkJsMessage } from '../models/chatMessage';
 import { UnixMilliseconds } from '../models/chatCommon';
 
 // - All methods throw AxiosError and return JSON data directly if successful.
@@ -107,15 +107,25 @@ export const removeUserFromConversation = (conversationId: string, uidToRemove: 
  * Empty array if no messages are sent in the conversation yet.
  * if afterMessageId is specified, returns the 100 most recent messages after that message.
  */
-export const getAllMessages = (conversationId: string, afterMessageId?: string) => {
-  return client
+export const getAllMessages = async (conversationId: string, afterMessageId?: string) => {
+  const talkJsMessages = await client
     .get(`conversations/${conversationId}/messages`, {
       params: {
         limit: 100,
         startingAfter: afterMessageId
       },
-    })
-    .then((response) => response.data.data as Message[]);
+    }).then((response) => response.data.data as TalkJsMessage[]);
+  
+  const messages: Message[] = talkJsMessages.map(talkJsMessage => {
+    return {
+      id: talkJsMessage.id,
+      senderId: talkJsMessage.senderId,
+      text: talkJsMessage.text,
+      createdAt: talkJsMessage.createdAt
+    }
+  })
+  
+  return messages;
 };
 
 /**
