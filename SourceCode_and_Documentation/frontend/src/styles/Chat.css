@@ -23,15 +23,13 @@
 .chat {
   width: 100%;
   height: 50vh;
-  overflow-y: scroll;
   border: solid 1px #EEE;
-  display: flex;
-  flex-direction: column;
   padding: 10px;
+  overflow-y: scroll;
 }
 
 .remove-margin {
-  margin-top: 0px !important;
+  margin-top: -7.5px !important;
 }
 
 .messages {

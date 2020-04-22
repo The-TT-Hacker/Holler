@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
@@ -7,6 +8,7 @@ import * as ROUTES from '../../constants/routes'
 import { LANDING } from '../../constants/roles'
 import Lock from '../../icons/lock.svg'
 import Mail from '../../icons/mail.svg'
+import { BACKEND } from '../../constants/roles'
 
 import { Nav, Button, Form, InputGroup, Image } from 'react-bootstrap'
 
@@ -66,7 +68,7 @@ class LoginFormBase extends Component {
       .doLoginWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE })
-        this.props.history.push(ROUTES.EXPLORE)     
+        this.props.history.push(ROUTES.EXPLORE)
       })
       .catch(error => {
         this.setState({ error })

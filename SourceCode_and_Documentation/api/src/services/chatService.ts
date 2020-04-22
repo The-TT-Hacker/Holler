@@ -140,6 +140,7 @@ export async function removeUserFromConversation(conversationId: string, uidToRe
  */
 export async function getAllMessages(conversationId: string, afterMessageId?: string): Promise<Message[]> {
   try {
+    console.log(afterMessageId)
     const talkJsMessages = await client
       .get(`conversations/${conversationId}/messages`, {
         params: {

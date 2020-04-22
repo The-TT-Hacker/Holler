@@ -15,7 +15,7 @@ const GroupChat = (props) => {
 
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState("")
-
+  
   const token = localStorage.getItem('token')
   const myID = localStorage.getItem('firebase_id')
   const users = props.location.state.users
@@ -27,7 +27,9 @@ const GroupChat = (props) => {
       headers: { 'Authorization': `${token}` }
     }).then(response => {
       setMessages(response.data.reverse())
-    }).catch(error => {
+      scrollToBottom()
+    })
+    .catch(error => {
       if (axios.isCancel(error))
         console.log("Cancelled")
       else
@@ -57,20 +59,51 @@ const GroupChat = (props) => {
     }).then(response => {
       setMessage("")
       fetchMessages()
+      scrollToBottom()
       console.log(response)
-    }).then(error => {
+    }).catch(error => {
       console.log(error)
     })
 
   }
 
+  const scrollToBottom = () => {
+    var element = document.getElementById("scroll-to-bottom");
+    element.scrollTop = element.scrollHeight;
+  } 
+  
   useEffect(() => {
+    fetchMessages()
+  }, [])
+
+  useEffect(() => {
+    
+    const fetchNewMessages = async () => {
+      if (messages.length > 0) {
+        await axios({
+          url: BACKEND + "/chat/" + props.location.state.id + "/messages",
+          method: "GET",
+          headers: { 'Authorization': `${token}` },
+        }).then(response => {
+          if (response.data.length > messages.length) {
+            setMessages(response.data.reverse())
+            scrollToBottom()
+          }
+        }).catch(error => {
+          console.log("Error: ", error)
+        })
+      }
+    }
+    
     const interval = setInterval(() => {
-      fetchMessages()
+      fetchNewMessages()
     }, 5000)
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => {
+      clearInterval(interval)
+    }
+
+  }, [messages])
 
   return (
     <div className="container-fluid d-flex justify-content-center center-on-desktop" style={{ width: '100%' }}>
@@ -91,7 +124,7 @@ const GroupChat = (props) => {
         <div className="row spacer-down">
           <div className="col">
 
-            <div className="chat" id="custom-scrollbar">
+            <div className="chat" id="scroll-to-bottom">
 
               {messages.map((message, index, messages) => {
                 // Get the previous and next message
@@ -132,14 +165,14 @@ const GroupChat = (props) => {
                             return user.firstName + " " + user.lastName
                         })}
 
-                      </div>
+                        </div>
                         <div className="message last"> {message.text} </div>
                       </div>
                     )
                   }
 
                   // Continued message, will continue more
-                  else if (previousMessage.senderId === message.senderId && message.id === nextMessage.senderId) {
+                  else if (previousMessage.senderId === message.senderId && message.senderId === nextMessage.senderId) {
                     return (
                       <div className="mine messages remove-margin">
                         <div className="message"> {message.text} </div>
