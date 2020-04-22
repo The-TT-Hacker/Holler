@@ -1,32 +1,10 @@
-import * as matchService from "../services/matchService";
-import * as chatService from "../services/chatService";
-import { Match } from "../models/match";
+import * as matchTests from "./matchTests";
+import * as chatTests from "./chatTests";
 
-const chatId = "43234234";
+//matchTests.makeMatch().then(res => console.log(res)).catch(e => console.log(e));
+//chatTests.sendMessage().then(res => console.log(res)).catch(e => console.log(e));
+chatTests.getLastMessage().then(res => console.log(res)).catch(e => console.log(e));
 
-const uids: string[] = [
-  "aH069sOkv1QKt3uuWgKYZfMx30q2",
-  "uGAX57PKjSMZc5liS9BbK5JRy363",
-  "y8gjL79sLcguYhS7sYiMDBejBol1"
-];
-
-const eventIds: string[] = [
-  "249845289743423"
-];
-
-chatService.createConverstaion({
-  id: chatId,
-  subject: "Test Match",
-  participants: uids
-}).then(res => console.log("chat", res));
-
-const match: Match = {
-  chatId: chatId,
-  uids: uids,
-  eventIds: eventIds
-}
-
-matchService.setMatch(match).then(res => console.log("match", res));
 
 /*
 import * as dataService from "../services/dataService";

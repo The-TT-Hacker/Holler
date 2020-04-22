@@ -1,10 +1,13 @@
 // Import dependencies
 import axios, { AxiosResponse } from 'axios';
 
+// Import services
+import * as userService from "./userService";
+
 // Import models
 import { CreateChatUserRequest, ChatUser, UpdateUserRequest } from '../models/chatUser';
 import { CreateConversationRequest, Conversation } from '../models/chatConversation';
-import { SendMessageRequest, Message } from '../models/chatMessage';
+import { SendMessageRequest, Message, LastMessage } from '../models/chatMessage';
 
 // - All methods throw AxiosError and return JSON data directly if successful.
 // - We set the ID for all entities, TalkJS does not auto generate IDs.
@@ -126,8 +129,18 @@ export const getLastMessage = async (conversationId: string) => {
         },
       })
       .then((response) => response.data.data as Message[]);
+
+    if (!lastMessageArray.length) return null;
+
+    const user = await userService.getUser(lastMessageArray[0].senderId);
+
+    const lastMessage: LastMessage = {
+      firstName: user.firstName,
+      text: lastMessageArray[0].text,
+      createdAt: lastMessageArray[0].createdAt
+    }
     
-    return lastMessageArray.length ? lastMessageArray[0] : null;
+    return lastMessage;
   } catch (e) {
     throw e;
   }
