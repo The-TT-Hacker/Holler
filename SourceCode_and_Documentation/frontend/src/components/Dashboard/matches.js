@@ -55,15 +55,9 @@ const Matches = () => {
           <ul style={{width: "100%", maxWidth: "600px"}}>
             {matches.map(match => {
 
-              if (match.lastMessage !== null) {
-                return (
-                  <Match key ={match.chatId} id={match.chatId} title={match.events[0].title} lastMessage={match.lastMessage} lastMessageTime={"3.03pm"} image={ChatPlaceholder} />
-                )
-              } else { 
-                return (
-                  <Match key ={match.chatId} id={match.chatId} title={match.events[0].title} lastMessage={"No messages in this chat yet."} image={ChatPlaceholder} />
-                )
-              } 
+              return (
+                <Match key ={match.chatId} id={match.chatId} title={match.events[0].title} lastMessage={match.lastMessage ? `${match.lastMessage.firstName}: ${match.lastMessage.text}` : 'No messages in this chat yet.'} lastMessageTime={match.lastMessage ? match.lastMessage.createdAt : ''} image={ChatPlaceholder} />
+              )
 
             }
             )}
