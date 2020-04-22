@@ -123,8 +123,8 @@ app.get('/verify_email', async (req: HollerRequest, res: Response) => {
 // Gets all the current user's information
 app.get('/user', async (req: HollerRequest, res: Response) => {
   try {
-    await userService.getUser(req.uid);
-    res.sendStatus(200);
+    const user = await userService.getUser(req.uid);
+    res.send(user);
   } catch (e) {
     res.status(400).send(e);
   }

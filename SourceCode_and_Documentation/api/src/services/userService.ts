@@ -187,7 +187,7 @@ export async function getUserEventInterests(uid: string): Promise<EventInterest[
 
     return eventInterests;
   } catch (e) {
-    return null;
+    throw e;
   }
 }
 
@@ -226,7 +226,7 @@ export async function setNotification(uid: string, message: string, url: string)
   
   } catch (e) {
     if (e.errorInfo) throw e.errorInfo.message;
-    else throw "Error";
+    else throw e;
   }
 }
 
@@ -251,13 +251,13 @@ export async function getAllNotifications(uid: string, start: string="0", end: s
       .orderBy('time', 'desc')
       .get();
     
-      const notifcations: Notification[] = <Notification[]> snapshot.docs.map(doc => doc.data());
+      const notifications: Notification[] = <Notification[]> snapshot.docs.map(doc => doc.data());
 
-    return notifcations.slice(pagStart, pagEnd);
+    return notifications.slice(pagStart, pagEnd);
   
   } catch (e) {
     if (e.errorInfo) throw e.errorInfo.message;
-    else throw "Error";
+    else throw e;
   }
 }
 
@@ -305,8 +305,7 @@ export async function getEventInterestIds(uid: string): Promise<string[]> {
 
     return events;
   } catch (e) {
-    console.log(e);
-    throw "Error"
+    throw e;
   }
 }
 
@@ -330,7 +329,6 @@ export async function getEventInterests(uid: string): Promise<Event[]> {
 
     return events;
   } catch (e) {
-    console.log(e);
-    throw "Error"
+    throw e;
   }
 }

@@ -14,7 +14,7 @@ import * as ids from "../UUIDs";
  * 
  * @param match 
  */
-export async function setMatch(match: Match) {
+export async function setMatch(match: Match): Promise<void> {
   try {
     const newMatch: Match = {
       chatId: match.chatId,
@@ -25,11 +25,8 @@ export async function setMatch(match: Match) {
     db.collection("matches").add(newMatch);
 
     await Promise.all(newMatch.uids.map(async uid => await userService.addBadge(uid, ids.badges.firstMatch)));
-
-    return null;
   } catch (e) {
-    console.log(e);
-    return false;
+    throw e;
   }
 }
 
@@ -81,7 +78,6 @@ export async function getMatches(uid: string): Promise<MatchResponse[]> {
 
     return matches;
   } catch (e) {
-    console.log(e);
-    throw "Error"
+    throw e;
   }
 }
