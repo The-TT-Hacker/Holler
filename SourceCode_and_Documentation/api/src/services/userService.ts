@@ -286,7 +286,7 @@ export async function getNewNotifications(uid: string): Promise<Notification[]> 
   
   } catch (e) {
     if (e.errorInfo) throw e.errorInfo.message;
-    else throw "Error";
+    else throw e;
   }
 }
 
