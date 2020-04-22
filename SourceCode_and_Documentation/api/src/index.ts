@@ -287,7 +287,11 @@ app.get('/badges', async (req: HollerRequest, res: Response) => {
 
 // Gets all messages for a conversation
 app.get('/chat/:conversationId/messages', async (req: HollerRequest, res: Response) => {
-  const messages = await chatService.getAllMessages(req.params.conversationId);
+
+  const messages = req.query.afterMessageId ? 
+    await chatService.getAllMessages(req.params.conversationId, req.query.afterMessageId) :
+    await chatService.getAllMessages(req.params.conversationId)
+  
   res.send(messages);
 });
 

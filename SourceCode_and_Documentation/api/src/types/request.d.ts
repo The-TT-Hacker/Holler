@@ -13,8 +13,10 @@ export interface HollerRequest extends Request {
     // Pagination
     start: string;
     end: string;
-    // Verify Email
+    // Verify email
     uid: string;
     oobCode: string;
+    // Get messages
+    afterMessageId: string;
   }
 }
