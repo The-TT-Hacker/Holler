@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState} from 'react'
+import axios from 'axios'
 
 import { Accordion } from 'react-bootstrap'
+import { BACKEND } from '../../constants/roles'
 import { PageTitle, AccordionEventCard } from './subcomponents'
 
 const convertDates = (futureDate) => {
@@ -42,6 +44,38 @@ const convertDates = (futureDate) => {
 
 const Going = (props) => {
 
+  const [userEvents, setUserEvents] = useState([])
+  const [userEventsIds, setUserEventIds] = useState([])
+
+  useEffect(() => {
+
+    const source = axios.CancelToken.source()
+    const token = localStorage.getItem('token')
+
+    const fetchUserEvents = async () => {
+      await axios({
+        url: BACKEND + "/user/events",
+        method: "GET",
+        headers: { 'Authorization': `${token}` }
+      }).then(response => {
+        setUserEvents(response.data)
+        setUserEventIds(response.data.map(({ id }) => id))
+      }).catch(error => {
+        if (axios.isCancel(error)) {
+        } else {
+          console.log("Error: ", error)
+        }
+      })
+    }
+
+    fetchUserEvents()
+
+    return () => {
+      source.cancel()
+    }
+
+  }, [])
+
   return (
     <div className="container-fluid d-flex flex-column align-items-center" style={{ width: '100%'}}>
       <div className="main-content" style={{ overflowX: 'hidden' }}>
@@ -54,17 +88,30 @@ const Going = (props) => {
           <div className="col">
             <Accordion className="accordion-going">
 
-            <AccordionEventCard
-                  eventId={2701907676589744}
-                  id={0}
-                  image={"https://cdn.eventlink.me/event/2701907676589744.jpg"}
-                  title={"Quidditch Goes to Trivia"}
-                  subtitle={new Date("2021-01-06T08:00:00.000Z").toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'})}
-                  description={"The Description"}
-                  hosts={["UNSW Quidditch Society", "UTS Quidditch"]}
-                  facebookLink={"https://www.facebook.com/events/2701907676589744"}
-                  location={"The Soda Factory 16 Wentworth Ave, Surry Hills, New South Wales, Australia 2010"}
-                  nextMatch={ convertDates(new Date("2021-01-06T08:00:00.000Z")) } /> 
+              { 
+              
+              userEvents.map((event, index) =>
+                <AccordionEventCard
+                  key={index}
+                  id={index}
+                  eventID={event.id}
+                  image={event.image_url}
+                  title={event.title}
+                  subtitle={new Date(event.time_start).toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'})}
+                  description={event.description}
+                  hosts={event.hosts}
+                  facebookLink={event.url}
+                  location={event.location}
+                  nextMatch={ convertDates(new Date(event.time_start)) }
+                  latitude={event.latitude}
+                  longitude={event.longitude}
+                  mapsValues={event.longitude}
+                  going={userEventsIds}
+                  setGoing={setUserEventIds}/> 
+              )
+                    
+              }
+
             </Accordion>
           </div>
         </div>

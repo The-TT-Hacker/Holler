@@ -17,7 +17,7 @@ getEvents().then(async (events) => {
 
   var tags: string[] = [];
 
-  events = events.map((event) => {
+  const addEventRequests: AddEventRequest[] = events.map((event) => {
 
     event.categories.forEach((category: string) => {
       if (!tags.includes(category)) {
@@ -31,8 +31,8 @@ getEvents().then(async (events) => {
       }
     });
 
-
-    const hollerEvent: Event = {
+    const hollerEvent: AddEventRequest = {
+      id: event.id,
       url: event.url,
       image_url: event.image_url,
       title: event.title,
@@ -47,7 +47,7 @@ getEvents().then(async (events) => {
     return hollerEvent;
   });
 
-  var result = await eventService.setEvents(events);
+  var result = await eventService.setEvents(addEventRequests);
 
   if (!result) {
     console.log("set events failed");

@@ -112,7 +112,7 @@ const updateUserName = async (newName) => {
 
 const updateUserFaculties = async (newFaculties) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('faculties', newFaculties)
+  sessionStorage.setItem('faculties', JSON.stringify(newFaculties))
 
   await axios({
     url: BACKEND + '/user',
@@ -132,7 +132,7 @@ const updateUserFaculties = async (newFaculties) => {
 
 const updateUserClasses = async (newClasses) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('classes', newClasses)
+  sessionStorage.setItem('classes', JSON.stringify(newClasses))
 
   await axios({
     url: BACKEND + '/user',
@@ -152,7 +152,7 @@ const updateUserClasses = async (newClasses) => {
 
 const updateUserInterests = async (newInterests) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('interests', newInterests)
+  sessionStorage.setItem('interests', JSON.stringify(newInterests))
 
   await axios({
     url: BACKEND + '/user',

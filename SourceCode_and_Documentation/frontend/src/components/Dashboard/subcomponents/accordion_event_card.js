@@ -1,24 +1,101 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
-// Images
 import Marker from '../../../icons/marker.png'
 import ChatBubble from '../../../icons/chat.svg'
 import FacebookLogo from '../../../icons/facebook.png'
 
-// Components
+import { BACKEND } from '../../../constants/roles'
 import { Accordion, Card, ToggleButtonGroup, ToggleButton, Image, Button, OverlayTrigger, Tooltip, Badge } from 'react-bootstrap'
 import GoogleMapReact from 'google-map-react'
 
+/* @Params
+ * int - id: The id of the event to add to the user
+ */
+const AddEvent = async (id) => {
+  const token = localStorage.getItem('token')
+
+  await axios({
+    url: BACKEND + "/event/" + id + "/add_interest",
+    method: "POST",
+    headers: { 'Authorization': `${token}` }
+  }).then(response => {
+    console.log("Success: ", response)
+  }).catch(error => {
+    console.log("Error: ", error)
+  })
+
+}
+
+/* @Params
+ * int - id: The id of the event to remove from the user
+ */
+const RemoveEvent = async (id) => {
+  const token = localStorage.getItem('token')
+
+  await axios({
+    url: BACKEND + "/event/" + id + "/remove_interest",
+    method: "DELETE",
+    headers: { 'Authorization': `${token}` }
+  }).then(response => {
+    console.log("Success: ", response)
+  }).catch(error => {
+    console.log("Error: ", error)
+  })
+
+}
+
+/* @Params
+ * array - eventsGoing: List of events the user has
+ * currently marked as going.
+ * 
+ * int   - id: The id which should be either added
+ * or removed from the user's list.
+ */
+const handleChange = async (setGoing, going, id) => {
+
+
+
+  if (going.includes(id)) {
+    RemoveEvent(id)
+    var newArray = []
+    for (var i = 0; i < going.length; i++) {
+      if (going[i] !== id)
+        newArray.push(going[i])
+    }
+    setGoing(newArray)
+  } else {
+    AddEvent(id)
+    setGoing(id)
+  }
+
+}
+
+/* @Params
+ * integer - key
+ * integer - index
+ * integer - eventID
+ * string  - image
+ * string  - title
+ * string  - subtitle
+ * string  - description
+ * array   - hosts
+ * string  - facebookLink
+ * string  - location
+ * date    - nextMatch
+ * array   - going
+ * function - setGoing
+ * float   - latitude
+ * float   - longitude
+ */
 const AccordionEventCard = (props) => {
 
-  const [value, setValue] = useState([])
-  const handleChange = (val) => setValue(val)
   const AnyReactComponent = ({ text }) => <Image src={Marker} />
 
   const mapValue = {
     center: {
-      lat: -33.917,
-      lng: 151.232
+      lat: props.latitude,
+      lng: props.longitude
     },
     zoom: 11
   }
@@ -31,16 +108,16 @@ const AccordionEventCard = (props) => {
       document.getElementsByClassName("btn-show-more")[props.id].classList.add("active");
   }
 
-  const renderTooltip = (values) => {
-    if (Array.isArray(value) && value.length)
+  const renderTooltip = (props) => {
+    if (Array.isArray(props.going) && props.going.length)
       return (
-        <Tooltip id="button-tooltip" {...values}>
+        <Tooltip id="button-tooltip" {...props.going}>
           Leave this event!
         </Tooltip>
       )
     else
       return (
-        <Tooltip id="button-tooltip" {...values}>
+        <Tooltip id="button-tooltip" {...props.going}>
           Join this event!
         </Tooltip>
       )
@@ -76,6 +153,7 @@ const AccordionEventCard = (props) => {
           <div className="card-title">Location</div>
           {props.location} <br /><br />
 
+          {props.mapsValues &&         
           <div className="map-container">
             <GoogleMapReact
               bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
@@ -90,6 +168,7 @@ const AccordionEventCard = (props) => {
 
             </GoogleMapReact>
           </div>
+          }          
 
         </Card.Body>
       </Accordion.Collapse>
@@ -110,8 +189,8 @@ const AccordionEventCard = (props) => {
                 delay={{ show: 50, hide: 100 }}
                 overlay={renderTooltip}
               >
-                <ToggleButtonGroup className="" type="checkbox" value={value} onChange={handleChange}>
-                  <ToggleButton className="btn-gradient-circle" value={0}></ToggleButton>
+                <ToggleButtonGroup className="" type="checkbox" value={props.going} onChange={() => handleChange(props.setGoing, props.going, props.eventID)}>
+                  <ToggleButton className="btn-gradient-circle" value={props.eventID}></ToggleButton>
                 </ToggleButtonGroup>
               </OverlayTrigger>
 

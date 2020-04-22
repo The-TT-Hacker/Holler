@@ -3,7 +3,7 @@ import { db } from "./firebaseService";
 import * as googleMapsService from "./googleMapsService";
 
 // Import models
-import { Event, EventInterest, AddEventRequest } from "../models/event";
+import { Event, EventInterest, AddEventRequest, GetEventResponse } from "../models/event";
 
 declare global {
   interface Date {
@@ -47,9 +47,11 @@ export async function getEvents(searchText: string, tags: string, startDate: str
     
     // Get events
     const snapshot = await query.get()
-    var events = <Event[]> snapshot.docs.map(doc => {
-      const docData = doc.data();
-      return {
+    var events = <Event[]> snapshot.docs.map(docRef => {
+      const docData = docRef.data();
+
+      const eventResponse: GetEventResponse = {
+        id: docRef.id,
         url: docData.url,
         title: docData.title,
         time_start: docData.time_start.toDate(),
@@ -60,6 +62,11 @@ export async function getEvents(searchText: string, tags: string, startDate: str
         categories: docData.categories,
         image_url: docData.image_url
       }
+
+      if (docData.latitude) eventResponse.latitude = docData.latitude;
+      if (docData.longitude) eventResponse.longitude = docData.longitude;
+
+      return eventResponse;
     });
 
     // Filter events
@@ -110,27 +117,32 @@ export async function getEvents(searchText: string, tags: string, startDate: str
  * 
  * @param id 
  */
-export async function getEvent(id: string): Promise<Event> {
+export async function getEvent(eventId: string): Promise<Event> {
 
   try {
 
-    const docRef = await db.collection("events").doc(id).get();
+    const docRef = await db.collection("events").doc(eventId).get();
     const docData: FirebaseFirestore.DocumentData = docRef.data();
-    
-    return {
+
+    const eventResponse: GetEventResponse = {
+      id: docRef.id,
       url: docData.url,
-      image_url: docData.image_url,
       title: docData.title,
       time_start: docData.time_start.toDate(),
       time_finish: docData.time_finish.toDate(),
       description: docData.description,
       location: docData.location,
       hosts: docData.hosts,
-      categories: docData.categories
+      categories: docData.categories,
+      image_url: docData.image_url
     }
 
+    if (docData.latitude) eventResponse.latitude = docData.latitude;
+    if (docData.longitude) eventResponse.longitude = docData.longitude;
+    
+    return eventResponse;
+
   } catch (e) {
-    console.log(e);
     throw e;
   }
 
@@ -183,27 +195,44 @@ export async function setEvent(id: string, event: Event): Promise<void> {
 
     const currentEvent = await getEvent(id);
 
-    // Check if location has been updated
-    if (event.location === currentEvent.location)
-      newOrUpdatedLocation = false;
-    else
-      newOrUpdatedLocation = true;
-0
+    // Event location has not been updated
+    if (event.location === currentEvent.location) newOrUpdatedLocation = true;
+    
+    // Event location updated
+    else newOrUpdatedLocation = false;
+
+  // New event
   } catch {
 
-    // New event
     newOrUpdatedLocation = true;
   
   }
 
   // Get coordinates if event is new or location is updated
   if (newOrUpdatedLocation) {
-    googleMapsService.getCoordinates(event.location);
+
+    try {
+      
+      //const coordinates = { latitude: 0, longitude: 0 };
+      const coordinates = await googleMapsService.getCoordinates(event.location);
+      console.log(coordinates);
+      
+      event.latitude = coordinates.latitude;
+      event.longitude = coordinates.longitude;
+
+    } catch {
+      console.log("Failed to get coordinates");
+      // Remove current values if new event location doesn't have coordinates
+      if (event.latitude) delete event.latitude;
+      if (event.longitude) delete event.longitude;
+
+    }
+    
   }
 
   try {
 
-    // If 
+    console.log(id);
 
     await db.collection("events").doc(id).set(event);
 
