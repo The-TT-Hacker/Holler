@@ -25,15 +25,15 @@ const SeparateIfList = (props) => {
       props.text.map((elem, index) => {
 
         if (index === props.text.length - 1)
-          return (<div className="col"> <span key={elem}> {elem} </span> </div>)
+          return ( <div className="col"><span key={elem}> {elem} </span> </div>)
         else
-          return (<div className="col"> <span key={elem}> {elem + ", "} </span>  </div>)
+          return ( <div className="col"><span key={elem}> {elem + ", "} </span> </div>)
   
       })
     )
 
   } else {
-    return (<div className="col"> <span key={props.text}> {props.text} </span>  </div>)
+    return (<div className="col"> <span key={props.text}> {props.text} </span> </div>)
   }
 
 }
@@ -112,7 +112,7 @@ const updateUserName = async (newName) => {
 
 const updateUserFaculties = async (newFaculties) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('faculties', JSON.stringify(newFaculties))
+  sessionStorage.setItem('faculties', newFaculties)
 
   await axios({
     url: BACKEND + '/user',
@@ -132,7 +132,7 @@ const updateUserFaculties = async (newFaculties) => {
 
 const updateUserClasses = async (newClasses) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('classes', JSON.stringify(newClasses))
+  sessionStorage.setItem('classes', newClasses)
 
   await axios({
     url: BACKEND + '/user',
@@ -152,7 +152,7 @@ const updateUserClasses = async (newClasses) => {
 
 const updateUserInterests = async (newInterests) => {
   const token = localStorage.getItem('token')
-  sessionStorage.setItem('interests', JSON.stringify(newInterests))
+  sessionStorage.setItem('interests', newInterests)
 
   await axios({
     url: BACKEND + '/user',
@@ -358,13 +358,12 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Birthday} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Born on the </span>
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> DOB </span>
             <Editable text={dob} updateFunction={updateUserDOB} placeholder="Enter your name" editText="Update your date of birth" textWeight="normal"  sizeEditIcon="24px">
               <Form.Group className="reponsive-form spacer-right" style={{ marginBottom: '0' }}>
                 <Form.Control type="date" placeholder="Enter your name" value={dob} onChange={e => setDOB(e.currentTarget.value)} />
               </Form.Group>
             </Editable>
-
           </div>
         </div>
 
@@ -372,7 +371,7 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Mortarboard} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Majoring in </span>
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Majors </span>
             <Editable text={faculties} updateFunction={updateUserFaculties} placeholder="Enter your name" editText="Update your majors" textWeight="normal" sizeEditIcon="24px">
 
               <Typeahead
@@ -396,7 +395,7 @@ const Profile = (props) => {
         <div className="row spacer-down">
           <div className="col d-flex flex-row align-items-center">
             <img className="spacer-right" src={Classroom} style={{ width: "48px", height: "48px" }} alt="classes" />
-            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Currently studying </span>
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Subjects </span>
             <Editable text={classes} updateFunction={updateUserClasses} placeholder="Enter your name" editText="Update your majors" textWeight="normal"  sizeEditIcon="24px">
 
               <Typeahead
@@ -421,7 +420,7 @@ const Profile = (props) => {
           <div className="col d-flex flex-row align-items-center">
 
             <img className="spacer-right" src={Paragliding} style={{ width: "48px", height: "48px" }} alt="birthday" />
-            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Interested in </span>
+            <span className="text-setup" style={{ fontFamily: 'Poppins', fontSize: 'normal', marginRight: '0.25rem' }}> Interests </span>
             <Editable text={interests} updateFunction={updateUserInterests} placeholder="Enter your name" editText="Update your majors" textWeight="normal"  sizeEditIcon="24px">
 
               <Typeahead
