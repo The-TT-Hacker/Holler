@@ -5,7 +5,7 @@ import { BACKEND } from '../../../constants/roles'
 
 const Avatar = (props) => {
   
-  const [avatar, setAvatar] = useState("Loading...")
+  const [avatar, setAvatar] = useState(sessionStorage.getItem('avatar'))
 
   const getAvatar = async () => {
     const token = localStorage.getItem('token')
@@ -15,6 +15,7 @@ const Avatar = (props) => {
       headers: { 'Authorization': `${token}` }
     }).then(response => {
       setAvatar(response.data.image)
+      sessionStorage.setItem('avatar', response.data.image)
     }).catch(error => {
       console.log("Error: ", error)
     })
@@ -22,7 +23,7 @@ const Avatar = (props) => {
 
   getAvatar()
 
-  if (avatar === "Loading...") {
+  if (avatar === "" || avatar === null) {
     return (
       <div class="sk-fading-circle">
         <div class="sk-circle1 sk-circle"></div>
