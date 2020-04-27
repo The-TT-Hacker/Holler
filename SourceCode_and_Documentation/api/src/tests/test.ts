@@ -1,8 +1,8 @@
-import * as matchTests from "./matchTests";
-import * as chatTests from "./chatTests";
+//import * as matchTests from "./matchTests";
+//import * as chatTests from "./chatTests";
 
 //matchTests.makeMatch().then(res => console.log(res)).catch(e => console.log(e));
-matchTests.matchTest().then(res => console.log(res)).catch(e => console.log(e));
+//matchTests.matchTest().then(res => console.log(res)).catch(e => console.log(e));
 //chatTests.sendMessage().then(res => console.log(res)).catch(e => console.log(e));
 //chatTests.getLastMessage().then(res => console.log(res)).catch(e => console.log(e));
 

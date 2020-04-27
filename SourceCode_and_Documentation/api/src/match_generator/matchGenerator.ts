@@ -189,8 +189,25 @@ function computeMatchPoints(firstUser: UserResponse, secondUser: UserResponse, t
   // This means the more group members have an attribute in common, the amount of matchpoints increases exponentially
   Object.entries(commonAttributes).forEach(([attribute, numInCommon]) => matchPoints += numInCommon ** 2);
 
-  // TODO - Add match points for age
+  // Add match points for age
 
+  // Convert birth dates to milliseconds
+  const firstUserBirthTime = firstUser.dob.getTime()
+  const secondUserBirthTime = secondUser.dob.getTime()
+  const thirdUserBirthTime = thirdUser.dob.getTime()
+  
+  // Get difference between birth dates in years
+  const diffYears1 = Math.abs(firstUserBirthTime - secondUserBirthTime) / 1000 / 60 / 60 / 24 / 365 // Milliseconds to years
+  const diffYears2 = Math.abs(secondUserBirthTime - thirdUserBirthTime) / 1000 / 60 / 60 / 24 / 365 // Milliseconds to years
+  const diffYears3 = Math.abs(thirdUserBirthTime - firstUserBirthTime) / 1000 / 60 / 60 / 24 / 365 // Milliseconds to years
+
+  // Get sum of differences in years
+  const totalDiffYears = diffYears1 + diffYears2 + diffYears3;
+
+  // Use exponential function to create inverse relationship between total difference in birth dates and amount of match points
+  // so that the more similar the groups ages are the more match points they get
+  matchPoints += 50 * Math.exp(-0.8 * totalDiffYears);
+  
   return matchPoints;
 
 }

@@ -11,7 +11,8 @@
     "get_token": "node dist/src/tests/get_token.js",
     "unsw_timetable": "node dist/data_collection/unsw_timetable",
     "unsw_events": "node dist/data_collection/unsw_events",
-    "match": "node dist/match_generator/match_generator.js"
+    "match": "node dist/match_generator/match_generator.js",
+    "run_match": "node dist/src/tests/matchTests.js"
   },
   "repository": {
     "type": "git",
